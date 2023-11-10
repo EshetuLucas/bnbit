@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "414289243591",
+    "project_id": "bnbit-app-370917",
+    "storage_bucket": "bnbit-app-370917.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414289243591:android:5506db245a933544b8fde2",
+        "android_client_info": {
+          "package_name": "com.bnbit.app.bnbit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414289243591-1fhin8il708mucq79v2qbqglfac05lic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bnbit.app.bnbit",
+            "certificate_hash": "3d313432a166148f57cbf5ef2cd3947edbbe0592"
+          }
+        },
+        {
+          "client_id": "414289243591-ng1plu4a0p08jbgco4dfhs99p8uq13uo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bnbit.app.bnbit",
+            "certificate_hash": "58c70cac679bbdc85cf9a31e6a3c19fb05b24718"
+          }
+        },
+        {
+          "client_id": "414289243591-up9clc7vj0a2uivh3ka7nilvlat6nocu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bnbit.app.bnbit",
+            "certificate_hash": "33dcafee3f09a2c921df9d83e0825ca81c2ae8c2"
+          }
+        },
+        {
+          "client_id": "414289243591-lhefbct71ima8csfmk05shoo66ao7cv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAIv4q8GAZ-CrJ-KmhWbgIGlF73l35uyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414289243591-eltuug381c6o9djlk0r0hog3k6m9bsfm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414289243591-7le6n8hu940jj8d6cdbbtkfpi7u3qkn5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bnbit.app.bnbit",
+                "app_store_id": "6446858641"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

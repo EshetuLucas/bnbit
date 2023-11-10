@@ -1,0 +1,1 @@
+enum FetchType { all, random }
