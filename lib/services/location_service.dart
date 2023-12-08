@@ -45,6 +45,7 @@ class LocationService {
         }
       }
     }
+    return null;
   }
 
   Future<LocationData?> getUserLocation() async {

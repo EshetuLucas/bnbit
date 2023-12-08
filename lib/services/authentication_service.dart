@@ -48,10 +48,9 @@ class AuthenticationService with ListenableServiceMixin {
   Future<bool> _fetchIfUserExists(String uid) async {
     try {
       final user = await _userService.getUserById(userId: uid);
-      if (user != null) {
-        _userService.setCurrentUser(user);
-      }
-      return user != null;
+      _userService.setCurrentUser(user);
+          // ignore: unnecessary_null_comparison
+          return user != null;
     } catch (e) {
       log.e(e);
       return false;
