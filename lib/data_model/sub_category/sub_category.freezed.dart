@@ -21,7 +21,7 @@ SubCategory _$SubCategoryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SubCategory {
   String get name => throw _privateConstructorUsedError;
-  String get svg => throw _privateConstructorUsedError;
+  String? get svg => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
 
@@ -37,7 +37,7 @@ abstract class $SubCategoryCopyWith<$Res> {
           SubCategory value, $Res Function(SubCategory) then) =
       _$SubCategoryCopyWithImpl<$Res, SubCategory>;
   @useResult
-  $Res call({String name, String svg, String id, String category});
+  $Res call({String name, String? svg, String id, String category});
 }
 
 /// @nodoc
@@ -54,7 +54,7 @@ class _$SubCategoryCopyWithImpl<$Res, $Val extends SubCategory>
   @override
   $Res call({
     Object? name = null,
-    Object? svg = null,
+    Object? svg = freezed,
     Object? id = null,
     Object? category = null,
   }) {
@@ -63,10 +63,10 @@ class _$SubCategoryCopyWithImpl<$Res, $Val extends SubCategory>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      svg: null == svg
+      svg: freezed == svg
           ? _value.svg
           : svg // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,7 @@ abstract class _$$SubCategoryImplCopyWith<$Res>
       __$$SubCategoryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String svg, String id, String category});
+  $Res call({String name, String? svg, String id, String category});
 }
 
 /// @nodoc
@@ -102,7 +102,7 @@ class __$$SubCategoryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = null,
-    Object? svg = null,
+    Object? svg = freezed,
     Object? id = null,
     Object? category = null,
   }) {
@@ -111,10 +111,10 @@ class __$$SubCategoryImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      svg: null == svg
+      svg: freezed == svg
           ? _value.svg
           : svg // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -131,10 +131,7 @@ class __$$SubCategoryImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SubCategoryImpl implements _SubCategory {
   _$SubCategoryImpl(
-      {required this.name,
-      required this.svg,
-      required this.id,
-      required this.category});
+      {required this.name, this.svg, required this.id, required this.category});
 
   factory _$SubCategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$SubCategoryImplFromJson(json);
@@ -142,7 +139,7 @@ class _$SubCategoryImpl implements _SubCategory {
   @override
   final String name;
   @override
-  final String svg;
+  final String? svg;
   @override
   final String id;
   @override
@@ -186,7 +183,7 @@ class _$SubCategoryImpl implements _SubCategory {
 abstract class _SubCategory implements SubCategory {
   factory _SubCategory(
       {required final String name,
-      required final String svg,
+      final String? svg,
       required final String id,
       required final String category}) = _$SubCategoryImpl;
 
@@ -196,7 +193,7 @@ abstract class _SubCategory implements SubCategory {
   @override
   String get name;
   @override
-  String get svg;
+  String? get svg;
   @override
   String get id;
   @override

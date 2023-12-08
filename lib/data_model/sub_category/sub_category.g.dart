@@ -9,7 +9,7 @@ part of 'sub_category.dart';
 _$SubCategoryImpl _$$SubCategoryImplFromJson(Map<String, dynamic> json) =>
     _$SubCategoryImpl(
       name: json['name'] as String,
-      svg: json['svg'] as String,
+      svg: json['svg'] as String?,
       id: json['id'] as String,
       category: json['category'] as String,
     );

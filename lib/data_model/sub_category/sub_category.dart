@@ -8,7 +8,7 @@ part 'sub_category.g.dart';
 class SubCategory with _$SubCategory {
   factory SubCategory({
     required String name,
-    required String svg,
+    String? svg,
     required String id,
     required String category,
   }) = _SubCategory;
@@ -19,7 +19,31 @@ class SubCategory with _$SubCategory {
 
 List<SubCategory> get fakeSubCategories => [
       SubCategory(
-        name: 'Hotels',
+        name: 'Hotels     ',
+        svg: hotelSvg,
+        id: 'id1',
+        category: 'categoryId1',
+      ),
+      SubCategory(
+        name: 'Hotels     ',
+        svg: hotelSvg,
+        id: 'id1',
+        category: 'categoryId1',
+      ),
+      SubCategory(
+        name: 'Hotels     ',
+        svg: hotelSvg,
+        id: 'id1',
+        category: 'categoryId1',
+      ),
+      SubCategory(
+        name: 'Hotels     ',
+        svg: hotelSvg,
+        id: 'id1',
+        category: 'categoryId1',
+      ),
+      SubCategory(
+        name: 'Hotels     ',
         svg: hotelSvg,
         id: 'id1',
         category: 'categoryId1',
