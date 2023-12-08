@@ -16,15 +16,20 @@ class CustomSnackbarService {
     Duration? duration,
   }) async {
     basicSnackBar(
-      messageText: _BasicSanckbarWidget(
-        title: 'double_tap'.tr,
-        icon: DecoratedContainer(borderRadius: 100, child: Container()
+      messageText: const _BasicSanckbarWidget(
+        title: 'Double tap to exit the app',
+      ),
+    );
+  }
 
-            // ImageBuilder(
-            //   imagePath: iconPng,
-            //   height: 30,
-            // ),
-            ),
+  Future<void> showError(
+    String? message, {
+    Duration? duration,
+  }) async {
+    basicSnackBar(
+      messageText: _BasicSanckbarWidget(
+        containerColor: kcRed.withOpacity(0.9),
+        title: message?.tr ?? 'Something went wrong! Try again',
       ),
     );
   }
@@ -35,36 +40,23 @@ class CustomSnackbarService {
     basicSnackBar(
       messageText: _BasicSanckbarWidget(
         title: 'needs_internet'.tr,
-        icon: const DecoratedContainer(
-          borderRadius: 100,
-          child: Icon(
-            Icons.wifi_off,
-            color: kcPrimaryColor,
-          ),
+        icon: const Icon(
+          Icons.wifi_off,
+          color: kcPrimaryColor,
         ),
       ),
     );
   }
 
-  // Future<void> comingSoon({
-  //   String? message,
-  // }) async {
-  //   basicSnackBar(
-  //     messageText: _BasicSanckbarWidget(
-  //       title: 'coming_soon'.tr,
-  //       icon: const DecoratedContainer(
-  //         borderRadius: 100,
-  //         child: DecoratedContainer(
-  //           borderRadius: 100,
-  //           child: ImageBuilder(
-  //             imagePath: iconPng,
-  //             height: 30,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Future<void> comingSoon({
+    String? message,
+  }) async {
+    basicSnackBar(
+      messageText: _BasicSanckbarWidget(
+        title: 'Working on this feature'.tr,
+      ),
+    );
+  }
 
   void basicSnackBar({
     String? title,
@@ -83,62 +75,93 @@ class CustomSnackbarService {
     );
   }
 
-  // _snackbarService.showCustomSnackBar(
-  //   variant: SnackbarType.imageSaved,
-  //   message: '',
-  //   duration: const Duration(seconds: 2),
-  // );
+  Future<void> showImageSaved(String title) async {
+    basicSnackBar(
+      messageText: _BasicSanckbarWidget(
+        title: title.tr,
+      ),
+    );
+  }
+
+  Future<void> showSuccess(String title) async {
+    basicSnackBar(
+      messageText: _BasicSanckbarWidget(
+        icon: const Icon(
+          Icons.check_circle,
+          color: kcWhite,
+        ),
+        title: title.tr,
+      ),
+    );
+  }
+
+  Future<void> showWarning(String title) async {
+    basicSnackBar(
+      messageText: _BasicSanckbarWidget(
+        icon: const Icon(
+          Icons.warning,
+          color: Colors.orange,
+        ),
+        title: title.tr,
+      ),
+    );
+  }
 }
 
 class _BasicSanckbarWidget extends StatelessWidget {
   const _BasicSanckbarWidget({
     required this.title,
-    required this.icon,
+    this.icon,
+    this.containerColor,
   });
 
   final String title;
-  final Widget icon;
+  final Widget? icon;
+  final Color? containerColor;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DecoratedContainer(
-          withCard: false,
-          containerColor:
-              Theme.of(context).colorScheme.tertiary.withOpacity(0.8),
-          shadowColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
-          borderColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
-          shadowOpacity: 0.01,
-          borderRadius: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(9.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                horizontalSpaceSmall,
-                icon,
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 18),
-                    child: Text(
-                      title,
-                      style: ktsWhiteMediumTextStyle(context).copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.onPrimary),
-                      textAlign: TextAlign.start,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: DecoratedContainer(
+            borderColor: kcTransparent,
+            containerColor: containerColor ?? kcDark.withOpacity(0.7),
+            shadowColor: kcDark700.withOpacity(0.6),
+            shadowOpacity: 0.01,
+            borderRadius: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  horizontalSpaceSmall,
+                  if (icon != null) icon!,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 18, bottom: 3),
+                      child: Text(
+                        title,
+                        style: ktsSmall(context).copyWith(
+                            fontWeight: FontWeight.w500,
+                            color:
+                                Theme.of(context).colorScheme.outlineVariant),
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () => getx.Get.closeAllSnackbars(),
-                  child: Icon(
-                    Icons.close,
-                    color: Theme.of(context).colorScheme.onPrimary,
+                  GestureDetector(
+                    onTap: () => getx.Get.closeAllSnackbars(),
+                    child: Icon(
+                      Icons.close,
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                    ),
                   ),
-                )
-              ],
+                  horizontalSpaceTiny,
+                ],
+              ),
             ),
           ),
         ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:bnbit_app/api/user/user_apis.dart';
@@ -25,11 +26,14 @@ class UserService {
   UserModel get currentUser => _currentUser!;
 
   Future<String> get token async {
-    return await _firebaseAuthentication.currentUser!.getIdToken() ?? '';
+    return await _firebaseAuthentication.currentUser?.getIdToken() ?? '';
   }
 
-  Future<void> updateUser(UserModel user) async {
-    final result = await _userApis.updateUser(user);
+  Future<void> updateUser(
+    UserModel user, {
+    File? image,
+  }) async {
+    final result = await _userApis.updateUser(user, image: image);
     setCurrentUser(result);
   }
 
@@ -71,6 +75,31 @@ class UserService {
     _currentUser = null;
   }
 
+  Future<void> createAccount() async {
+    // final fcmTokens = {...currentUser.userfcmTokens};
+    // fcmTokens.remove(await _deviceInfoService.getDeviceModel());
+    // await onlyUpdate(
+    //     documentId: currentUser.id, payload: {'userfcmTokens': fcmTokens});
+    await _firebaseAuthentication.logout();
+    // _sharedPreferencesService.setUserLoggedIn(false);
+    // _sharedPreferencesService.saveToDisk(paymentModes, []);
+    _currentUser = null;
+  }
+
+  Future<void> sendEmailVerificationCode(String email) async {
+    return await _userApis.sendEmailVerificationCode(email);
+  }
+
+  Future<void> verifyOTPCode({
+    required String email,
+    required String otp,
+  }) async {
+    return await _userApis.verifyOTPCode(
+      email: email,
+      otp: otp,
+    );
+  }
+
   /// This function deletes the user account
   /// This is required for the ios and android when uploading
 
@@ -78,6 +107,10 @@ class UserService {
     //await ref.doc(_currentUser!.uid).delete();
     await _firebaseAuthentication.currentUser!.delete();
     _currentUser = null;
+  }
+
+  Future<void> resetPassword(String email) async {
+    // return await _userApi.resetPassword(email);
   }
 
   // /// Generates an FCM token for a user's device. It will

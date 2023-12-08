@@ -264,7 +264,9 @@ class AuthenticationService with ListenableServiceMixin {
     }
   }
 
-  Future<bool> verifyOTP(String otp) async {
+  Future<bool> verifyOTP(
+    String otp,
+  ) async {
     log.i('otp$otp');
     try {
       final result = await _firebaseAuthenticationService.firebaseAuth
