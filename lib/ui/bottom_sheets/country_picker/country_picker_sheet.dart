@@ -7,7 +7,6 @@ import 'package:bnbit_app/utils/country_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:get/get.dart';
 
 class CountryPickerBottomSheetArguments {
   final Function(Country)? onCountrySelected;
