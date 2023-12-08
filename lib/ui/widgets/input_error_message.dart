@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:bnbit_app/ui/common/shared_styles.dart';
-import 'package:bnbit_app/ui/common/ui_helpers.dart';
 
 class ValidationMessage extends StatelessWidget {
   const ValidationMessage({
@@ -18,12 +17,11 @@ class ValidationMessage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          verticalSpaceTiny,
           Text(
             title,
             style: textStyle ??
                 ktsSmallWhiteTextStyle(context).copyWith(
-                  fontSize: 12,
+                  fontSize: 11,
                   color: kcRed.withOpacity(0.9),
                 ),
           )

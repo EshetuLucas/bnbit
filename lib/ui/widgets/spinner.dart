@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +29,9 @@ class Spinner extends StatelessWidget {
         height: size,
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation(
-              color ?? Theme.of(context).colorScheme.primary),
+            color ?? Theme.of(context).colorScheme.primary,
+          ),
+          strokeWidth: 5,
         ),
       ),
     );

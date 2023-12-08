@@ -36,7 +36,7 @@ class AppButton extends StatelessWidget {
       this.backgroundColor = kcPrimaryColor,
       this.textColor,
       this.shadow = false,
-      this.height = 50,
+      this.height = 49,
       this.enablebuttonTextStyle,
       this.disablebuttonTextStyle,
       required this.onTap,
@@ -61,15 +61,12 @@ class AppButton extends StatelessWidget {
               ? Colors.transparent
               : enabled || busy
                   ? backgroundColor
-                  : Theme.of(context)
-                      .colorScheme
-                      .primaryContainer
-                      .withOpacity(0.03),
-          // border:  isOutlined
-          //     ? Border.all(color: backgroundColor)
-          //     : Border.all(
-          //         color: backgroundColor,
-          //       ),
+                  : kcLightGrey,
+          border: isOutlined
+              ? Border.all(color: backgroundColor)
+              : Border.all(
+                  color: enabled || busy ? backgroundColor : kcBorderColor,
+                ),
           borderRadius: roundOnlyBottom
               ? const BorderRadius.only(
                   bottomLeft: Radius.circular(10),

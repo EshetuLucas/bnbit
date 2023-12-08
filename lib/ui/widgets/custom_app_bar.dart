@@ -14,6 +14,7 @@ class CustomAppBar extends StatelessWidget {
     this.hasBackButton = true,
     this.hasDivider = true,
     this.tail,
+    this.hasPadding = true,
   }) : super(key: key);
   final String title;
   final VoidCallback? onBack;
@@ -21,6 +22,7 @@ class CustomAppBar extends StatelessWidget {
   final bool hasBackButton;
   final bool hasDivider;
   final Widget? tail;
+  final bool hasPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +34,14 @@ class CustomAppBar extends StatelessWidget {
         children: [
           verticalSpaceTiny,
           Padding(
-            padding: appSymmetricEdgePadding,
+            padding: hasPadding ? appSymmetricEdgePadding : EdgeInsets.zero,
             child: Row(
               children: [
                 if (hasBackButton) ...[
                   AppBackButton(
                     onTap: onBack,
                   ),
-                  horizontalSpace(12),
+                  horizontalSpace(20),
                 ],
                 Expanded(
                   child: Text(
@@ -47,7 +49,7 @@ class CustomAppBar extends StatelessWidget {
                     style: textStyle ??
                         ktsSemibold(context).copyWith(
                           fontWeight: FontWeight.w500,
-                          fontSize: 15,
+                          fontSize: 18,
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                   ),

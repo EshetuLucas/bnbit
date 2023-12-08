@@ -5,7 +5,7 @@ class DecoratedContainer extends StatelessWidget {
   const DecoratedContainer({
     super.key,
     required this.child,
-    this.shadowColor = kcPrimaryColor,
+    this.shadowColor = kcWhite,
     this.containerColor,
     this.borderColor,
     this.borderRadius = 8,

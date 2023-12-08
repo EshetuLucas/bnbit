@@ -1,3 +1,5 @@
+import 'package:bnbit_app/ui/widgets/svg_builder.dart';
+import 'package:bnbit_app/utils/asset_helper.dart';
 import 'package:flutter/material.dart';
 
 class AppBackButton extends StatelessWidget {
@@ -15,10 +17,7 @@ class AppBackButton extends StatelessWidget {
       onTap: onTap ?? () => Navigator.pop(context),
       child: Padding(
         padding: padding ?? EdgeInsets.zero,
-        child: const Icon(
-          Icons.arrow_back,
-          size: 20,
-        ),
+        child: const SvgBuilder(svg: backButton),
       ),
     );
   }

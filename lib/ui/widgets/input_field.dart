@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 import '../common/ui_helpers.dart';
 
 class InputField extends StatefulWidget {
-  InputField({
-    required this.controller,
+  const InputField({
+    this.controller,
     required this.placeholder,
     this.contentPadding = const EdgeInsets.only(
       left: 16,
@@ -60,6 +60,7 @@ class InputField extends StatefulWidget {
     this.showErrorMessage = false,
     this.focusedBorderColor = kcPrimaryColor,
     this.counter,
+    this.hintTextStyle,
     Key? key,
   }) : super(key: key);
 
@@ -77,7 +78,7 @@ class InputField extends StatefulWidget {
   final Color focusedBorderColor;
   final BoxDecoration? boxDecoration;
   final EdgeInsetsGeometry contentPadding;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final Function? enterPressed;
   final bool expands;
   final FocusNode? fieldFocusNode;
@@ -109,6 +110,7 @@ class InputField extends StatefulWidget {
   final TextInputType textInputType;
   final String? validationMessage;
   final TextStyle? textStyle;
+  final TextStyle? hintTextStyle;
   final String? errorMessage;
 
   @override
@@ -126,213 +128,217 @@ class _InputFieldState extends State<InputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AnimatedOpacity(
-          duration: const Duration(milliseconds: 300),
-          opacity: widget.isReadOnly ? 0.3 : 1.0,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (widget.floatingLabelText != null) ...[
-                Text(
-                  '  ${widget.floatingLabelText!}',
-                  style: ktsDarkSmall(context).copyWith(
-                      color: Theme.of(context).colorScheme.tertiaryContainer,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12),
-                ),
-                verticalSpaceTiny,
-              ],
-              Container(
-                height: widget.hasFieldHight ? widget.fieldHeight : null,
-                alignment: Alignment.centerLeft,
-                decoration: widget.boxDecoration ??
-                    BoxDecoration(
-                      boxShadow: widget.hasShadow
-                          ? [
-                              BoxShadow(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.1),
-                                spreadRadius: 5,
-                                blurRadius: 5,
-                                offset: const Offset(
-                                  0, // This is from X direction
-                                  3, // This is from Y direction
-                                ), // changes position of the shadow to the given direction
-                              )
-                            ]
-                          : null,
-                      border: widget.hasError ? Border.all(color: kcRed) : null,
-                      borderRadius: BorderRadius.all(
-                        widget.blendTextForm
-                            ? const Radius.circular(6)
-                            : widget.hasError
-                                ? const Radius.circular(6)
-                                : Radius.zero,
-                      ),
-                    ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    decoration: widget.boxDecoration ??
-                        const BoxDecoration(
-                          // border: widget.hasError ? Border.all(color: kcRed) : null,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(6),
-                          ),
+    return AbsorbPointer(
+      absorbing: widget.controller == null,
+      child: Column(
+        children: [
+          AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: widget.isReadOnly ? 0.3 : 1.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (widget.floatingLabelText != null) ...[
+                  Text(
+                    '  ${widget.floatingLabelText!}',
+                    style: ktsDarkSmall(context).copyWith(
+                        color: Theme.of(context).colorScheme.tertiaryContainer,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12),
+                  ),
+                  verticalSpaceTiny,
+                ],
+                Container(
+                  height: widget.hasFieldHight ? widget.fieldHeight : null,
+                  alignment: Alignment.centerLeft,
+                  decoration: widget.boxDecoration ??
+                      BoxDecoration(
+                        boxShadow: widget.hasShadow
+                            ? [
+                                BoxShadow(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 5,
+                                  offset: const Offset(
+                                    0, // This is from X direction
+                                    3, // This is from Y direction
+                                  ), // changes position of the shadow to the given direction
+                                )
+                              ]
+                            : null,
+                        border:
+                            widget.hasError ? Border.all(color: kcRed) : null,
+                        borderRadius: BorderRadius.all(
+                          widget.blendTextForm
+                              ? const Radius.circular(6)
+                              : widget.hasError
+                                  ? const Radius.circular(6)
+                                  : Radius.zero,
                         ),
-                    clipBehavior: widget.boxDecoration != null
-                        ? Clip.antiAlias
-                        : Clip.none,
-                    child: RASkeletonLoader(
-                      loading: widget.loading,
-                      child: AbsorbPointer(
-                        absorbing: widget.isPlaceholder || widget.isReadOnly,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                style: widget.textStyle ??
-                                    ktsDarkGreyTextStyle(context)
+                      ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      decoration: widget.boxDecoration ??
+                          const BoxDecoration(
+                            // border: widget.hasError ? Border.all(color: kcRed) : null,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                          ),
+                      clipBehavior: widget.boxDecoration != null
+                          ? Clip.antiAlias
+                          : Clip.none,
+                      child: RASkeletonLoader(
+                        loading: widget.loading,
+                        child: AbsorbPointer(
+                          absorbing: widget.isPlaceholder || widget.isReadOnly,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  style: widget.textStyle ??
+                                      ktsDarkGreyTextStyle(context)
+                                          .copyWith(fontSize: 14),
+                                  textCapitalization: widget.textInputType !=
+                                          TextInputType.emailAddress
+                                      ? TextCapitalization.sentences
+                                      : TextCapitalization.none,
+                                  textAlignVertical: widget.textAlignVertical,
+                                  expands: widget.expands,
+                                  maxLines: widget.maxLine,
+                                  maxLength: widget.maxTextLimit,
+                                  inputFormatters: widget.inputFormatter,
+                                  autofocus: widget.autoFocus,
+                                  autocorrect: true,
+                                  controller: widget.controller,
+                                  keyboardType: widget.textInputType,
+                                  focusNode: widget.fieldFocusNode,
+                                  textInputAction: widget.textInputAction,
+                                  onChanged: widget.onChanged,
+                                  obscureText: isPassword,
+                                  onTap: widget.onTap,
+                                  onEditingComplete: () {
+                                    if (widget.enterPressed != null) {
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                      widget.enterPressed!();
+                                    }
+                                    if (widget.nextFocusNode != null) {
+                                      widget.nextFocusNode!.nextFocus();
+                                    } else {
+                                      FocusScope.of(context).unfocus();
+                                    }
+                                  },
+                                  onFieldSubmitted: widget.onFieldSubmitted ??
+                                      (value) {
+                                        if (widget.nextFocusNode != null) {
+                                          widget.nextFocusNode!.requestFocus();
+                                        }
+                                      },
+                                  readOnly: widget.isReadOnly,
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    filled: true,
+                                    fillColor: widget.backgroundColor ??
+                                        Theme.of(context).colorScheme.tertiary,
+                                    counterText: !widget.showCounterText
+                                        ? ""
+                                        : widget.counter,
+                                    counterStyle: ktsSmall(context),
+                                    enabledBorder: widget.hasInputDecoration
+                                        ? OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: widget.borderColor ??
+                                                    Theme.of(context)
+                                                        .colorScheme
+                                                        .outline,
+                                                width: 1.2),
+                                            borderRadius:
+                                                widget.focusedBorderRadius ??
+                                                    BorderRadius.circular(6),
+                                          )
+                                        : null,
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: widget.hasFocusedBorder
+                                          ? BorderSide(
+                                              color: widget.hasFocusedBorder &&
+                                                      !widget.isReadOnly
+                                                  ? widget.focusedBorderColor
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiaryContainer,
+                                              width: 1.2)
+                                          : const BorderSide(
+                                              color: Colors.transparent,
+                                              width: 1.2),
+                                      borderRadius:
+                                          widget.focusedBorderRadius ??
+                                              BorderRadius.circular(6),
+                                    ),
+                                    prefixIcon: widget.prefixIcon,
+                                    suffixIcon: widget.suffixIcon ??
+                                        (widget.password
+                                            ? GestureDetector(
+                                                onTap: () => setState(() {
+                                                  isPassword = !isPassword;
+                                                }),
+                                                child: widget.password
+                                                    ? Icon(
+                                                        isPassword
+                                                            ? Icons
+                                                                .visibility_outlined
+                                                            : Icons
+                                                                .visibility_off_outlined,
+                                                        color: kcPrimary2Color,
+                                                        size: 22,
+                                                      )
+                                                    : Container(),
+                                              )
+                                            : null),
+                                    border: InputBorder.none,
+                                    labelText: widget.labelText,
+                                    floatingLabelStyle: ktsSmall(context),
+                                    labelStyle: ktsRegular(context)
                                         .copyWith(fontSize: 14),
-                                textCapitalization: widget.textInputType !=
-                                        TextInputType.emailAddress
-                                    ? TextCapitalization.sentences
-                                    : TextCapitalization.none,
-                                textAlignVertical: widget.textAlignVertical,
-                                expands: widget.expands,
-                                maxLines: widget.maxLine,
-                                maxLength: widget.maxTextLimit,
-                                inputFormatters: widget.inputFormatter,
-                                autofocus: widget.autoFocus,
-                                autocorrect: true,
-                                controller: widget.controller,
-                                keyboardType: widget.textInputType,
-                                focusNode: widget.fieldFocusNode,
-                                textInputAction: widget.textInputAction,
-                                onChanged: widget.onChanged,
-                                obscureText: isPassword,
-                                onTap: widget.onTap,
-                                onEditingComplete: () {
-                                  if (widget.enterPressed != null) {
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-                                    widget.enterPressed!();
-                                  }
-                                  if (widget.nextFocusNode != null) {
-                                    widget.nextFocusNode!.nextFocus();
-                                  } else {
-                                    FocusScope.of(context).unfocus();
-                                  }
-                                },
-                                onFieldSubmitted: widget.onFieldSubmitted ??
-                                    (value) {
-                                      if (widget.nextFocusNode != null) {
-                                        widget.nextFocusNode!.requestFocus();
-                                      }
-                                    },
-                                readOnly: widget.isReadOnly,
-                                decoration: InputDecoration(
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  filled: true,
-                                  fillColor: widget.backgroundColor ??
-                                      Theme.of(context).colorScheme.tertiary,
-                                  counterText: !widget.showCounterText
-                                      ? ""
-                                      : widget.counter,
-                                  counterStyle: ktsSmall(context),
-                                  enabledBorder: widget.hasInputDecoration
-                                      ? OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: widget.borderColor ??
+                                    hintText: widget.placeholder,
+                                    hintStyle: widget.hintTextStyle ??
+                                        ktsRegular(context).copyWith(
+                                          fontSize: 14,
+                                          color: widget.isPlaceholder
+                                              ? kcDark
+                                              : widget.placeholderColor ??
                                                   Theme.of(context)
                                                       .colorScheme
-                                                      .outline,
-                                              width: 1.2),
-                                          borderRadius:
-                                              widget.focusedBorderRadius ??
-                                                  BorderRadius.circular(6),
-                                        )
-                                      : null,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: widget.hasFocusedBorder
-                                        ? BorderSide(
-                                            color: widget.hasFocusedBorder &&
-                                                    !widget.isReadOnly
-                                                ? widget.focusedBorderColor
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .tertiaryContainer,
-                                            width: 1.2)
-                                        : const BorderSide(
-                                            color: Colors.transparent,
-                                            width: 1.2),
-                                    borderRadius: widget.focusedBorderRadius ??
-                                        BorderRadius.circular(6),
+                                                      .tertiaryContainer,
+                                        ),
+                                    contentPadding: widget.contentPadding,
                                   ),
-                                  prefixIcon: widget.prefixIcon,
-                                  suffixIcon: widget.suffixIcon ??
-                                      (widget.password
-                                          ? GestureDetector(
-                                              onTap: () => setState(() {
-                                                isPassword = !isPassword;
-                                              }),
-                                              child: widget.password
-                                                  ? Icon(
-                                                      isPassword
-                                                          ? Icons
-                                                              .visibility_outlined
-                                                          : Icons
-                                                              .visibility_off_outlined,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary,
-                                                      size: 22,
-                                                    )
-                                                  : Container(),
-                                            )
-                                          : null),
-                                  border: InputBorder.none,
-                                  labelText: widget.labelText,
-                                  floatingLabelStyle: ktsSmall(context),
-                                  labelStyle: ktsRegular(context)
-                                      .copyWith(fontSize: 14),
-                                  hintText: widget.placeholder,
-                                  hintStyle: ktsRegular(context).copyWith(
-                                    fontSize: 14,
-                                    color: widget.isPlaceholder
-                                        ? kcDark
-                                        : widget.placeholderColor ??
-                                            Theme.of(context)
-                                                .colorScheme
-                                                .tertiaryContainer,
-                                  ),
-                                  contentPadding: widget.contentPadding,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        if (widget.showErrorMessage)
-          Text(
-            widget.errorMessage!,
-            style: ktsSmall(context)
-                .copyWith(color: Theme.of(context).colorScheme.error),
-          ),
-      ],
+          if (widget.showErrorMessage)
+            Text(
+              widget.errorMessage!,
+              style: ktsSmall(context)
+                  .copyWith(color: Theme.of(context).colorScheme.error),
+            ),
+        ],
+      ),
     );
   }
 }

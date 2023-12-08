@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const int _transitionDuration = 500;
+const int _TransitionDuration = 500;
 
 /// A widget that allows you to provide the expected UI and will render a shimmer over that
 /// while loading is true.
@@ -10,6 +10,7 @@ class RASkeletonLoader extends StatefulWidget {
   final Color? startColor;
   final Color? endColor;
   final Duration duration;
+  final double radius;
   const RASkeletonLoader({
     Key? key,
     required this.child,
@@ -17,6 +18,7 @@ class RASkeletonLoader extends StatefulWidget {
     this.duration = const Duration(seconds: 1),
     this.startColor,
     this.endColor,
+    this.radius = 2,
   }) : super(key: key);
 
   @override
@@ -25,7 +27,10 @@ class RASkeletonLoader extends StatefulWidget {
 
 class _SkeletonLoaderState extends State<RASkeletonLoader>
     with TickerProviderStateMixin {
-  AnimationController? _controller;
+  late AnimationController _controller = AnimationController(
+    duration: widget.duration,
+    vsync: this,
+  );
   Animation<Color?>? animationOne;
   Animation<Color?>? animationTwo;
 
@@ -36,43 +41,42 @@ class _SkeletonLoaderState extends State<RASkeletonLoader>
   @override
   void initState() {
     super.initState();
+    // Store the loading widget we first constructed with
+    if (_initialWidget == null) {
+      _initialWidget = widget.child;
+    }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Store the loading widget we first constructed with
-      _initialWidget ??= widget.child;
-      if (mounted) {
-        _controller = AnimationController(
-          duration: widget.duration,
-          vsync: this,
-        );
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initialWidget = _initialWidget ?? widget.child;
 
-      if (_controller != null && mounted) {
-        animationOne = ColorTween(
-                begin: widget.startColor ??
-                    Theme.of(context).colorScheme.inversePrimary,
-                end: widget.endColor ?? Theme.of(context).colorScheme.tertiary)
-            .animate(_controller!);
-        animationTwo = ColorTween(
-          begin: widget.endColor ?? Theme.of(context).colorScheme.tertiary,
-          end:
-              widget.startColor ?? Theme.of(context).colorScheme.inversePrimary,
-        ).animate(_controller!);
+      animationOne = ColorTween(
+              begin: widget.startColor ??
+                  Theme.of(context).colorScheme.inversePrimary,
+              end: widget.endColor ?? Theme.of(context).colorScheme.tertiary)
+          .animate(_controller);
+      animationTwo = ColorTween(
+        begin: widget.endColor ?? Theme.of(context).colorScheme.tertiary,
+        end: widget.startColor ?? Theme.of(context).colorScheme.inversePrimary,
+      ).animate(_controller);
 
-        _controller!.forward();
+      _controller.forward();
 
-        _controller!.addListener(() {
-          if (_controller!.status == AnimationStatus.completed) {
-            _controller!.reverse();
-          } else if (_controller!.status == AnimationStatus.dismissed) {
-            _controller!.forward();
-          }
-          {
-            setState(() {});
-          }
-        });
-      }
+      _controller.addListener(() {
+        if (_controller.status == AnimationStatus.completed) {
+          _controller.reverse();
+        } else if (_controller.status == AnimationStatus.dismissed) {
+          _controller.forward();
+        }
+
+        setState(() {});
+      });
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -88,8 +92,7 @@ class _SkeletonLoaderState extends State<RASkeletonLoader>
       // has now updated to match the actual data.
       // We will use a delayed future to only fade out the shader mask
       // a few milliseconds after we have received the actual widget.
-      Future.delayed(const Duration(milliseconds: _transitionDuration))
-          .then((value) {
+      Future.delayed(Duration(milliseconds: _TransitionDuration)).then((value) {
         if (!_dispose) {
           setState(() {
             _transitionToNewWidget = false;
@@ -106,12 +109,12 @@ class _SkeletonLoaderState extends State<RASkeletonLoader>
           // We only want to show this if the widget is loading OR if the widget is busy with the transition.
           child: widget.loading || _transitionToNewWidget
               ? AnimatedSize(
-                  duration: const Duration(milliseconds: 450),
+                  duration: Duration(milliseconds: 450),
                   curve: Curves.easeOut,
                   child: ShaderMask(
                     child: CustomPaint(
                       child: widget.child,
-                      foregroundPainter: RectangleFillPainter(),
+                      foregroundPainter: RectangleFillPainter(widget.radius),
                     ),
                     blendMode: BlendMode.srcATop,
                     shaderCallback: (rect) {
@@ -127,23 +130,19 @@ class _SkeletonLoaderState extends State<RASkeletonLoader>
               : widget.child),
     );
   }
-
-  @override
-  void dispose() {
-    _dispose = true;
-    _controller?.dispose();
-    super.dispose();
-  }
 }
 
 class RectangleFillPainter extends CustomPainter {
   bool hasPainted = true;
+  final double radius;
+
+  RectangleFillPainter(this.radius);
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromLTWH(0, 0, size.width, size.height),
-          const Radius.circular(2.0),
+          Radius.circular(radius),
         ),
         Paint()..color = Colors.grey);
   }

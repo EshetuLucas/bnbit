@@ -16,6 +16,7 @@ class SocialloginWidget extends StatelessWidget {
     this.onGoogleSign,
     this.onAppleSign,
     this.onFacebookSign,
+    this.onEmailSign,
     required this.isAppleSignInAvailable,
   }) : super(key: key);
 
@@ -28,6 +29,7 @@ class SocialloginWidget extends StatelessWidget {
   final VoidCallback? onGoogleSign;
   final VoidCallback? onAppleSign;
   final VoidCallback? onFacebookSign;
+  final VoidCallback? onEmailSign;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class SocialloginWidget extends StatelessWidget {
       children: [
         _SocialLogin(
           svg: emailSvg,
-          onTap: onGoogleSign,
+          onTap: onEmailSign,
           svgColor: kcPrimaryColor,
           backgroundColor:
               backgroundColor ?? Theme.of(context).colorScheme.outlineVariant,
