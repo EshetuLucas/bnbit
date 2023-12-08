@@ -1,5 +1,6 @@
 import 'package:bnbit_app/app/app.logger.dart';
 import 'package:bnbit_app/services/authentication_service.dart';
+import 'package:bnbit_app/services/location_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:bnbit_app/app/app.locator.dart';
@@ -13,12 +14,13 @@ class StartupViewModel extends BaseViewModel {
   final _navigationService = locator<NavigationService>();
   final _authService = locator<AuthenticationService>();
   final _userService = locator<UserService>();
+  final _locationService = locator<LocationService>();
 
   // Place anything here that needs to happen before we get into the application
 
   Future<void> startupLogic() async {
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      _locationService.getUserLocation();
       if (_firebaseAuthentication.hasUser) {
         log.v('Has user: ${_firebaseAuthentication.hasUser}');
         await _authService.syncUserAccount();
@@ -26,6 +28,7 @@ class StartupViewModel extends BaseViewModel {
           await _navigationService.clearStackAndShow(Routes.createProfileView);
           return;
         }
+
         await _navigationService.clearStackAndShow(Routes.homeView);
       } else {
         await _navigationService.clearStackAndShow(Routes.loginView);
