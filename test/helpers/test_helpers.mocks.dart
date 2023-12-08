@@ -436,7 +436,7 @@ class MockBottomSheetService extends _i1.Mock
     bool? showIconInAdditionalButton = false,
     String? additionalButtonTitle,
     bool? takesInput = false,
-    _i5.Color? barrierColor = const _i5.Color(3707764736),
+    _i5.Color? barrierColor = const _i5.Color(1929379840),
     bool? barrierDismissible = true,
     bool? isScrollControlled = false,
     String? barrierLabel = r'',
