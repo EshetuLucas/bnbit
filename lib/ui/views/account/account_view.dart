@@ -37,6 +37,7 @@ class AccountView extends StatelessWidget {
                 ActionsItem(
                   title: 'Sign out',
                   svg: logOutSvg,
+                  svgColor: kcRed,
                   onTap: () => model.onLogout(),
                   backgroundColor: kcRed.withOpacity(0.2),
                   hasTail: false,
@@ -94,6 +95,7 @@ class ActionsItem extends StatelessWidget {
     this.svgSize,
     this.backgroundColor,
     this.hasTail = true,
+    this.svgColor,
   }) : super(key: key);
 
   final String title;
@@ -102,41 +104,46 @@ class ActionsItem extends StatelessWidget {
   final double? svgSize;
   final Color? backgroundColor;
   final bool hasTail;
+  final Color? svgColor;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                  color: backgroundColor ?? kcDark700Light.withOpacity(0.08),
-                  borderRadius: const BorderRadius.all(Radius.circular(8))),
-              child: Padding(
-                padding: const EdgeInsets.all(6.5),
-                child: SvgBuilder(
-                  svg: svg,
-                  height: svgSize,
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                    color: backgroundColor ?? kcDark700Light.withOpacity(0.08),
+                    borderRadius: const BorderRadius.all(Radius.circular(8))),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.5),
+                  child: SvgBuilder(
+                    svg: svg,
+                    height: svgSize,
+                    color: svgColor ?? kcDark700Light,
+                  ),
                 ),
               ),
-            ),
-            horizontalSpaceSmall,
-            horizontalSpaceTiny,
-            Padding(
-              padding: const EdgeInsets.only(bottom: 2.5),
-              child: Text(
-                title,
-                style: ktsSmall(context),
+              horizontalSpaceSmall,
+              horizontalSpaceTiny,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2.5),
+                child: Text(
+                  title,
+                  style: ktsSmall(context),
+                ),
               ),
-            ),
-            const Spacer(),
-            if (hasTail) const MoreIcon(quarterTurns: 2)
-          ],
-        ),
-      ],
+              const Spacer(),
+              if (hasTail) const MoreIcon(quarterTurns: 2)
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -164,7 +171,7 @@ class _UserProfile extends ViewModelWidget<AccountViewModel> {
               ),
 
               Text(
-                model.phoneOrEmail,
+                model.userPhoneNumer,
                 style: ktsSmall(context).copyWith(fontSize: 12),
               ),
 
