@@ -45,7 +45,7 @@ mixin _$UserModel {
   /// User first name [required]
   String? get last_name => throw _privateConstructorUsedError;
   DateTime? get last_login => throw _privateConstructorUsedError;
-  String? get profilePicUrl => throw _privateConstructorUsedError;
+  String? get profile_picture => throw _privateConstructorUsedError;
 
   /// Created at date and time for this user
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -53,6 +53,7 @@ mixin _$UserModel {
   /// Push notification tokens - these are device tokens that helps us to send
   /// push notifications to those devices
   Map<String, String> get userfcmTokens => throw _privateConstructorUsedError;
+  List<String> get saved_business => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -74,9 +75,10 @@ abstract class $UserModelCopyWith<$Res> {
       String first_name,
       String? last_name,
       DateTime? last_login,
-      String? profilePicUrl,
+      String? profile_picture,
       DateTime? createdAt,
-      Map<String, String> userfcmTokens});
+      Map<String, String> userfcmTokens,
+      List<String> saved_business});
 }
 
 /// @nodoc
@@ -100,9 +102,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? first_name = null,
     Object? last_name = freezed,
     Object? last_login = freezed,
-    Object? profilePicUrl = freezed,
+    Object? profile_picture = freezed,
     Object? createdAt = freezed,
     Object? userfcmTokens = null,
+    Object? saved_business = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -137,9 +140,9 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.last_login
           : last_login // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      profilePicUrl: freezed == profilePicUrl
-          ? _value.profilePicUrl
-          : profilePicUrl // ignore: cast_nullable_to_non_nullable
+      profile_picture: freezed == profile_picture
+          ? _value.profile_picture
+          : profile_picture // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -149,6 +152,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.userfcmTokens
           : userfcmTokens // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      saved_business: null == saved_business
+          ? _value.saved_business
+          : saved_business // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -170,9 +177,10 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String first_name,
       String? last_name,
       DateTime? last_login,
-      String? profilePicUrl,
+      String? profile_picture,
       DateTime? createdAt,
-      Map<String, String> userfcmTokens});
+      Map<String, String> userfcmTokens,
+      List<String> saved_business});
 }
 
 /// @nodoc
@@ -194,9 +202,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? first_name = null,
     Object? last_name = freezed,
     Object? last_login = freezed,
-    Object? profilePicUrl = freezed,
+    Object? profile_picture = freezed,
     Object? createdAt = freezed,
     Object? userfcmTokens = null,
+    Object? saved_business = null,
   }) {
     return _then(_$UserModelImpl(
       id: null == id
@@ -231,9 +240,9 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.last_login
           : last_login // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      profilePicUrl: freezed == profilePicUrl
-          ? _value.profilePicUrl
-          : profilePicUrl // ignore: cast_nullable_to_non_nullable
+      profile_picture: freezed == profile_picture
+          ? _value.profile_picture
+          : profile_picture // ignore: cast_nullable_to_non_nullable
               as String?,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -243,6 +252,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value._userfcmTokens
           : userfcmTokens // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
+      saved_business: null == saved_business
+          ? _value._saved_business
+          : saved_business // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -260,10 +273,12 @@ class _$UserModelImpl extends _UserModel {
       required this.first_name,
       this.last_name,
       this.last_login,
-      this.profilePicUrl,
+      this.profile_picture,
       this.createdAt,
-      final Map<String, String> userfcmTokens = const {}})
+      final Map<String, String> userfcmTokens = const {},
+      final List<String> saved_business = const []})
       : _userfcmTokens = userfcmTokens,
+        _saved_business = saved_business,
         super._();
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -305,7 +320,7 @@ class _$UserModelImpl extends _UserModel {
   @override
   final DateTime? last_login;
   @override
-  final String? profilePicUrl;
+  final String? profile_picture;
 
   /// Created at date and time for this user
   @override
@@ -325,9 +340,18 @@ class _$UserModelImpl extends _UserModel {
     return EqualUnmodifiableMapView(_userfcmTokens);
   }
 
+  final List<String> _saved_business;
+  @override
+  @JsonKey()
+  List<String> get saved_business {
+    if (_saved_business is EqualUnmodifiableListView) return _saved_business;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_saved_business);
+  }
+
   @override
   String toString() {
-    return 'UserModel(id: $id, is_active: $is_active, getNotifications: $getNotifications, email: $email, phone: $phone, first_name: $first_name, last_name: $last_name, last_login: $last_login, profilePicUrl: $profilePicUrl, createdAt: $createdAt, userfcmTokens: $userfcmTokens)';
+    return 'UserModel(id: $id, is_active: $is_active, getNotifications: $getNotifications, email: $email, phone: $phone, first_name: $first_name, last_name: $last_name, last_login: $last_login, profile_picture: $profile_picture, createdAt: $createdAt, userfcmTokens: $userfcmTokens, saved_business: $saved_business)';
   }
 
   @override
@@ -348,12 +372,14 @@ class _$UserModelImpl extends _UserModel {
                 other.last_name == last_name) &&
             (identical(other.last_login, last_login) ||
                 other.last_login == last_login) &&
-            (identical(other.profilePicUrl, profilePicUrl) ||
-                other.profilePicUrl == profilePicUrl) &&
+            (identical(other.profile_picture, profile_picture) ||
+                other.profile_picture == profile_picture) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             const DeepCollectionEquality()
-                .equals(other._userfcmTokens, _userfcmTokens));
+                .equals(other._userfcmTokens, _userfcmTokens) &&
+            const DeepCollectionEquality()
+                .equals(other._saved_business, _saved_business));
   }
 
   @JsonKey(ignore: true)
@@ -368,9 +394,10 @@ class _$UserModelImpl extends _UserModel {
       first_name,
       last_name,
       last_login,
-      profilePicUrl,
+      profile_picture,
       createdAt,
-      const DeepCollectionEquality().hash(_userfcmTokens));
+      const DeepCollectionEquality().hash(_userfcmTokens),
+      const DeepCollectionEquality().hash(_saved_business));
 
   @JsonKey(ignore: true)
   @override
@@ -396,9 +423,10 @@ abstract class _UserModel extends UserModel {
       required final String first_name,
       final String? last_name,
       final DateTime? last_login,
-      final String? profilePicUrl,
+      final String? profile_picture,
       final DateTime? createdAt,
-      final Map<String, String> userfcmTokens}) = _$UserModelImpl;
+      final Map<String, String> userfcmTokens,
+      final List<String> saved_business}) = _$UserModelImpl;
   _UserModel._() : super._();
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
@@ -438,7 +466,7 @@ abstract class _UserModel extends UserModel {
   @override
   DateTime? get last_login;
   @override
-  String? get profilePicUrl;
+  String? get profile_picture;
   @override
 
   /// Created at date and time for this user
@@ -448,6 +476,8 @@ abstract class _UserModel extends UserModel {
   /// Push notification tokens - these are device tokens that helps us to send
   /// push notifications to those devices
   Map<String, String> get userfcmTokens;
+  @override
+  List<String> get saved_business;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>

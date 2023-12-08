@@ -18,7 +18,7 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       last_login: json['last_login'] == null
           ? null
           : DateTime.parse(json['last_login'] as String),
-      profilePicUrl: json['profilePicUrl'] as String?,
+      profile_picture: json['profile_picture'] as String?,
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -26,6 +26,10 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
             (k, e) => MapEntry(k, e as String),
           ) ??
           const {},
+      saved_business: (json['saved_business'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -38,9 +42,10 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'first_name': instance.first_name,
       'last_name': instance.last_name,
       'last_login': instance.last_login?.toIso8601String(),
-      'profilePicUrl': instance.profilePicUrl,
+      'profile_picture': instance.profile_picture,
       'createdAt': instance.createdAt?.toIso8601String(),
       'userfcmTokens': instance.userfcmTokens,
+      'saved_business': instance.saved_business,
     };
 
 _$UserInfoImpl _$$UserInfoImplFromJson(Map<String, dynamic> json) =>

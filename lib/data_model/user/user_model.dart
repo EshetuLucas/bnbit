@@ -34,7 +34,7 @@ class UserModel with _$UserModel {
     /// User first name [required]
     String? last_name,
     DateTime? last_login,
-    String? profilePicUrl,
+    String? profile_picture,
 
     /// Created at date and time for this user
     DateTime? createdAt,
@@ -42,6 +42,7 @@ class UserModel with _$UserModel {
     /// Push notification tokens - these are device tokens that helps us to send
     /// push notifications to those devices
     @Default({}) Map<String, String> userfcmTokens,
+    @Default([]) List<String> saved_business,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
