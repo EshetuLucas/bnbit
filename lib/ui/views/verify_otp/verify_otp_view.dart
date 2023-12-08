@@ -1,39 +1,24 @@
+import 'package:bnbit_app/ui/widgets/numeric_keyboard.dart';
 import 'package:flutter_countdown_timer/current_remaining_time.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'verify_otp_view.form.dart';
 import 'verify_otp_viewmodel.dart';
 import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:bnbit_app/ui/common/shared_styles.dart';
 import 'package:bnbit_app/ui/common/ui_helpers.dart';
 import 'package:bnbit_app/ui/widgets/app_button.dart';
-import 'package:bnbit_app/ui/widgets/input_field.dart';
-import 'package:flutter/services.dart';
 
-import 'package:stacked/stacked_annotations.dart';
-
-@FormView(
-  fields: [
-    FormTextField(
-      name: "otp",
-    ),
-  ],
-)
-class VerifyOtpView extends StackedView<VerifyOtpViewModel>
-    with $VerifyOtpView {
+class VerifyOtpView extends StackedView<VerifyOtpViewModel> {
   const VerifyOtpView({
     Key? key,
     required this.phoneNumber,
+    this.password,
   }) : super(key: key);
 
   final String phoneNumber;
-  @override
-  void onDispose(VerifyOtpViewModel viewModel) {
-    disposeForm();
-    super.onDispose(viewModel);
-  }
+  final String? password;
 
   @override
   Widget builder(
@@ -47,6 +32,24 @@ class VerifyOtpView extends StackedView<VerifyOtpViewModel>
         return Future.value(true);
       },
       child: Scaffold(
+        bottomNavigationBar: SafeArea(
+          child: SizedBox(
+            height: 220,
+            width: screenWidth(context),
+            child: Padding(
+              padding: appSymmetricEdgePadding,
+              child: NumericKeyboard(
+                textColor: kcDark,
+                onKeyboardTap: viewModel.onKeyboardTap,
+                rightIcon: Icon(
+                  Icons.backspace,
+                  color: kcDark700,
+                ),
+                rightButtonFn: viewModel.onClearKeyboard,
+              ),
+            ),
+          ),
+        ),
         body: SafeArea(
           child: IgnorePointer(
             ignoring: viewModel.isBusy,
@@ -65,10 +68,7 @@ class VerifyOtpView extends StackedView<VerifyOtpViewModel>
                         Padding(
                           padding: appSymmetricEdgePadding,
                           child: Center(
-                            child: _BodySection(
-                              focusNode: otpFocusNode,
-                              verificationController: otpController,
-                            ),
+                            child: _BodySection(),
                           ),
                         ),
                         verticalSpaceSmall,
@@ -88,7 +88,7 @@ class VerifyOtpView extends StackedView<VerifyOtpViewModel>
   VerifyOtpViewModel viewModelBuilder(
     BuildContext context,
   ) =>
-      VerifyOtpViewModel(phoneNumber);
+      VerifyOtpViewModel(phoneNumber, password);
 }
 
 class _HeaderSection extends ViewModelWidget<VerifyOtpViewModel> {
@@ -97,50 +97,71 @@ class _HeaderSection extends ViewModelWidget<VerifyOtpViewModel> {
 
   @override
   Widget build(BuildContext context, VerifyOtpViewModel viewModel) {
-    return Column(
+    return Stack(
+      alignment: Alignment.topLeft,
       children: [
-        verticalSpaceMedium,
-        verticalSpaceSmall,
-        Text(
-          'verify_otp'.tr,
-          style: ktsBoldMeidumDarkTextStyle(context).copyWith(
-            fontSize: 25,
-            color: Theme.of(context).colorScheme.onPrimary,
-            fontWeight: FontWeight.w500,
+        Align(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              verticalSpaceMedium,
+              verticalSpaceSmall,
+              Text(
+                'Verify OTP'.tr,
+                style: ktsBoldMeidumDarkTextStyle(context).copyWith(
+                  fontSize: 25,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              verticalSpaceSmall,
+              Text(
+                'We have sent otp to this'.tr,
+                style: ktsText100(context).copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 15,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                phoneNumber,
+                style: ktsText100(context).copyWith(
+                    color: kcDeepBlue,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    decoration: TextDecoration.underline),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
-        verticalSpaceSmall,
-        Text(
-          'sent_otp'.tr,
-          style: ktsText100(context).copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-            fontWeight: FontWeight.w400,
-            fontSize: 15,
+        Align(
+          alignment: Alignment.topLeft,
+          child: InkWell(
+            onTap: viewModel.onClose,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: kcPrimaryColor.withOpacity(0.2),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Icon(
+                  Icons.close,
+                  color: kcPrimaryColor.withOpacity(0.6),
+                ),
+              ),
+            ),
           ),
-          textAlign: TextAlign.center,
-        ),
-        Text(
-          phoneNumber,
-          style: ktsText100(context).copyWith(
-              color: kcDeepBlue,
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              decoration: TextDecoration.underline),
-          textAlign: TextAlign.center,
-        ),
+        )
       ],
     );
   }
 }
 
 class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
-  const _BodySection({
-    required this.verificationController,
-    required this.focusNode,
-  });
-
-  final TextEditingController verificationController;
-  final FocusNode focusNode;
+  const _BodySection();
 
   @override
   Widget build(BuildContext context, VerifyOtpViewModel viewModel) {
@@ -149,10 +170,6 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
       child: Column(
         children: [
           verticalSpaceSmall,
-          _InputField(
-            focusNode: focusNode,
-            verificationController: verificationController,
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -160,7 +177,6 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
               Expanded(
                 child: _VerificationInputField(
                   isBlinking: viewModel.isBlinking(0),
-                  focusNode: focusNode,
                   code: viewModel.verificationCode(0),
                 ),
               ),
@@ -168,7 +184,6 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
               Expanded(
                 child: _VerificationInputField(
                   isBlinking: viewModel.isBlinking(1),
-                  focusNode: focusNode,
                   code: viewModel.verificationCode(1),
                 ),
               ),
@@ -176,7 +191,6 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
               Expanded(
                 child: _VerificationInputField(
                   isBlinking: viewModel.isBlinking(2),
-                  focusNode: focusNode,
                   code: viewModel.verificationCode(2),
                 ),
               ),
@@ -184,7 +198,6 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
               Expanded(
                 child: _VerificationInputField(
                   isBlinking: viewModel.isBlinking(3),
-                  focusNode: focusNode,
                   code: viewModel.verificationCode(3),
                 ),
               ),
@@ -192,7 +205,6 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
               Expanded(
                 child: _VerificationInputField(
                   isBlinking: viewModel.isBlinking(4),
-                  focusNode: focusNode,
                   code: viewModel.verificationCode(4),
                 ),
               ),
@@ -200,7 +212,6 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
               Expanded(
                 child: _VerificationInputField(
                   isBlinking: viewModel.isBlinking(5),
-                  focusNode: focusNode,
                   code: viewModel.verificationCode(5),
                 ),
               ),
@@ -227,7 +238,7 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
                 fontWeight: FontWeight.w500),
             enabled: viewModel.enableNextButton,
             busy: viewModel.isBusy,
-            title: 'verify_otp'.tr,
+            title: 'Verify Otp'.tr,
             onTap: viewModel.onNext,
           ),
           verticalSpace(60),
@@ -237,101 +248,63 @@ class _BodySection extends ViewModelWidget<VerifyOtpViewModel> {
   }
 }
 
-class _InputField extends ViewModelWidget<VerifyOtpViewModel> {
-  const _InputField(
-      {required this.verificationController, required this.focusNode});
-
-  final TextEditingController verificationController;
-  final FocusNode focusNode;
-
-  @override
-  Widget build(BuildContext context, VerifyOtpViewModel viewModel) {
-    return SizedBox(
-      height: 0,
-      child: InputField(
-        autoFocus: true,
-        controller: verificationController,
-        hasInputDecoration: false,
-        onChanged: viewModel.onChange,
-        fieldFocusNode: focusNode,
-        textStyle: ktsDarkGreyTextStyle(context).copyWith(fontSize: 18),
-        placeholder: '',
-        textInputType: const TextInputType.numberWithOptions(
-            decimal: false, signed: false),
-        inputFormatter: [
-          FilteringTextInputFormatter.allow(RegExp('[0-9]+')),
-          LengthLimitingTextInputFormatter(6),
-        ],
-      ),
-    );
-  }
-}
-
 class _VerificationInputField extends StatelessWidget {
   const _VerificationInputField({
     required this.code,
-    required this.focusNode,
     required this.isBlinking,
   });
 
   final String code;
-  final FocusNode focusNode;
   final bool isBlinking;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        SystemChannels.textInput.invokeMethod("TextInput.show");
-        focusNode.requestFocus();
-      },
-      child: Column(
-        children: [
-          if (isBlinking)
-            BlinkWidget(children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4, top: 4),
-                child: Container(
-                  height: 16,
-                  width: 1,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primary),
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
+    return Column(
+      children: [
+        if (isBlinking)
+          BlinkWidget(children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4, top: 4),
+              child: Container(
+                height: 16,
+                width: 1,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  border:
+                      Border.all(color: Theme.of(context).colorScheme.primary),
+                  color: Theme.of(context).colorScheme.tertiary,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4, top: 4),
-                child: Container(
-                  height: 16,
-                  width: 1,
-                  alignment: Alignment.center,
-                  color: kcTransparent,
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4, top: 4),
+              child: Container(
+                height: 16,
+                width: 1,
+                alignment: Alignment.center,
+                color: kcTransparent,
               ),
-            ])
-          else
-            Text(
-              code,
-              style: ktsSmall(context)
-                  .copyWith(fontSize: 16, color: kcPrimaryColor),
             ),
-          Container(
-            height: isBlinking ? 1.3 : 1,
-            width: isBlinking ? 46 : 50,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: isBlinking
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.surface),
-              color: Theme.of(context).colorScheme.tertiary,
-            ),
+          ])
+        else
+          Text(
+            code,
+            style:
+                ktsSmall(context).copyWith(fontSize: 16, color: kcPrimaryColor),
           ),
-        ],
-      ),
+        Container(
+          height: isBlinking ? 1.3 : 1,
+          width: isBlinking ? 46 : 50,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: isBlinking
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.surface),
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -345,7 +318,7 @@ class _BottomSection extends ViewModelWidget<VerifyOtpViewModel> {
         ? Column(
             children: [
               Text(
-                "did_not_receive_code".tr,
+                "Did not receive code".tr,
                 style: ktsText100(context).copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 15,
@@ -356,10 +329,10 @@ class _BottomSection extends ViewModelWidget<VerifyOtpViewModel> {
               GestureDetector(
                 onTap: viewModel.onResendOTP,
                 child: Text(
-                  "resend".tr,
+                  "Resend".tr,
                   style: ktsText100(context).copyWith(
                     decoration: TextDecoration.underline,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: kcPrimaryColor,
                     fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
@@ -372,7 +345,7 @@ class _BottomSection extends ViewModelWidget<VerifyOtpViewModel> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'resend_code'.tr,
+                'Resend code in ',
                 style: ktsText100(context).copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 15,

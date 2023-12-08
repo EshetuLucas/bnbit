@@ -1,5 +1,7 @@
 import 'package:bnbit_app/services/authentication_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
+import 'package:bnbit_app/ui/views/create_profile/create_profile_view.dart';
+import 'package:bnbit_app/ui/views/home/home_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
@@ -15,17 +17,19 @@ class VerifyOtpViewModel extends FormViewModel {
   final _userService = locator<UserService>();
 
   final String phoneNumber;
+  final String? password;
 
   String? _apiValidationMessage;
   String? get apiValidationMessage => _apiValidationMessage;
 
-  VerifyOtpViewModel(this.phoneNumber);
+  VerifyOtpViewModel(this.phoneNumber, this.password);
 
   void onBack() {
     _navigationService.back();
     dispose();
   }
 
+  void onClose() => _navigationService.back();
   Future<void> onResendOTP() async {
     _timeOut = false;
     _now = DateTime.now();
@@ -33,6 +37,11 @@ class VerifyOtpViewModel extends FormViewModel {
 
     try {
       await Future.delayed(const Duration(seconds: 1));
+
+      if (password != null) {
+        await _userService.sendEmailVerificationCode(phoneNumber);
+        return;
+      }
 
       await _authService.loginWithPhone(
         codeAutoRetrievalTimeout: onTimeOut,
@@ -83,16 +92,49 @@ class VerifyOtpViewModel extends FormViewModel {
   String? get otpCode => _authService.otpCode;
   String? get verificationId => _authService.verificationId;
 
-  void onChange(String value) {
+  void onKeyboardTap(String value) {
+    if (_verification.length == 6) return;
     _apiValidationMessage = null;
-    _verification = value;
+    _verification = _verification + value;
     notifyListeners();
+  }
+
+  void onClearKeyboard() {
+    if (_verification.isEmpty) return;
+    List<String> tempString = _verification.split('');
+    tempString.removeLast();
+    _verification = tempString.join('');
+    notifyListeners();
+  }
+
+  Future<void> signupWithEmail() async {
+    setBusy(true);
+
+    try {
+      await _authService.createAccountWithEmail(
+        email: phoneNumber,
+        password: password!,
+      );
+      navigateToNextView();
+    } catch (e) {
+      log.e(e);
+    } finally {
+      setBusy(false);
+    }
   }
 
   Future<void> onNext() async {
     setBusy(true);
     try {
-      await _authService.verifyOTP(otpCode ?? _verification);
+      if (password != null) {
+        await _userService.verifyOTPCode(
+          email: phoneNumber,
+          otp: _verification,
+        );
+        await signupWithEmail();
+      } else {
+        await _authService.verifyOTP(otpCode ?? _verification);
+      }
       navigateToNextView();
     } catch (e) {
       log.e('Unable to verify otp $e');
@@ -104,9 +146,9 @@ class VerifyOtpViewModel extends FormViewModel {
   void navigateToNextView() {
     bool isUserActive = _userService.currentUser.is_active;
     if (isUserActive) {
-      _navigationService.navigateToHomeView();
+      _navigationService.clearStackAndShowView(const HomeView());
     } else {
-      _navigationService.navigateToCreateProfileView();
+      _navigationService.clearStackAndShowView(const CreateProfileView());
     }
   }
 
