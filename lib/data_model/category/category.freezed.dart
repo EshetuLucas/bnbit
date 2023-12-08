@@ -22,10 +22,8 @@ Category _$CategoryFromJson(Map<String, dynamic> json) {
 mixin _$Category {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  int get updated_by => throw _privateConstructorUsedError;
+  List<SubCategory> get subcategories => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  DateTime? get created_at => throw _privateConstructorUsedError;
-  DateTime? get updated_at => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,10 +39,8 @@ abstract class $CategoryCopyWith<$Res> {
   $Res call(
       {String id,
       String name,
-      int updated_by,
-      String? description,
-      DateTime? created_at,
-      DateTime? updated_at});
+      List<SubCategory> subcategories,
+      String? description});
 }
 
 /// @nodoc
@@ -62,10 +58,8 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? updated_by = null,
+    Object? subcategories = null,
     Object? description = freezed,
-    Object? created_at = freezed,
-    Object? updated_at = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -76,22 +70,14 @@ class _$CategoryCopyWithImpl<$Res, $Val extends Category>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      updated_by: null == updated_by
-          ? _value.updated_by
-          : updated_by // ignore: cast_nullable_to_non_nullable
-              as int,
+      subcategories: null == subcategories
+          ? _value.subcategories
+          : subcategories // ignore: cast_nullable_to_non_nullable
+              as List<SubCategory>,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      created_at: freezed == created_at
-          ? _value.created_at
-          : created_at // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updated_at: freezed == updated_at
-          ? _value.updated_at
-          : updated_at // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
     ) as $Val);
   }
 }
@@ -107,10 +93,8 @@ abstract class _$$CategoryImplCopyWith<$Res>
   $Res call(
       {String id,
       String name,
-      int updated_by,
-      String? description,
-      DateTime? created_at,
-      DateTime? updated_at});
+      List<SubCategory> subcategories,
+      String? description});
 }
 
 /// @nodoc
@@ -126,10 +110,8 @@ class __$$CategoryImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? updated_by = null,
+    Object? subcategories = null,
     Object? description = freezed,
-    Object? created_at = freezed,
-    Object? updated_at = freezed,
   }) {
     return _then(_$CategoryImpl(
       id: null == id
@@ -140,22 +122,14 @@ class __$$CategoryImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      updated_by: null == updated_by
-          ? _value.updated_by
-          : updated_by // ignore: cast_nullable_to_non_nullable
-              as int,
+      subcategories: null == subcategories
+          ? _value._subcategories
+          : subcategories // ignore: cast_nullable_to_non_nullable
+              as List<SubCategory>,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      created_at: freezed == created_at
-          ? _value.created_at
-          : created_at // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      updated_at: freezed == updated_at
-          ? _value.updated_at
-          : updated_at // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
     ));
   }
 }
@@ -167,11 +141,10 @@ class _$CategoryImpl extends _Category {
   _$CategoryImpl(
       {required this.id,
       required this.name,
-      required this.updated_by,
-      this.description,
-      this.created_at,
-      this.updated_at})
-      : super._();
+      final List<SubCategory> subcategories = const [],
+      this.description})
+      : _subcategories = subcategories,
+        super._();
 
   factory _$CategoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryImplFromJson(json);
@@ -180,18 +153,21 @@ class _$CategoryImpl extends _Category {
   final String id;
   @override
   final String name;
+  final List<SubCategory> _subcategories;
   @override
-  final int updated_by;
+  @JsonKey()
+  List<SubCategory> get subcategories {
+    if (_subcategories is EqualUnmodifiableListView) return _subcategories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_subcategories);
+  }
+
   @override
   final String? description;
-  @override
-  final DateTime? created_at;
-  @override
-  final DateTime? updated_at;
 
   @override
   String toString() {
-    return 'Category(id: $id, name: $name, updated_by: $updated_by, description: $description, created_at: $created_at, updated_at: $updated_at)';
+    return 'Category(id: $id, name: $name, subcategories: $subcategories, description: $description)';
   }
 
   @override
@@ -201,20 +177,16 @@ class _$CategoryImpl extends _Category {
             other is _$CategoryImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.updated_by, updated_by) ||
-                other.updated_by == updated_by) &&
+            const DeepCollectionEquality()
+                .equals(other._subcategories, _subcategories) &&
             (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.created_at, created_at) ||
-                other.created_at == created_at) &&
-            (identical(other.updated_at, updated_at) ||
-                other.updated_at == updated_at));
+                other.description == description));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, updated_by, description, created_at, updated_at);
+  int get hashCode => Object.hash(runtimeType, id, name,
+      const DeepCollectionEquality().hash(_subcategories), description);
 
   @JsonKey(ignore: true)
   @override
@@ -234,10 +206,8 @@ abstract class _Category extends Category {
   factory _Category(
       {required final String id,
       required final String name,
-      required final int updated_by,
-      final String? description,
-      final DateTime? created_at,
-      final DateTime? updated_at}) = _$CategoryImpl;
+      final List<SubCategory> subcategories,
+      final String? description}) = _$CategoryImpl;
   _Category._() : super._();
 
   factory _Category.fromJson(Map<String, dynamic> json) =
@@ -248,13 +218,9 @@ abstract class _Category extends Category {
   @override
   String get name;
   @override
-  int get updated_by;
+  List<SubCategory> get subcategories;
   @override
   String? get description;
-  @override
-  DateTime? get created_at;
-  @override
-  DateTime? get updated_at;
   @override
   @JsonKey(ignore: true)
   _$$CategoryImplCopyWith<_$CategoryImpl> get copyWith =>
