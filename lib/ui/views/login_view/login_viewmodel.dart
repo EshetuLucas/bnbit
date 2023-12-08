@@ -1,6 +1,7 @@
 import 'package:bnbit_app/data_model/language/language_model.dart';
 import 'package:bnbit_app/services/authentication_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
+import 'package:bnbit_app/ui/views/home/home_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bnbit_app/app/app.bottomsheets.dart';
 import 'package:bnbit_app/app/app.locator.dart';
@@ -114,6 +115,17 @@ class LoginViewModel extends FormViewModel {
     }
   }
 
+  Future<void> onEmailSignIn() async {
+    log.i('useAppleAuthentication');
+    try {
+      _navigationService.navigateToEmailSignInView();
+    } catch (e) {
+      log.e('Unable to sign-in with google: $e');
+    } finally {
+      setBusy(false);
+    }
+  }
+
   void navigateToNextView() {
     bool isUserActive = _userService.currentUser.is_active;
     if (!_userService.currentUser.is_active) {
@@ -121,7 +133,7 @@ class LoginViewModel extends FormViewModel {
       return;
     }
     if (isUserActive) {
-      _navigationService.navigateToHomeView();
+      _navigationService.clearStackAndShowView(const HomeView());
     } else {
       _navigationService.navigateToCreateProfileView();
     }
