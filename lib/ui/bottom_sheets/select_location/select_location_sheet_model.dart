@@ -1,7 +1,7 @@
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
 import 'package:bnbit_app/data_model/address/address.dart';
-import 'package:bnbit_app/services/business_service.dart';
+//import 'package:bnbit_app/services/business_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:places_service/places_service.dart';
 import 'package:stacked/stacked.dart';
@@ -10,7 +10,7 @@ import 'package:stacked_services/stacked_services.dart';
 class SelectLocationSheetModel extends FormViewModel {
   final log = getLogger('SelectLocationSheetModel');
   final _placesService = locator<PlacesService>();
-  final _businessService = locator<BusinessService>();
+  //final _businessService = locator<BusinessService>();
 
   final Function(SheetResponse response)? completer;
   SelectLocationSheetModel(this.completer);
@@ -115,7 +115,7 @@ class SelectLocationSheetModel extends FormViewModel {
 
     log.v(url.toString(), "URL");
 
-    var response = await _businessService.getAddresses(url);
+    // var response = await _businessService.getAddresses(url);
 
     // log.d(response.body, "Body");
     // if (response.statusCode == 200) {
