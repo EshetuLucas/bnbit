@@ -1,27 +1,34 @@
 import 'package:bnbit_app/app/app.locator.dart';
+import 'package:bnbit_app/data_model/address/address.dart';
+import 'package:bnbit_app/data_model/business/business_model.dart';
 import 'package:bnbit_app/data_model/category/category.dart';
 import 'package:bnbit_app/data_model/user/user_model.dart';
 import 'package:bnbit_app/services/user_service.dart';
 import 'package:dio/dio.dart';
 import 'package:bnbit_app/exceptions/api_exceptions.dart';
+import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 
 import '../../app/app.logger.dart';
 
 class ApiClient {
   final log = getLogger('ApiClient');
   final _userService = locator<UserService>();
+  final _firebaseAuthentication = locator<FirebaseAuthenticationService>();
   final Dio dio = Dio(BaseOptions(baseUrl: ''));
   Map<String, String>? headers;
 
   Future<void> setHeader({Map<String, String>? header}) async {
     String authorization = 'Bearer ' + await _userService.token;
-    headers = header ??
-        {
-          "Authorization": authorization,
-          "Content-Type": "application/json",
-        };
-    dio.options.headers = headers;
-    dio.options.headers.putIfAbsent("Content-Type", () => "application/json");
+
+    if (_firebaseAuthentication.hasUser) {
+      headers = header ??
+          {
+            "Authorization": authorization,
+            "Content-Type": "application/json",
+          };
+      dio.options.headers = headers;
+      dio.options.headers.putIfAbsent("Content-Type", () => "application/json");
+    }
   }
 
   List<T> listRawDataToModel<T>(
@@ -76,6 +83,13 @@ class ApiClient {
         return data = UserModel.fromJson(data);
       case Category:
         return data = Category.fromJson(data);
+      case Address:
+        return data = Address.fromJson(data);
+      case Business:
+        return data = Business.fromJson(data);
+
+      case Image:
+        return data = Image.fromJson(data);
 
       default:
     }
@@ -172,7 +186,7 @@ class ApiClient {
         return listRawDataToModel<T>(data,
             key: key, additionalKey: additionalKey);
       } else {
-        throw ApiErrorHandler.handleError(response);
+        throw ApiErrorHandler.handleError(response.statusCode);
       }
     } catch (e) {
       log.e('Something went wrong: $e');
@@ -187,17 +201,19 @@ class ApiClient {
   }) async {
     try {
       final response = await request;
-      log.i('request:$request');
+      log.v('response:$response');
       log.v('statusCode:${response.statusCode}');
-      var data = response.data;
-      log.v('statusCode:${response.statusMessage}');
-      log.v('raw:$data');
-      if (key != null) data = data[key];
-      if (modelKey != null) data = {modelKey: data};
-      log.v('data:$data');
-      return assignType<T>(data);
-    } on DioError catch (e) {
-      throw ApiErrorHandler.handleError(e);
+      log.v('statusMessage:${response.statusMessage}');
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        var data = response.data;
+        log.v('raw:$data');
+        if (key != null) data = data[key];
+        if (modelKey != null) data = {modelKey: data};
+        log.v('data:$data');
+        return assignType<T>(data);
+      } else {
+        throw ApiErrorHandler.handleError(response.statusCode);
+      }
     } catch (e) {
       log.e('Something went wrong: $e');
       rethrow;
