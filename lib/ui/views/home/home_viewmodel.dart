@@ -1,5 +1,6 @@
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/services/custom_snackbar_service.dart';
+import 'package:move_to_background/move_to_background.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -30,7 +31,7 @@ class HomeViewModel extends IndexTrackingViewModel {
       return;
     }
     _navigationService.back();
-    //MoveToBackground.moveTaskToBack();
+    MoveToBackground.moveTaskToBack();
   }
 
   void onHomeIconTap() {

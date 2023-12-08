@@ -1,6 +1,8 @@
 import 'package:bnbit_app/ui/common/shared_styles.dart';
 import 'package:bnbit_app/ui/views/account/account_view.dart';
 import 'package:bnbit_app/ui/views/landing/landing_view.dart';
+import 'package:bnbit_app/ui/views/scanner/scanner_view.dart';
+import 'package:bnbit_app/ui/views/search_view/search_view_view.dart';
 import 'package:bnbit_app/ui/widgets/svg_builder.dart';
 import 'package:bnbit_app/utils/asset_helper.dart';
 import 'package:flutter/material.dart';
@@ -71,12 +73,12 @@ class HomeView extends StatelessWidget {
                         ),
                         FittedBox(
                           child: BottomNavigationBarItem(
-                            label: 'Notifications',
-                            icon: notificationSvg,
+                            label: 'Scanner',
+                            icon: scanSvg,
                             isSelected: model.currentIndex == 2,
                             context: context,
                             onTap: () => model.setIndex(2),
-                            svgHight: 28,
+                            svgHight: 26,
                           ),
                         ),
                         FittedBox(
@@ -187,9 +189,9 @@ class GetViewForIndex extends StatelessWidget {
       case 0:
         return const LandingView();
       case 1:
-        return const LandingView();
+        return const SearchViewView();
       case 2:
-        return const LandingView();
+        return ScannerView();
 
       default:
         return const AccountView();
