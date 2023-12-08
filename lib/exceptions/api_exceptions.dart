@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-
 class ApiException implements Exception {
   final String? message;
 
@@ -42,43 +40,38 @@ class ServiceUnavailableException extends ApiException {
 }
 
 class ApiErrorHandler {
-  static Exception handleError(error) {
-    if (error?.response is Response) {
-      final e = error?.response;
+  static Exception handleError(int? statusCode) {
+    // final _navigationService = locator<NavigationService>();
+    // final _userService = locator<UserService>();
 
-      if (e?.statusCode != null) {
-        switch (e.statusCode) {
-          case 400:
-            return BadRequestException(message: e.statusMessage);
-          case 401:
-            return UnauthorizedException(message: e.statusMessage);
-          case 403:
-            return ForbiddenException(message: e.statusMessage);
-          case 404:
-            return NotFoundException(message: e.statusMessage);
-          case 409:
-            return ConflictException(message: e.statusMessage);
-          case 500:
-            return InternalServerErrorException(message: e.statusMessage);
-          case 502:
-            return BadGatewayException(message: e.statusMessage);
-          case 503:
-            return ServiceUnavailableException(message: e.statusMessage);
-          default:
-            return ApiException(
-                message: e.statusMessage ?? 'Something went wrong');
-        }
-      }
-      return ApiException(message: 'Something went wrong');
-    }
-    if (error?.message != null) {
-      if (error.message.toString().contains('SocketException')) {
-        return ApiException(message: 'Please check your internet connection');
-      } else {
-        return ApiException(message: 'Something went wrong');
+    if (statusCode != null) {
+      switch (statusCode) {
+        case 400:
+          return BadRequestException(message: 'BadRequestException');
+        case 401:
+          // if (_userService.hasUser) {
+          //   _navigationService.clearStackAndShow(Routes.loginView);
+          // }
+          return UnauthorizedException(message: 'UnauthorizedException');
+
+        case 403:
+          return ForbiddenException(message: 'ForbiddenException');
+        case 404:
+          return NotFoundException(message: 'NotFoundException');
+        case 409:
+          return ConflictException(message: 'ConflictException');
+        case 500:
+          return InternalServerErrorException(
+              message: 'InternalServerErrorException');
+        case 502:
+          return BadGatewayException(message: 'BadGatewayException');
+        case 503:
+          return ServiceUnavailableException(
+              message: 'ServiceUnavailableException');
+        default:
+          return ApiException(message: 'Something went wrong');
       }
     }
-
-    return ApiException(message: error.toString());
+    return ApiException(message: 'Something went wrong');
   }
 }
