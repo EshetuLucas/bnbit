@@ -23,19 +23,19 @@ import 'create_profile_viewmodel.dart';
 )
 class CreateProfileView extends StackedView<CreateProfileViewModel>
     with $CreateProfileView {
-  const CreateProfileView({
-    Key? key,
-    this.firstName,
-    this.lastName,
-  }) : super(key: key);
+  const CreateProfileView(
+      {Key? key, this.firstName, this.lastName, this.phoneNumber})
+      : super(key: key);
 
   final String? firstName;
   final String? lastName;
+  final String? phoneNumber;
 
   @override
   void onViewModelReady(CreateProfileViewModel viewModel) {
     firstNameController.text = viewModel.firstName;
     lastNameController.text = viewModel.lastName;
+
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
   }
@@ -97,7 +97,7 @@ class CreateProfileView extends StackedView<CreateProfileViewModel>
                     enabled: viewModel.hasValidFirstName,
                     busy: viewModel.isBusy,
                     title: 'Next',
-                    onTap: () => viewModel.onNext(),
+                    onTap: () => viewModel.onNext(phoneNumber),
                   ),
                 ],
               ),

@@ -24,6 +24,7 @@ class CreateProfileViewModel extends FormViewModel {
 
   bool _showValidationIfAny = false;
   bool get hasValidFirstName => !firstNameValue.isNullOrEmpty;
+
   bool get hasNoValidFirstName {
     if (_showValidationIfAny && firstNameValue.isNullOrEmpty) {
       _nameValidationMessage = 'First Name can\'t be empty';
@@ -32,11 +33,12 @@ class CreateProfileViewModel extends FormViewModel {
     return false;
   }
 
-  void onNext() async {
+  void onNext(String? phoneNumber) async {
     //  if (!await _internetCheckerService.checkInternetConnection()) {
     //   notifyListeners();
     //   return;
     // }
+
 
     _showValidationIfAny = true;
     notifyListeners();
@@ -46,6 +48,7 @@ class CreateProfileViewModel extends FormViewModel {
         first_name: firstNameValue!,
         last_name: lastNameValue,
         is_active: true,
+        phone: phoneNumber,
       );
 
       try {
