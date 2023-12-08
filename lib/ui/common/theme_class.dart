@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeClass {
-  Color primaryColor = const Color(0xFF3ED400);
+  Color primaryColor = const Color(0xFF8F00FF);
   Color secondaryColor = const Color(0xFF96CB39);
   Color kcDarkGreyColor = const Color(0xFF1A1B1E);
   Color kcLightGrey = const Color(0xFFA4A9B8);
@@ -28,7 +28,7 @@ class ThemeClass {
   Color kcDisabledButtonColor = const Color(0xffF0F3F6);
 
   static ThemeData lightTheme = ThemeData(
-      fontFamily: 'Montserrat',
+      fontFamily: 'OpenSans',
       splashColor: _themeClass.kcTransparent,
       highlightColor: _themeClass.kcTransparent,
       hoverColor: _themeClass.kcTransparent,

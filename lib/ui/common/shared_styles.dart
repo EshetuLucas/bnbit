@@ -1,3 +1,4 @@
+import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:flutter/material.dart';
 
 // Box Decorations
@@ -152,6 +153,13 @@ TextStyle ktsSmall(BuildContext context) => TextStyle(
       fontSize: 13,
     );
 
+TextStyle ktsSmallTitle(BuildContext context) => TextStyle(
+      height: 1.5,
+      fontSize: 13,
+      fontWeight: FontWeight.w600,
+      color: kcDark700,
+    );
+
 TextStyle ktsDarkSmall(BuildContext context) => TextStyle(
       height: 1.5,
       fontWeight: FontWeight.w500,
@@ -169,7 +177,7 @@ const EdgeInsets fieldPadding = EdgeInsets.symmetric(horizontal: 15);
 const EdgeInsets largeFieldPadding =
     EdgeInsets.symmetric(horizontal: 15, vertical: 15);
 EdgeInsets appSymmetricEdgePadding = const EdgeInsets.symmetric(
-  horizontal: 24,
+  horizontal: 20,
 );
 
 /// Padding
