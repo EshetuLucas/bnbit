@@ -2,6 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+ 
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Cronlink uses location data for tracking of drivers.\nYour data will not be shared with any other.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Cronlink uses location data for tracking of drivers.\nYour data will not be shared with any other.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Cronlink uses location data for tracking of drivers.\nYour data will not be shared with any other.</string>
+    <key>NSCameraUsageDescription</key>
+	<string>This lets you to capture photos of receipt during adding entries, making it easy to remember important details.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Mekfeya Cashbook would like to access your photo library to enable you to upload your business and entry images.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open and in the background.</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -44,6 +63,7 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
+	
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
