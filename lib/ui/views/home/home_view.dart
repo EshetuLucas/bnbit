@@ -177,19 +177,21 @@ class BottomNavigationBarItem extends StatelessWidget {
   }
 }
 
-class GetViewForIndex extends StatelessWidget {
+class GetViewForIndex extends ViewModelWidget<HomeViewModel> {
   const GetViewForIndex({Key? key, required this.index, this.businessId})
       : super(key: key);
   final int index;
   final String? businessId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, HomeViewModel viewModel) {
     switch (index) {
       case 0:
         return const LandingView();
       case 1:
-        return const SearchViewView();
+        return SearchViewView(
+          homeViewCallBack: viewModel.setIndex,
+        );
       case 2:
         return ScannerView();
 
