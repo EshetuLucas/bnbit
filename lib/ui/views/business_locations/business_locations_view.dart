@@ -165,7 +165,9 @@ class _Location extends ViewModelWidget<BusinessLocationsViewModel> {
               child: InkWell(
                 onTap: onTap,
                 child: InputField(
-                  placeholder: address.displayAddress,
+                  placeholder: address.city == 'Select Location'
+                      ? address.city
+                      : address.displayAddress,
 
                   maxLine: 1,
                   // onChanged: viewModel.onChange,

@@ -26,7 +26,7 @@ class BusinessLocationsViewModel extends BaseViewModel {
 
   Address get placeHolderAddress => Address(
         city: 'Select Location',
-        country: 'Ethiopia',
+        country: '',
         latitude: 0,
         longitude: 0,
       );
