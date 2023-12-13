@@ -406,12 +406,12 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
   Widget build(BuildContext context, BusinessDetailViewModel viewModel) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 103,
+        height: 88,
         aspectRatio: 2.0,
         viewportFraction: 0.8,
         enlargeCenterPage: true,
         enableInfiniteScroll: false,
-        enlargeFactor: 0.2,
+        enlargeFactor: 0.25,
         onPageChanged: (index, reason) => viewModel.onChangeAddres(
           addresses[index],
           index,
@@ -423,9 +423,9 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
             return SizedBox(
               height: 10,
               child: Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(2.0),
                 child: DecoratedContainer(
-                  elevation: 5,
+                  elevation: 1,
                   shadowColor: kcDark700,
                   containerColor: kcWhite,
                   borderRadius: 8,
@@ -441,7 +441,8 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(8),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 3, 8, 8),
                                   child: SvgBuilder(
                                     svg: locationSvg,
                                     height: 18,
@@ -486,33 +487,36 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                                   ),
                                 ),
                                 const Spacer(),
-                                InkWell(
-                                  onTap: () => viewModel.launchMapsUrl(
-                                    address.latitude,
-                                    address.longitude,
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        color: kcPrimaryColor,
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(8),
+                                if (viewModel.selectedAddressIndex ==
+                                    addresses.indexOf(address))
+                                  InkWell(
+                                    onTap: () => viewModel.launchMapsUrl(
+                                      address.latitude,
+                                      address.longitude,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: kcPrimaryColor,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8),
+                                            bottomLeft: Radius.circular(8),
+                                          ),
                                         ),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: Text(
-                                          'Navigate',
-                                          style: ktsSmall(context).copyWith(
-                                              fontSize: 12,
-                                              color: kcWhite,
-                                              fontWeight: FontWeight.w600),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(7.0),
+                                          child: Text(
+                                            'Navigate',
+                                            style: ktsSmall(context).copyWith(
+                                                fontSize: 12,
+                                                color: kcWhite,
+                                                fontWeight: FontWeight.w600),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
                               ],
                             ),
                           ],

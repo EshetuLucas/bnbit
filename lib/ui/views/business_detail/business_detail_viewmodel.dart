@@ -19,7 +19,6 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class BusinessDetailViewModel extends BaseViewModel {
   final log = getLogger('BusinessDetailViewModel');
