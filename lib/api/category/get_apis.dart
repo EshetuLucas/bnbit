@@ -29,6 +29,18 @@ mixin GetApis {
     double? lng,
     int? radius,
     String? subCategory,
+    String? city,
+    String? sub_city,
+    String? state,
+    String? country,
+    String? phone_number,
+    String? description,
+    String? label,
+    String? search,
+    String? business,
+    String? line1,
+    String? line2,
+    String? name,
   }) async {
     String query = '?';
     if (lat != null && lng != null) {
@@ -38,7 +50,40 @@ mixin GetApis {
       query = query + 'radius=$radius&';
     }
     if (subCategory != null) {
-      query = query + 'subcategories=$subCategory';
+      query = query + 'subcategories=$subCategory&';
+    }
+    if (city != null) {
+      query = query + 'city=$city&';
+    }
+    if (country != null) {
+      query = query + 'country=$country&';
+    }
+    if (state != null) {
+      query = query + 'state=$state&';
+    }
+    if (description != null) {
+      query = query + 'description=$description&';
+    }
+    if (description != null) {
+      query = query + 'description=$description&';
+    }
+    if (label != null) {
+      query = query + 'label=$label&';
+    }
+    if (search != null) {
+      query = query + 'search=$search&';
+    }
+    if (business != null) {
+      query = query + 'business=$business&';
+    }
+    if (line1 != null) {
+      query = query + 'line1=$line1&';
+    }
+    if (line2 != null) {
+      query = query + 'line2=$line2&';
+    }
+    if (name != null) {
+      query = query + 'name=$name';
     }
 
     return await apiClient.getList<Business>(
