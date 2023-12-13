@@ -23,6 +23,7 @@ mixin _$Address {
   String? get business => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String get city => throw _privateConstructorUsedError;
+  String? get state => throw _privateConstructorUsedError;
   String get country => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
@@ -31,8 +32,9 @@ mixin _$Address {
   String? get postal_code => throw _privateConstructorUsedError;
   String? get phone_number => throw _privateConstructorUsedError;
   String? get line2 => throw _privateConstructorUsedError;
-  String? get state => throw _privateConstructorUsedError;
   String? get label => throw _privateConstructorUsedError;
+  String? get sub_city => throw _privateConstructorUsedError;
+  String? get area => throw _privateConstructorUsedError;
   List<Map<String, dynamic>>? get subcategories =>
       throw _privateConstructorUsedError;
 
@@ -50,6 +52,7 @@ abstract class $AddressCopyWith<$Res> {
       {String? business,
       String? id,
       String city,
+      String? state,
       String country,
       double latitude,
       double longitude,
@@ -58,8 +61,9 @@ abstract class $AddressCopyWith<$Res> {
       String? postal_code,
       String? phone_number,
       String? line2,
-      String? state,
       String? label,
+      String? sub_city,
+      String? area,
       List<Map<String, dynamic>>? subcategories});
 }
 
@@ -79,6 +83,7 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
     Object? business = freezed,
     Object? id = freezed,
     Object? city = null,
+    Object? state = freezed,
     Object? country = null,
     Object? latitude = null,
     Object? longitude = null,
@@ -87,8 +92,9 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
     Object? postal_code = freezed,
     Object? phone_number = freezed,
     Object? line2 = freezed,
-    Object? state = freezed,
     Object? label = freezed,
+    Object? sub_city = freezed,
+    Object? area = freezed,
     Object? subcategories = freezed,
   }) {
     return _then(_value.copyWith(
@@ -104,6 +110,10 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as String,
+      state: freezed == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
       country: null == country
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
@@ -136,13 +146,17 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
           ? _value.line2
           : line2 // ignore: cast_nullable_to_non_nullable
               as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
       label: freezed == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sub_city: freezed == sub_city
+          ? _value.sub_city
+          : sub_city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      area: freezed == area
+          ? _value.area
+          : area // ignore: cast_nullable_to_non_nullable
               as String?,
       subcategories: freezed == subcategories
           ? _value.subcategories
@@ -163,6 +177,7 @@ abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
       {String? business,
       String? id,
       String city,
+      String? state,
       String country,
       double latitude,
       double longitude,
@@ -171,8 +186,9 @@ abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
       String? postal_code,
       String? phone_number,
       String? line2,
-      String? state,
       String? label,
+      String? sub_city,
+      String? area,
       List<Map<String, dynamic>>? subcategories});
 }
 
@@ -190,6 +206,7 @@ class __$$AddressImplCopyWithImpl<$Res>
     Object? business = freezed,
     Object? id = freezed,
     Object? city = null,
+    Object? state = freezed,
     Object? country = null,
     Object? latitude = null,
     Object? longitude = null,
@@ -198,8 +215,9 @@ class __$$AddressImplCopyWithImpl<$Res>
     Object? postal_code = freezed,
     Object? phone_number = freezed,
     Object? line2 = freezed,
-    Object? state = freezed,
     Object? label = freezed,
+    Object? sub_city = freezed,
+    Object? area = freezed,
     Object? subcategories = freezed,
   }) {
     return _then(_$AddressImpl(
@@ -215,6 +233,10 @@ class __$$AddressImplCopyWithImpl<$Res>
           ? _value.city
           : city // ignore: cast_nullable_to_non_nullable
               as String,
+      state: freezed == state
+          ? _value.state
+          : state // ignore: cast_nullable_to_non_nullable
+              as String?,
       country: null == country
           ? _value.country
           : country // ignore: cast_nullable_to_non_nullable
@@ -247,13 +269,17 @@ class __$$AddressImplCopyWithImpl<$Res>
           ? _value.line2
           : line2 // ignore: cast_nullable_to_non_nullable
               as String?,
-      state: freezed == state
-          ? _value.state
-          : state // ignore: cast_nullable_to_non_nullable
-              as String?,
       label: freezed == label
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sub_city: freezed == sub_city
+          ? _value.sub_city
+          : sub_city // ignore: cast_nullable_to_non_nullable
+              as String?,
+      area: freezed == area
+          ? _value.area
+          : area // ignore: cast_nullable_to_non_nullable
               as String?,
       subcategories: freezed == subcategories
           ? _value._subcategories
@@ -270,6 +296,7 @@ class _$AddressImpl extends _Address {
       {this.business,
       this.id,
       required this.city,
+      this.state,
       required this.country,
       required this.latitude,
       required this.longitude,
@@ -278,8 +305,9 @@ class _$AddressImpl extends _Address {
       this.postal_code,
       this.phone_number,
       this.line2,
-      this.state,
       this.label,
+      this.sub_city,
+      this.area,
       final List<Map<String, dynamic>>? subcategories})
       : _subcategories = subcategories,
         super._();
@@ -293,6 +321,8 @@ class _$AddressImpl extends _Address {
   final String? id;
   @override
   final String city;
+  @override
+  final String? state;
   @override
   final String country;
   @override
@@ -310,9 +340,11 @@ class _$AddressImpl extends _Address {
   @override
   final String? line2;
   @override
-  final String? state;
-  @override
   final String? label;
+  @override
+  final String? sub_city;
+  @override
+  final String? area;
   final List<Map<String, dynamic>>? _subcategories;
   @override
   List<Map<String, dynamic>>? get subcategories {
@@ -332,6 +364,7 @@ class _$AddressImpl extends _Address {
                 other.business == business) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.city, city) || other.city == city) &&
+            (identical(other.state, state) || other.state == state) &&
             (identical(other.country, country) || other.country == country) &&
             (identical(other.latitude, latitude) ||
                 other.latitude == latitude) &&
@@ -345,8 +378,10 @@ class _$AddressImpl extends _Address {
             (identical(other.phone_number, phone_number) ||
                 other.phone_number == phone_number) &&
             (identical(other.line2, line2) || other.line2 == line2) &&
-            (identical(other.state, state) || other.state == state) &&
             (identical(other.label, label) || other.label == label) &&
+            (identical(other.sub_city, sub_city) ||
+                other.sub_city == sub_city) &&
+            (identical(other.area, area) || other.area == area) &&
             const DeepCollectionEquality()
                 .equals(other._subcategories, _subcategories));
   }
@@ -358,6 +393,7 @@ class _$AddressImpl extends _Address {
       business,
       id,
       city,
+      state,
       country,
       latitude,
       longitude,
@@ -366,8 +402,9 @@ class _$AddressImpl extends _Address {
       postal_code,
       phone_number,
       line2,
-      state,
       label,
+      sub_city,
+      area,
       const DeepCollectionEquality().hash(_subcategories));
 
   @JsonKey(ignore: true)
@@ -389,6 +426,7 @@ abstract class _Address extends Address {
       {final String? business,
       final String? id,
       required final String city,
+      final String? state,
       required final String country,
       required final double latitude,
       required final double longitude,
@@ -397,8 +435,9 @@ abstract class _Address extends Address {
       final String? postal_code,
       final String? phone_number,
       final String? line2,
-      final String? state,
       final String? label,
+      final String? sub_city,
+      final String? area,
       final List<Map<String, dynamic>>? subcategories}) = _$AddressImpl;
   _Address._() : super._();
 
@@ -410,6 +449,8 @@ abstract class _Address extends Address {
   String? get id;
   @override
   String get city;
+  @override
+  String? get state;
   @override
   String get country;
   @override
@@ -427,9 +468,11 @@ abstract class _Address extends Address {
   @override
   String? get line2;
   @override
-  String? get state;
-  @override
   String? get label;
+  @override
+  String? get sub_city;
+  @override
+  String? get area;
   @override
   List<Map<String, dynamic>>? get subcategories;
   @override

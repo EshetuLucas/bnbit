@@ -11,6 +11,7 @@ class Address with _$Address {
     String? business,
     String? id,
     required String city,
+    String? state,
     required String country,
     required double latitude,
     required double longitude,
@@ -19,19 +20,48 @@ class Address with _$Address {
     String? postal_code,
     String? phone_number,
     String? line2,
-    String? state,
     String? label,
+    String? sub_city,
+    String? area,
     List<Map<String, dynamic>>? subcategories,
   }) = _Address;
 
   factory Address.fromJson(Map<String, dynamic> json) =>
       _$AddressFromJson(json);
 
-  String get displayAddress => [
-        line1 ?? '',
-        if (line2 != null) line2,
-        city,
-      ].join(line1 == null ? '' : ', ');
+  String get displayAddress {
+    String displayName = '';
+
+    if (line1 == null && line2 == null) {
+      if (sub_city != null) {
+        displayName = displayName + ', ' + sub_city!;
+      }
+      return displayName = displayName + ', ' + city + ', ' + country;
+    }
+    if (line1 != null) {
+      displayName = displayName + line1!;
+    }
+    if (line2 != null) {
+      displayName = displayName + ', ' + line2!;
+    } else {
+      if (sub_city != null) {
+        displayName = displayName + ', ' + sub_city!;
+      } else {
+        displayName = displayName + ', ' + city;
+      }
+    }
+    if (displayName.trim().startsWith(',')) {
+      displayName = displayName.replaceFirst(',', '');
+    }
+
+    return displayName;
+  }
+
+  //  [
+  //       line1 ?? '',
+  //       if (line2 != null) line2,
+  //       city,
+  //     ].join(line1 == null ? '' : ', ');
 
   @override
   String toString() {

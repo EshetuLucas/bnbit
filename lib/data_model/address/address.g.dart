@@ -11,6 +11,7 @@ _$AddressImpl _$$AddressImplFromJson(Map<String, dynamic> json) =>
       business: json['business'] as String?,
       id: json['id'] as String?,
       city: json['city'] as String,
+      state: json['state'] as String?,
       country: json['country'] as String,
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
@@ -19,8 +20,9 @@ _$AddressImpl _$$AddressImplFromJson(Map<String, dynamic> json) =>
       postal_code: json['postal_code'] as String?,
       phone_number: json['phone_number'] as String?,
       line2: json['line2'] as String?,
-      state: json['state'] as String?,
       label: json['label'] as String?,
+      sub_city: json['sub_city'] as String?,
+      area: json['area'] as String?,
       subcategories: (json['subcategories'] as List<dynamic>?)
           ?.map((e) => e as Map<String, dynamic>)
           .toList(),
@@ -31,6 +33,7 @@ Map<String, dynamic> _$$AddressImplToJson(_$AddressImpl instance) =>
       'business': instance.business,
       'id': instance.id,
       'city': instance.city,
+      'state': instance.state,
       'country': instance.country,
       'latitude': instance.latitude,
       'longitude': instance.longitude,
@@ -39,8 +42,9 @@ Map<String, dynamic> _$$AddressImplToJson(_$AddressImpl instance) =>
       'postal_code': instance.postal_code,
       'phone_number': instance.phone_number,
       'line2': instance.line2,
-      'state': instance.state,
       'label': instance.label,
+      'sub_city': instance.sub_city,
+      'area': instance.area,
       'subcategories': instance.subcategories,
     };
 
