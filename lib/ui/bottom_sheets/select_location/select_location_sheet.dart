@@ -1,5 +1,6 @@
 import 'package:bnbit_app/ui/bottom_sheets/basic_bottom_sheet.dart';
 import 'package:bnbit_app/ui/bottom_sheets/select_location/select_location_sheet.form.dart';
+import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:bnbit_app/ui/common/shared_styles.dart';
 import 'package:bnbit_app/ui/widgets/input_field.dart';
 import 'package:bnbit_app/ui/widgets/svg_builder.dart';
@@ -49,9 +50,7 @@ class SelectLocationSheet extends StackedView<SelectLocationSheetModel>
     Widget? child,
   ) {
     return FrostedBottomSheet(
-        child: 
-        
-        Column(
+        child: Column(
       children: [
         verticalSpaceMedium,
         Padding(
@@ -67,11 +66,35 @@ class SelectLocationSheet extends StackedView<SelectLocationSheetModel>
             contentPadding: const EdgeInsets.fromLTRB(18, 4, 4, 4),
             fieldHeight: 49,
             controller: searchController,
-            placeholder: 'Search',
+            placeholder: 'Search Address',
             maxLine: 1,
           ),
         ),
-        verticalSpaceMedium,
+        verticalSpaceSmall,
+        verticalSpaceSmall,
+        InkWell(
+          onTap: viewModel.setCurrentLocation,
+          child: Padding(
+            padding: appSymmetricEdgePadding,
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.my_location,
+                  color: kcPrimaryColor,
+                ),
+                horizontalSpaceSmall,
+                Text(
+                  'Use My Current Location',
+                  style: ktsSmall(context).copyWith(
+                    color: kcPrimaryColor,
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+        verticalSpaceSmall,
+        verticalSpaceTiny,
         Expanded(
           child: ListView.separated(
             separatorBuilder: (context, index) => const Divider(),

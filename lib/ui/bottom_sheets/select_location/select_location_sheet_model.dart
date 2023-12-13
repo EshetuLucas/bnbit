@@ -1,16 +1,19 @@
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
 import 'package:bnbit_app/data_model/address/address.dart';
+import 'package:bnbit_app/services/location_service.dart';
 //import 'package:bnbit_app/services/business_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:places_service/places_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:location_geocoder/location_geocoder.dart' as geo;
 
 class SelectLocationSheetModel extends FormViewModel {
   final log = getLogger('SelectLocationSheetModel');
   final _placesService = locator<PlacesService>();
-  //final _businessService = locator<BusinessService>();
+  final _locationService = locator<LocationService>();
 
   final Function(SheetResponse response)? completer;
   SelectLocationSheetModel(this.completer);
@@ -56,17 +59,23 @@ class SelectLocationSheetModel extends FormViewModel {
     try {
       final placeInfo =
           await _placesService.getPlaceDetails(placesDetail.placeId ?? '');
+      final detail = await _locationService.getLocationDetail(LatLng(
+        placeInfo.lat ?? 0,
+        placeInfo.lng ?? 0,
+      ));
 
-      log.d(placesDetail);
       _address = Address(
-        city: placeInfo.city ?? 'Unknown',
-        country: placeInfo.city ?? 'Unknown',
+        city: detail.locality ?? 'Unknown',
+        country: detail.countryName ?? 'Unknown',
         latitude: placeInfo.lat ?? 0,
         longitude: placeInfo.lng ?? 0,
         state: placeInfo.state,
         line1: placesDetail.mainText,
         line2: placesDetail.secondaryText,
+        area: detail.locality,
+        sub_city: detail.subLocality,
       );
+
       completer?.call(
         SheetResponse(data: _address),
       );
@@ -79,6 +88,36 @@ class SelectLocationSheetModel extends FormViewModel {
     }
 
     setBusy(false);
+  }
+
+  Future<void> setCurrentLocation() async {
+    _searchKey = '';
+    setBusy(true);
+    try {
+      final currentLocation = await _locationService.getUserLocation();
+
+      geo.Address address = await _locationService.getLocationDetail(
+          LatLng(currentLocation!.latitude!, currentLocation.longitude!));
+      _address = Address(
+        city: address.locality!,
+        country: address.countryName!,
+        latitude: currentLocation.latitude!,
+        longitude: currentLocation.longitude!,
+        state: address.subAdminArea,
+        line1: address.subLocality,
+        line2: address.addressLine,
+        sub_city: address.subLocality,
+        area: address.subAdminArea,
+      );
+      completer?.call(
+        SheetResponse(data: _address),
+      );
+      log.v('_address:$_address');
+    } catch (e) {
+      log.e('Unable to get location');
+    } finally {
+      setBusy(false);
+    }
   }
 
   @override
