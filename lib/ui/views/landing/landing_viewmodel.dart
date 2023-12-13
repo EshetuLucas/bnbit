@@ -311,7 +311,7 @@ class LandingViewModel extends BaseViewModel {
     await controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          // bearing: 60.8334901395799,
+          bearing: 60.8334901395799,
           target: target,
           tilt: 80.440717697143555,
           zoom: 14,
@@ -402,5 +402,9 @@ class LandingViewModel extends BaseViewModel {
     carouselController.animateToPage(index,
         duration: const Duration(milliseconds: 400), curve: Curves.linear);
     notifyListeners();
+  }
+
+  void onLocationTap() {
+    _navigationService.navigateToAddressSearchesView();
   }
 }

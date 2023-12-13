@@ -417,7 +417,7 @@ class _Header extends ViewModelWidget<LandingViewModel> {
           RASkeletonLoader(
             loading: viewModel.isBusy,
             child: InkWell(
-              onTap: viewModel.onChangeView,
+              onTap: viewModel.onLocationTap,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: RASkeletonLoader(
