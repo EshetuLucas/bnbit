@@ -61,12 +61,14 @@ class InputField extends StatefulWidget {
     this.focusedBorderColor = kcPrimaryColor,
     this.counter,
     this.hintTextStyle,
+    this.onSearch,
     Key? key,
   }) : super(key: key);
 
   final Function(String)? onChanged;
   final Function()? onTap;
   final Function(String)? onFieldSubmitted;
+  final Function(String)? onSearch;
   final bool autoFocus;
   final bool showErrorMessage;
   final bool loading;
@@ -224,8 +226,9 @@ class _InputFieldState extends State<InputField> {
                                   onTap: widget.onTap,
                                   onEditingComplete: () {
                                     if (widget.enterPressed != null) {
-                                      FocusScope.of(context)
-                                          .requestFocus(FocusNode());
+                                      FocusScope.of(context).requestFocus(
+                                        FocusNode(),
+                                      );
                                       widget.enterPressed!();
                                     }
                                     if (widget.nextFocusNode != null) {
@@ -238,6 +241,8 @@ class _InputFieldState extends State<InputField> {
                                       (value) {
                                         if (widget.nextFocusNode != null) {
                                           widget.nextFocusNode!.requestFocus();
+                                        } else {
+                                          FocusScope.of(context).unfocus();
                                         }
                                       },
                                   readOnly: widget.isReadOnly,
