@@ -21,6 +21,7 @@ import '../services/custom_snackbar_service.dart';
 import '../services/location_service.dart';
 import '../services/media_service.dart';
 import '../services/permissions_service.dart';
+import '../services/shared_preferences_service.dart';
 import '../services/url_launcher_service.dart';
 import '../services/user_service.dart';
 import '../ui/views/landing/landing_viewmodel.dart';
@@ -50,6 +51,9 @@ Future<void> setupLocator({
   locator.registerLazySingleton(() => LocationService());
   locator.registerLazySingleton(() => LandingViewModel());
   locator.registerLazySingleton(() => UrlLauncherService());
+  final sharedPreferencesService = await SharedPreferencesService.getInstance();
+  locator.registerSingleton(sharedPreferencesService);
+
   locator.registerLazySingleton(() => CategoryApis());
   locator.registerLazySingleton(() => UserApis());
 }

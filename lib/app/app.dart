@@ -6,6 +6,7 @@ import 'package:bnbit_app/services/custom_snackbar_service.dart';
 import 'package:bnbit_app/services/location_service.dart';
 import 'package:bnbit_app/services/media_service.dart';
 import 'package:bnbit_app/services/permissions_service.dart';
+import 'package:bnbit_app/services/shared_preferences_service.dart';
 import 'package:bnbit_app/services/url_launcher_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
 import 'package:bnbit_app/ui/bottom_sheets/notice/notice_sheet.dart';
@@ -56,6 +57,9 @@ import 'package:bnbit_app/ui/bottom_sheets/time_selection/time_selection_sheet.d
 import 'package:bnbit_app/ui/bottom_sheets/address_detail/address_detail_sheet.dart';
 import 'package:bnbit_app/ui/views/show_full_image/show_full_image_view.dart';
 import 'package:bnbit_app/ui/dialogs/warning/warning_dialog.dart';
+import 'package:bnbit_app/ui/views/dashboard/dashboard_view.dart';
+import 'package:bnbit_app/ui/views/address_search/address_searches_view.dart';
+import 'package:bnbit_app/ui/views/recent_searches/recent_searches_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -93,6 +97,9 @@ import 'package:bnbit_app/ui/dialogs/warning/warning_dialog.dart';
     MaterialRoute(page: SelectLocationView),
     MaterialRoute(page: ShowFullImageView),
 
+    MaterialRoute(page: DashboardView),
+    MaterialRoute(page: AddressSearchesView),
+MaterialRoute(page: RecentSearchesView),
 // @stacked-route
   ],
   dependencies: [
@@ -110,6 +117,10 @@ import 'package:bnbit_app/ui/dialogs/warning/warning_dialog.dart';
     LazySingleton(classType: LocationService),
     LazySingleton(classType: LandingViewModel),
     LazySingleton(classType: UrlLauncherService),
+    Presolve(
+      classType: SharedPreferencesService,
+      presolveUsing: SharedPreferencesService.getInstance,
+    ),
 
     /// APIs
     LazySingleton(classType: CategoryApis),
@@ -138,7 +149,7 @@ import 'package:bnbit_app/ui/dialogs/warning/warning_dialog.dart';
     StackedDialog(classType: LocationDialog),
 
     StackedDialog(classType: ForgotPasswordDialog),
-StackedDialog(classType: WarningDialog),
+    StackedDialog(classType: WarningDialog),
 // @stacked-dialog
   ],
   logger: StackedLogger(),
