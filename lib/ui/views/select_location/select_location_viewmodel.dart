@@ -131,13 +131,15 @@ class SelectLocationViewModel extends FormViewModel {
       currentLocationName =
           '${address.adminArea ?? ''}' ' ,' '${address.countryName ?? ''}';
       _address = Address(
-        city: address.adminArea!,
+        city: address.locality!,
         country: address.countryName!,
         latitude: currentLocation!.latitude!,
         longitude: currentLocation!.longitude!,
         state: address.subAdminArea,
         line1: address.subLocality,
         line2: address.addressLine,
+        sub_city: address.subLocality,
+        area: address.subAdminArea,
       );
       searchController.text = _address!.displayAddress;
       notifyListeners();
@@ -172,21 +174,40 @@ class SelectLocationViewModel extends FormViewModel {
 
   Future<void> getPlaceDetails(PlacesAutoCompleteResult placesDetail) async {
     log.i('placesDetail: $placesDetail');
-    setBusy(true);
+
     try {
       final placeInfo =
           await _placesService.getPlaceDetails(placesDetail.placeId ?? '');
+      final detail = await _locationService.getLocationDetail(LatLng(
+        placeInfo.lat ?? 0,
+        placeInfo.lng ?? 0,
+      ));
 
-      log.d(placesDetail);
       _address = Address(
-        city: placeInfo.city ?? 'Unknown',
-        country: placeInfo.city ?? 'Unknown',
+        city: detail.locality ?? 'Unknown',
+        country: detail.countryName ?? 'Unknown',
         latitude: placeInfo.lat ?? 0,
         longitude: placeInfo.lng ?? 0,
         state: placeInfo.state,
         line1: placesDetail.mainText,
         line2: placesDetail.secondaryText,
+        area: detail.locality,
+        sub_city: detail.subLocality,
       );
+
+      // log.d(placesDetail);
+      // _address = Address(
+      //   city: placeInfo.city ?? 'Unknown',
+      //   country: placeInfo.city ?? 'Unknown',
+      //   latitude: placeInfo.lat ?? 0,
+      //   longitude: placeInfo.lng ?? 0,
+      //   state: placeInfo.state,
+      //   line1: placesDetail.mainText,
+      //   line2: placesDetail.secondaryText,
+      // );
+
+      _searchKey = '';
+      notifyListeners();
 
       currentLatLng = LatLng(_address?.latitude ?? 0, _address?.longitude ?? 0);
 
