@@ -43,3 +43,4 @@ const String downloadSvg = svgsPath + '/download.svg';
 const String shareSvg = svgsPath + '/share.svg';
 const String bookmarkSvg = svgsPath + '/Saved.svg';
 const String lockSvg = svgsPath + '/lock.svg';
+const String recentSvg = svgsPath + '/recent.svg';

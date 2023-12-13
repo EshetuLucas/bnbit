@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:bnbit_app/ui/common/theme_class.dart';
-import 'package:bnbit_app/ui/views/change_password/change_password_view.dart';
 import 'package:bnbit_app/ui/views/startup/startup_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
