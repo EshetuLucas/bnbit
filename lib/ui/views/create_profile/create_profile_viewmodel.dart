@@ -19,7 +19,10 @@ class CreateProfileViewModel extends FormViewModel {
   String _nameValidationMessage = '';
   String get nameValidationMessage => _nameValidationMessage;
 
-  String get firstName => user.first_name;
+  String _apiValidation = '';
+  String get apiValidation => _apiValidation;
+
+  String get firstName => user.first_name ?? '';
   String get lastName => user.last_name ?? '';
 
   bool _showValidationIfAny = false;
@@ -39,8 +42,8 @@ class CreateProfileViewModel extends FormViewModel {
     //   return;
     // }
 
-
     _showValidationIfAny = true;
+    _apiValidation = '';
     notifyListeners();
 
     if (!hasNoValidFirstName) {
@@ -48,7 +51,7 @@ class CreateProfileViewModel extends FormViewModel {
         first_name: firstNameValue!,
         last_name: lastNameValue,
         is_active: true,
-        phone: phoneNumber,
+        phone_number: phoneNumber,
       );
 
       try {
@@ -57,6 +60,7 @@ class CreateProfileViewModel extends FormViewModel {
         await _navigationService.clearStackAndShowView(const HomeView());
       } catch (e) {
         log.e('Unable to update a user $e');
+        _apiValidation = 'Something went wrong. Try again!';
       } finally {
         setBusy(false);
       }

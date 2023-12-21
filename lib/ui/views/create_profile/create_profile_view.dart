@@ -3,6 +3,7 @@ import 'package:bnbit_app/ui/common/shared_styles.dart';
 import 'package:bnbit_app/ui/common/ui_helpers.dart';
 import 'package:bnbit_app/ui/widgets/app_button.dart';
 import 'package:bnbit_app/ui/widgets/custom_app_bar.dart';
+import 'package:bnbit_app/ui/widgets/input_error_message.dart';
 import 'package:bnbit_app/ui/widgets/input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -55,7 +56,6 @@ class CreateProfileView extends StackedView<CreateProfileViewModel>
               hasBackButton: false,
             ),
             verticalSpaceSmall,
-            verticalSpaceSmall,
             Padding(
               padding: appSymmetricEdgePadding,
               child: Column(
@@ -68,7 +68,9 @@ class CreateProfileView extends StackedView<CreateProfileViewModel>
                   ),
                   Text(
                     "Let's create your profile",
-                    style: ktsSmall(context).copyWith(fontSize: 12),
+                    style: ktsSmall(context).copyWith(
+                      fontSize: 12,
+                    ),
                   ),
                   verticalSpaceMedium,
                   verticalSpaceSmall,
@@ -93,6 +95,10 @@ class CreateProfileView extends StackedView<CreateProfileViewModel>
                   verticalSpaceSmall,
                   verticalSpaceSmall,
                   verticalSpaceMedium,
+                  if (viewModel.apiValidation.isNotEmpty) ...[
+                    ValidationMessage(title: viewModel.apiValidation),
+                    verticalSpaceSmall,
+                  ],
                   AppButton(
                     enabled: viewModel.hasValidFirstName,
                     busy: viewModel.isBusy,
