@@ -1,3 +1,8 @@
+import 'package:bnbit_app/app/app.locator.dart';
+import 'package:bnbit_app/app/app.router.dart';
+import 'package:bnbit_app/services/user_service.dart';
+import 'package:stacked_services/stacked_services.dart';
+
 class ApiException implements Exception {
   final String? message;
 
@@ -41,17 +46,17 @@ class ServiceUnavailableException extends ApiException {
 
 class ApiErrorHandler {
   static Exception handleError(int? statusCode) {
-    // final _navigationService = locator<NavigationService>();
-    // final _userService = locator<UserService>();
+    final _navigationService = locator<NavigationService>();
+    final _userService = locator<UserService>();
 
     if (statusCode != null) {
       switch (statusCode) {
         case 400:
           return BadRequestException(message: 'BadRequestException');
         case 401:
-          // if (_userService.hasUser) {
-          //   _navigationService.clearStackAndShow(Routes.loginView);
-          // }
+          if (_userService.hasUser) {
+            _navigationService.clearStackAndShow(Routes.loginView);
+          }
           return UnauthorizedException(message: 'UnauthorizedException');
 
         case 403:

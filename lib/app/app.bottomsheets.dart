@@ -17,6 +17,7 @@ import '../ui/bottom_sheets/image_option/image_option_sheet.dart';
 import '../ui/bottom_sheets/input_field/input_field_sheet.dart';
 import '../ui/bottom_sheets/notice/notice_sheet.dart';
 import '../ui/bottom_sheets/select_location/select_location_sheet.dart';
+import '../ui/bottom_sheets/single_input/single_input_sheet.dart';
 import '../ui/bottom_sheets/sub_categories/sub_categories_sheet.dart';
 import '../ui/bottom_sheets/time_selection/time_selection_sheet.dart';
 import '../ui/bottom_sheets/upload_image/upload_image_sheet.dart';
@@ -35,6 +36,7 @@ enum BottomSheetType {
   timeSelection,
   addressDetail,
   inputField,
+  singleInput,
 }
 
 void setupBottomSheetUi() {
@@ -67,6 +69,8 @@ void setupBottomSheetUi() {
         AddressDetailSheet(request: request, completer: completer),
     BottomSheetType.inputField: (context, request, completer) =>
         InputFieldSheet(request: request, completer: completer),
+    BottomSheetType.singleInput: (context, request, completer) =>
+        SingleInputSheet(request: request, completer: completer),
   };
 
   bottomsheetService.setCustomSheetBuilders(builders);

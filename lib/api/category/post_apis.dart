@@ -46,7 +46,6 @@ mixin PostApis {
   }) async {
     final businessMap = business.toJson();
     businessMap.remove('addressDetails');
-
     return await apiClient.put<Business>(
       businessUrl + '/$businessId',
       businessMap,
@@ -54,12 +53,13 @@ mixin PostApis {
   }
 
   Future<Address> addBuisnessAddress(Address address) async {
-    final businessMap = address.toJson();
-    businessMap.remove('id');
-    log.e(businessMap);
+    final addressMap = address.toJson();
+    addressMap.remove('id');
+    addressMap.remove('distance');
+
     return await apiClient.post<Address>(
       addAddressesUrl,
-      address.toJson(),
+      addressMap,
     );
   }
 
@@ -75,6 +75,7 @@ mixin PostApis {
   }) async {
     final addressMap = address.toJson();
     addressMap.remove('id');
+    addressMap.remove('distance');
     return await apiClient.put<void>(
       addAddressesUrl + '/$id',
       addressMap,

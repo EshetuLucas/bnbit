@@ -62,6 +62,9 @@ import 'package:bnbit_app/ui/views/address_search/address_searches_view.dart';
 import 'package:bnbit_app/ui/views/recent_searches/recent_searches_view.dart';
 import 'package:bnbit_app/ui/views/services/services_view.dart';
 import 'package:bnbit_app/ui/bottom_sheets/input_field/input_field_sheet.dart';
+import 'package:bnbit_app/ui/views/view_images/view_images_view.dart';
+import 'package:bnbit_app/ui/views/delete_account/delete_account_view.dart';
+import 'package:bnbit_app/ui/bottom_sheets/single_input/single_input_sheet.dart';
 // @stacked-import
 
 @StackedApp(
@@ -103,6 +106,8 @@ import 'package:bnbit_app/ui/bottom_sheets/input_field/input_field_sheet.dart';
     MaterialRoute(page: AddressSearchesView),
 MaterialRoute(page: RecentSearchesView),
 MaterialRoute(page: ServicesView),
+MaterialRoute(page: ViewImagesView),
+MaterialRoute(page: DeleteAccountView),
 // @stacked-route
   ],
   dependencies: [
@@ -145,6 +150,7 @@ MaterialRoute(page: ServicesView),
     StackedBottomsheet(classType: TimeSelectionSheet),
     StackedBottomsheet(classType: AddressDetailSheet),
 StackedBottomsheet(classType: InputFieldSheet),
+StackedBottomsheet(classType: SingleInputSheet),
 // @stacked-bottom-sheet
   ],
   dialogs: [

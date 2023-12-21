@@ -46,9 +46,10 @@ class MyApp extends StackedView<MainViewModel> {
       title: 'Flutter Demo',
       theme: ThemeClass.lightTheme,
       home: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: viewModel.systemUiOverlayStyle,
-        child: const ServicesView(),
-      ),
+          value: viewModel.systemUiOverlayStyle, child: const StartupView()
+
+          //  ServicesView(),
+          ),
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,
       navigatorObservers: [
