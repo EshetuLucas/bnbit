@@ -10,6 +10,7 @@ import 'package:bnbit_app/ui/widgets/decorated_container.dart';
 import 'package:bnbit_app/ui/widgets/image_place_holder.dart';
 import 'package:bnbit_app/ui/widgets/map_view.dart';
 import 'package:bnbit_app/ui/widgets/placeholder_image.dart';
+import 'package:bnbit_app/ui/widgets/ra_skeleton_loader.dart';
 import 'package:bnbit_app/ui/widgets/spinner.dart';
 import 'package:bnbit_app/ui/widgets/svg_builder.dart';
 import 'package:bnbit_app/utils/algorithm_helpers.dart';
@@ -46,41 +47,33 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
     return AbsorbPointer(
       absorbing: viewModel.isBusy,
       child: Scaffold(
-        bottomNavigationBar: SizedBox(
-          height: screenHeight(context) / 4,
-          child: Stack(
-            alignment: Alignment.bottomCenter,
+        bottomNavigationBar: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // MapView(business: business),
-              SafeArea(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _AddressCarousel(
-                      addresses: business.addresses.reversed.toList(),
-                      height: 97,
+              _AddressCarousel(
+                addresses: viewModel.businessAddress,
+                height: 97,
+              ),
+              verticalSpaceTiny,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i = 0; i < business.addresses.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 1),
+                      child: Icon(
+                        viewModel.selectedAddressIndex == i
+                            ? Icons.circle
+                            : Icons.circle_outlined,
+                        size: viewModel.selectedAddressIndex != i ? 7 : 8,
+                        color: viewModel.selectedAddressIndex == i
+                            ? kcPrimaryColor
+                            : kcDark700,
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int i = 0; i < business.addresses.length; i++)
-                          Padding(
-                            padding: const EdgeInsets.only(right: 1),
-                            child: Icon(
-                              viewModel.selectedAddressIndex == i
-                                  ? Icons.circle
-                                  : Icons.circle_outlined,
-                              size: viewModel.selectedAddressIndex != i ? 7 : 8,
-                              color: viewModel.selectedAddressIndex == i
-                                  ? kcPrimaryColor
-                                  : kcDark700,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
+                ],
+              ),
             ],
           ),
         ),
@@ -174,11 +167,76 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                           padding: const EdgeInsets.all(10.0),
                           child: Column(
                             children: [
-                              Text(
-                                business.name,
-                                style:
-                                    ktsSemibold(context).copyWith(fontSize: 16),
+                              // Text(
+                              //   business.name,
+                              //   style:
+                              //       ktsSemibold(context).copyWith(fontSize: 16),
+                              // ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      business.name,
+                                      style: ktsSemibold(context)
+                                          .copyWith(fontSize: 16),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  horizontalSpaceSmall,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        DecoratedContainer(
+                                          borderRadius: 4,
+                                          withCard: false,
+                                          containerColor: viewModel
+                                                  .getOperatingHour(business)
+                                                  .isNotEmpty
+                                              ? kcGreen.withOpacity(0.2)
+                                              : kcRed.withOpacity(0.2),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5, vertical: 2),
+                                            child: Text(
+                                              viewModel
+                                                      .getOperatingHour(
+                                                          business)
+                                                      .isNotEmpty
+                                                  ? 'Open'
+                                                  : 'Closed',
+                                              style:
+                                                  ktsSemibold(context).copyWith(
+                                                fontSize: 12,
+                                                color: viewModel
+                                                        .getOperatingHour(
+                                                            business)
+                                                        .isNotEmpty
+                                                    ? kcGreen
+                                                    : kcRed,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        horizontalSpaceTiny,
+                                        if (viewModel
+                                            .getOperatingHour(business)
+                                            .isNotEmpty)
+                                          Text(
+                                            ': Closes at ${viewModel.getOperatingHour(business)}',
+                                            style: ktsSmall(context)
+                                                .copyWith(fontSize: 12),
+                                          ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
+                              verticalSpaceSmall,
                               verticalSpaceTiny,
                               Text(
                                 business.description,
@@ -206,7 +264,8 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                               business.addresses.first
                                                   .displayAddress
                                           : '${business.addresses.length} locations',
-                                      maxLines: 2,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: ktsDarkSmall(context)
                                           .copyWith(fontSize: 14),
                                     ),
@@ -230,8 +289,8 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                   Padding(
                                     padding: const EdgeInsets.only(bottom: 8),
                                     child: Text(
-                                      getFormattedDistance(viewModel
-                                          .distance(business.addresses.last)),
+                                      getFormattedDistance(viewModel.distance(
+                                          viewModel.businessAddress.first)),
                                       style: ktsDarkSmall(context).copyWith(
                                         fontSize: 13,
                                       ),
@@ -255,7 +314,7 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                               Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Expanded(
+                                  Flexible(
                                     child: InkWell(
                                       onTap: () => viewModel.makePhoneCall(
                                           business.addresses.first
@@ -276,8 +335,9 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                       ),
                                     ),
                                   ),
+                                  horizontalSpaceMedium,
                                   if (!business.website.isNullOrEmpty)
-                                    Expanded(
+                                    Flexible(
                                       child: InkWell(
                                         onTap: () => viewModel
                                             .openLink(business.website!),
@@ -297,8 +357,9 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                         ),
                                       ),
                                     ),
+                                  horizontalSpaceMedium,
                                   if (!business.instagram.isNullOrEmpty)
-                                    Expanded(
+                                    Flexible(
                                       child: InkWell(
                                         onTap: () => viewModel
                                             .openLink(business.instagram!),
@@ -318,8 +379,9 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                         ),
                                       ),
                                     ),
+                                  horizontalSpaceMedium,
                                   if (!business.telegram.isNullOrEmpty)
-                                    Expanded(
+                                    Flexible(
                                       child: InkWell(
                                         onTap: () => viewModel
                                             .openLink(business.telegram!),
@@ -341,6 +403,8 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                     ),
                                 ],
                               ),
+                              verticalSpaceSmall,
+                              verticalSpaceTiny,
                               if (business.services.isNotEmpty)
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -356,12 +420,46 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                           color: kcPrimaryColor,
                                         ),
                                       ),
-                                      verticalSpaceSmall,
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8),
-                                        child: Text(business.services.first),
-                                      ),
+                                      verticalSpaceTiny,
+                                      if (business.services.isNotEmpty)
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Wrap(
+                                            spacing: 4,
+                                            runSpacing: 6,
+                                            children: business.services
+                                                .map(
+                                                  (service) => Wrap(
+                                                    spacing: 4,
+                                                    runSpacing: 6,
+                                                    children: [
+                                                      DecoratedContainer(
+                                                        // onTap: viewModel.onAddAddress,
+                                                        borderRadius: 30,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 8),
+                                                          child: Text(
+                                                            service.service,
+                                                            maxLines: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            style: ktsSmall(
+                                                                context),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                                .toList(),
+                                          ),
+                                        )
                                     ],
                                   ),
                                 ),
@@ -417,7 +515,7 @@ class _BusinessImageCarousel extends ViewModelWidget<BusinessDetailViewModel> {
             return SizedBox(
               height: 145,
               child: DecoratedContainer(
-                onTap: () => viewModel.onImageTap(baseUrl + '/' + image),
+                onTap: () => viewModel.onImageTap(images.indexOf(image)),
                 borderRadius: 1,
                 child: PlaceholderImage(
                   placeHolder: const ImagePlaceHolder(),
@@ -448,12 +546,12 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
   Widget build(BuildContext context, BusinessDetailViewModel viewModel) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 115,
+        height: 109,
         aspectRatio: 2.0,
-        viewportFraction: 0.8,
+        viewportFraction: 0.82,
         enlargeCenterPage: true,
         enableInfiniteScroll: false,
-        enlargeFactor: 0.25,
+        enlargeFactor: 0.2,
         onPageChanged: (index, reason) => viewModel.onChangeAddres(
           addresses[index],
           index,
@@ -462,76 +560,76 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
       items: addresses.map((address) {
         return Builder(
           builder: (BuildContext context) {
-            return SizedBox(
-              height: 10,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: DecoratedContainer(
-                  elevation: 1,
-                  shadowColor: kcDark700,
-                  containerColor: kcWhite,
-                  borderRadius: 8,
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            verticalSpaceSmall,
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(8, 3, 8, 8),
-                                  child: SvgBuilder(
-                                    svg: locationSvg,
-                                    height: 16,
-                                    color: kcDark700Light,
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: DecoratedContainer(
+                elevation: 0,
+                shadowColor: kcDark,
+                containerColor: kcWhite,
+                borderRadius: 8,
+                borderColor: kcLightGrey.withOpacity(0.3),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          verticalSpaceSmall,
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 3, 8, 8),
+                                child: SvgBuilder(
+                                  svg: locationSvg,
+                                  height: 16,
+                                  color: kcDark700Light,
+                                ),
+                              ),
+                              horizontalSpaceSmall,
+                              Flexible(
+                                child: Text(
+                                  address.label ?? address.displayAddress,
+                                  maxLines: 1,
+                                  style: ktsDarkSmall(context).copyWith(
+                                    fontSize: 13,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                          verticalSpaceTiny,
+                          Row(
+                            children: [
+                              horizontalSpaceSmall,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Icon(
+                                  FontAwesomeIcons.waveSquare,
+                                  size: 12,
+                                  color: kcDark700Light,
+                                ),
+                              ),
+                              horizontalSpaceSmall,
+                              horizontalSpaceSmall,
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Text(
+                                  getFormattedDistance(
+                                      viewModel.distance(address)),
+                                  style: ktsDarkSmall(context).copyWith(
+                                    fontSize: 12,
                                   ),
                                 ),
-                                horizontalSpaceSmall,
-                                Flexible(
-                                  child: Text(
-                                    address.label ?? address.displayAddress,
-                                    maxLines: 1,
-                                    style: ktsDarkSmall(context).copyWith(
-                                      fontSize: 13,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            verticalSpaceTiny,
-                            Row(
-                              children: [
-                                horizontalSpaceSmall,
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: Icon(
-                                    FontAwesomeIcons.waveSquare,
-                                    size: 12,
-                                    color: kcDark700Light,
-                                  ),
-                                ),
-                                horizontalSpaceSmall,
-                                horizontalSpaceSmall,
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: Text(
-                                    getFormattedDistance(
-                                        viewModel.distance(address)),
-                                    style: ktsDarkSmall(context).copyWith(
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            verticalSpaceTiny,
-                            Row(
+                              ),
+                            ],
+                          ),
+                          verticalSpaceTiny,
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 horizontalSpaceSmall,
                                 InkWell(
@@ -574,15 +672,15 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
-                                        decoration: const BoxDecoration(
-                                          color: kcPrimaryColor,
-                                          borderRadius: BorderRadius.only(
+                                        decoration: BoxDecoration(
+                                          color:
+                                              kcPrimaryColor.withOpacity(0.8),
+                                          borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(8),
-                                            bottomLeft: Radius.circular(8),
                                           ),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(7.0),
+                                          padding: const EdgeInsets.all(4.0),
                                           child: Text(
                                             'Navigate',
                                             style: ktsSmall(context).copyWith(
@@ -596,11 +694,11 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                                   ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -661,7 +759,7 @@ class _OperatingHoursWidget extends ViewModelWidget<BusinessDetailViewModel> {
   @override
   Widget build(BuildContext context, BusinessDetailViewModel viewModel) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      verticalSpaceMedium,
+      verticalSpaceSmall,
       Text(
         'Operating hours',
         style: ktsSmall(context).copyWith(

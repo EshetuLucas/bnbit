@@ -18,6 +18,7 @@ import 'package:bnbit_app/utils/day.dart';
 import 'package:bnbit_app/utils/time.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:location/location.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -35,6 +36,7 @@ class BusinessDetailViewModel extends BaseViewModel {
   UserModel get user => _userService.currentUser;
 
   List<String> _savedBusinesses = [];
+  List<Address> businessAddress = [];
 
   Map<String, TimeRange?> todayOperatingHour = {};
 
@@ -42,7 +44,24 @@ class BusinessDetailViewModel extends BaseViewModel {
   late BitmapDescriptor nearbyMarkerbitmap;
 
   final Business business;
-  BusinessDetailViewModel({required this.business});
+  BusinessDetailViewModel({required this.business}) {
+    setAddresses();
+  }
+  void setAddresses() {
+    List<Address> tempAddress = [];
+    for (Address address in business.addresses) {
+      final distance = calculateDistance(
+        currentLocation.latitude,
+        currentLocation.longitude,
+        address.latitude,
+        address.longitude,
+      );
+      tempAddress.add(address.copyWith(distance: distance));
+    }
+    tempAddress.sort(((a, b) => a.distance!.compareTo(b.distance!)));
+    businessAddress = tempAddress;
+  }
+
   final Completer<GoogleMapController> _controller = Completer();
 
   LatLng get currentLocation => LatLng(
@@ -88,8 +107,11 @@ class BusinessDetailViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void onImageTap(String url) => _navigationService.navigateToShowFullImageView(
-      imagePath: url, isFromFile: false);
+  void onImageTap(int index) => _navigationService.navigateToViewImagesView(
+      images: business.images.map((e) => e.image).toList(), index: index);
+
+  // _navigationService.navigateToShowFullImageView(
+  //     imagePath: url, isFromFile: false);
 
   void onImageChage(int index) {
     _selectedIndex = index;
@@ -256,6 +278,51 @@ class BusinessDetailViewModel extends BaseViewModel {
     }
 
     notifyListeners();
+  }
+
+  String getOperatingHour(Business business) {
+    String endTime = '';
+    DateTime now = DateTime.now();
+    Map<String, TimeRange?> operatingHour = {};
+    String day = DayUtil.getDay(DateTime.now().weekday);
+    if (business.opening_hours.isNotEmpty) {
+      TimeRange? timeRange = TimeUtil.convertOperatingHoursToTimeRanges(
+          business.opening_hours)[day];
+      if (timeRange != null) {
+        operatingHour[day] = TimeUtil.convertOperatingHoursToTimeRanges(
+            business.opening_hours)[day];
+        DateTime tempEndTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          business.opening_hours[day]!.endTime.hour,
+          business.opening_hours[day]!.endTime.minute,
+          0,
+          0,
+          0,
+        );
+        log.e('tempEndTime:$tempEndTime');
+
+        DateTime tempNow = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          now.hour,
+          now.minute,
+          0,
+          0,
+          0,
+        );
+        log.d('tempNow:_$tempNow');
+        if (tempNow.isBefore(tempEndTime)) {
+          endTime = DateFormat.jm().format(
+            business.opening_hours[day]!.endTime,
+          );
+        }
+      }
+    }
+
+    return endTime;
   }
 }
 
