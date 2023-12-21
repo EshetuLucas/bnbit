@@ -1,6 +1,7 @@
 import 'package:bnbit_app/ui/common/shared_styles.dart';
 import 'package:bnbit_app/ui/common/ui_helpers.dart';
 import 'package:bnbit_app/ui/widgets/app_button.dart';
+import 'package:bnbit_app/ui/widgets/custom_app_bar.dart';
 import 'package:bnbit_app/ui/widgets/input_field.dart';
 import 'package:bnbit_app/ui/widgets/validation_text_widget.dart';
 import 'package:flutter/material.dart';
@@ -28,19 +29,32 @@ class ForgotPasswordView extends StackedView<ForgotPasswordViewModel>
   }
 
   @override
+  void onDispose(ForgotPasswordViewModel viewModel) {
+    disposeForm();
+    super.onDispose(viewModel);
+  }
+
+  @override
   Widget builder(
     BuildContext context,
     ForgotPasswordViewModel viewModel,
     Widget? child,
   ) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 33),
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BodySection(emailController),
-            const _BottomSection(),
+            const CustomAppBar(title: 'Reset password'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 33),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _BodySection(emailController),
+                  const _BottomSection(),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -83,7 +97,7 @@ class _BodySection extends ViewModelWidget<ForgotPasswordViewModel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        verticalSpace(49),
+        verticalSpace(10),
         Text(
           'Forgot Password',
           style: ktsSemiboldBlack(context).copyWith(

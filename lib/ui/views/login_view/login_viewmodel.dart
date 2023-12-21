@@ -59,8 +59,6 @@ class LoginViewModel extends FormViewModel {
           verificationFailed: onVerificationFailed,
           codeSent: onCodeSent,
         );
-
-        setBusy(false);
         return;
       } catch (e) {
         log.e("Unable to login: $e");

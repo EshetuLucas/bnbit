@@ -104,12 +104,17 @@ class UserService {
 
   Future<void> deleteAccount() async {
     //await ref.doc(_currentUser!.uid).delete();
+    await _userApis.deleteAccount(currentUser.id);
     await _firebaseAuthentication.currentUser!.delete();
     _currentUser = null;
   }
 
   Future<void> resetPassword(String email) async {
-    // return await _userApi.resetPassword(email);
+    return await await _firebaseAuthentication.sendResetPasswordLink(email);
+  }
+
+  Future<bool> emailExists(String email) async {
+    return await _firebaseAuthentication.emailExists(email);
   }
 
   // /// Generates an FCM token for a user's device. It will

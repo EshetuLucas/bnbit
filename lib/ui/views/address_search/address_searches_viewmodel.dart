@@ -130,6 +130,8 @@ class AddressSearchesViewModel extends FormViewModel {
   }
 
   Future<void> getBusinesses({bool makeViewModelBusy = false}) async {
+    _navigationService.back(result: _address);
+    return;
     try {
       setBusy(true);
       getRecentAddresses();

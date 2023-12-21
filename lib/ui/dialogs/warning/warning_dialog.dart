@@ -37,10 +37,12 @@ class WarningDialog extends StackedView<WarningDialogModel> {
             verticalSpaceTiny,
             Row(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 6),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
                   child: SvgBuilder(
-                    svg: logOutSvg,
+                    svg: request.secondaryButtonTitle == 'Delete'
+                        ? trashSvg
+                        : logOutSvg,
                     color: kcRed,
                     height: 18,
                   ),
@@ -95,10 +97,14 @@ class WarningDialog extends StackedView<WarningDialogModel> {
                     height: 32,
                     child: AppButton(
                       isOutlined: true,
-                      backgroundColor: Theme.of(context).colorScheme.outline,
-                      textColor: Theme.of(context).colorScheme.onPrimary,
+                      backgroundColor: request.secondaryButtonTitle == 'Delete'
+                          ? kcRed
+                          : Theme.of(context).colorScheme.outline,
+                      textColor: request.secondaryButtonTitle == 'Delete'
+                          ? kcRed
+                          : Theme.of(context).colorScheme.onPrimary,
                       height: 32,
-                      title: request.mainButtonTitle ?? 'Yes',
+                      title: request.secondaryButtonTitle ?? 'Yes',
                       fontSize: 13,
                       onTap: () => completer.call(
                         DialogResponse(

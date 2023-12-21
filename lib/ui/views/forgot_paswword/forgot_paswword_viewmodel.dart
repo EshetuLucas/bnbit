@@ -1,6 +1,5 @@
 import 'package:bnbit_app/app/app.dialogs.dart';
 import 'package:bnbit_app/app/app.locator.dart';
-import 'package:bnbit_app/app/app.router.dart';
 import 'package:bnbit_app/exceptions/firestore_api_exception.dart';
 import 'package:bnbit_app/mixins/auth_mixin.dart';
 import 'package:bnbit_app/services/user_service.dart';
@@ -8,10 +7,13 @@ import 'package:bnbit_app/ui/views/forgot_paswword/forgot_paswword_view.form.dar
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../../../services/custom_snackbar_service.dart';
+
 class ForgotPasswordViewModel extends FormViewModel with AuthMixin {
   final _navigationService = locator<NavigationService>();
   final _dialogService = locator<DialogService>();
   final _userService = locator<UserService>();
+  final _snacBarService = locator<CustomSnackbarService>();
 
   bool get hasValidInputs {
     validateEmail(emailValue);
@@ -28,9 +30,18 @@ class ForgotPasswordViewModel extends FormViewModel with AuthMixin {
       return;
     }
     try {
+      if (!await _userService.emailExists(emailValue ?? '')) {
+        setBusy(false);
+        await _snacBarService.showError(
+          'The email does not exist in our records.',
+        );
+
+        return;
+      }
       await _userService.resetPassword(emailValue!);
+      setBusy(false);
       await _dialogService.showCustomDialog(variant: DialogType.forgotPassword);
-      _navigationService.clearStackAndShow(Routes.loginView);
+      _navigationService.back();
     } on EmailNotFoundException {
       setEmailValidation('There is no user with that email.');
     } catch (e) {

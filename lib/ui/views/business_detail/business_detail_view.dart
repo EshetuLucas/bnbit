@@ -51,7 +51,7 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              MapView(business: business),
+              // MapView(business: business),
               SafeArea(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -256,73 +256,115 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Expanded(
-                                    child: Column(
-                                      children: [
-                                        const SvgBuilder(
-                                          svg: callSvg,
-                                          height: 22,
-                                        ),
-                                        Text(
-                                          'Call',
-                                          style: ktsDarkSmall(context)
-                                              .copyWith(fontSize: 12),
-                                        ),
-                                      ],
+                                    child: InkWell(
+                                      onTap: () => viewModel.makePhoneCall(
+                                          business.addresses.first
+                                                  .phone_number ??
+                                              ''),
+                                      child: Column(
+                                        children: [
+                                          const SvgBuilder(
+                                            svg: callSvg,
+                                            height: 22,
+                                          ),
+                                          Text(
+                                            'Call',
+                                            style: ktsDarkSmall(context)
+                                                .copyWith(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   if (!business.website.isNullOrEmpty)
                                     Expanded(
-                                      child: Column(
-                                        children: [
-                                          const Icon(
-                                            FontAwesomeIcons.globe,
-                                            color: kcPrimaryColor,
-                                            size: 20,
-                                          ),
-                                          Text(
-                                            'Website',
-                                            style: ktsDarkSmall(context)
-                                                .copyWith(fontSize: 12),
-                                          ),
-                                        ],
+                                      child: InkWell(
+                                        onTap: () => viewModel
+                                            .openLink(business.website!),
+                                        child: Column(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.globe,
+                                              color: kcPrimaryColor,
+                                              size: 20,
+                                            ),
+                                            Text(
+                                              'Website',
+                                              style: ktsDarkSmall(context)
+                                                  .copyWith(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   if (!business.instagram.isNullOrEmpty)
                                     Expanded(
-                                      child: Column(
-                                        children: [
-                                          const Icon(
-                                            FontAwesomeIcons.instagram,
-                                            color: kcPrimaryColor,
-                                            size: 20,
-                                          ),
-                                          Text(
-                                            'Instagram',
-                                            style: ktsDarkSmall(context)
-                                                .copyWith(fontSize: 12),
-                                          ),
-                                        ],
+                                      child: InkWell(
+                                        onTap: () => viewModel
+                                            .openLink(business.instagram!),
+                                        child: Column(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.instagram,
+                                              color: kcPrimaryColor,
+                                              size: 20,
+                                            ),
+                                            Text(
+                                              'Instagram',
+                                              style: ktsDarkSmall(context)
+                                                  .copyWith(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   if (!business.telegram.isNullOrEmpty)
                                     Expanded(
-                                      child: Column(
-                                        children: [
-                                          const Icon(
-                                            FontAwesomeIcons.telegram,
-                                            color: kcPrimaryColor,
-                                            size: 20,
-                                          ),
-                                          Text(
-                                            'Telegram',
-                                            style: ktsDarkSmall(context)
-                                                .copyWith(fontSize: 12),
-                                          ),
-                                        ],
+                                      child: InkWell(
+                                        onTap: () => viewModel
+                                            .openLink(business.telegram!),
+                                        child: Column(
+                                          children: [
+                                            const Icon(
+                                              FontAwesomeIcons.telegram,
+                                              color: kcPrimaryColor,
+                                              size: 20,
+                                            ),
+                                            Text(
+                                              'Telegram',
+                                              style: ktsDarkSmall(context)
+                                                  .copyWith(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                 ],
                               ),
+                              if (business.services.isNotEmpty)
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Services',
+                                        style: ktsSmall(context).copyWith(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                          color: kcPrimaryColor,
+                                        ),
+                                      ),
+                                      verticalSpaceSmall,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        child: Text(business.services.first),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               if (business.opening_hours.isNotEmpty)
                                 const _OperatingHoursWidget()
                             ],
@@ -406,7 +448,7 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
   Widget build(BuildContext context, BusinessDetailViewModel viewModel) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 88,
+        height: 115,
         aspectRatio: 2.0,
         viewportFraction: 0.8,
         enlargeCenterPage: true,
@@ -445,7 +487,7 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                                       const EdgeInsets.fromLTRB(8, 3, 8, 8),
                                   child: SvgBuilder(
                                     svg: locationSvg,
-                                    height: 18,
+                                    height: 16,
                                     color: kcDark700Light,
                                   ),
                                 ),
@@ -453,9 +495,9 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                                 Flexible(
                                   child: Text(
                                     address.label ?? address.displayAddress,
-                                    maxLines: 2,
+                                    maxLines: 1,
                                     style: ktsDarkSmall(context).copyWith(
-                                      fontSize: 14,
+                                      fontSize: 13,
                                     ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -470,7 +512,7 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                                   padding: const EdgeInsets.only(bottom: 8),
                                   child: Icon(
                                     FontAwesomeIcons.waveSquare,
-                                    size: 13,
+                                    size: 12,
                                     color: kcDark700Light,
                                   ),
                                 ),
@@ -482,8 +524,43 @@ class _AddressCarousel extends ViewModelWidget<BusinessDetailViewModel> {
                                     getFormattedDistance(
                                         viewModel.distance(address)),
                                     style: ktsDarkSmall(context).copyWith(
-                                      fontSize: 13,
+                                      fontSize: 12,
                                     ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            verticalSpaceTiny,
+                            Row(
+                              children: [
+                                horizontalSpaceSmall,
+                                InkWell(
+                                  onTap: () => viewModel.makePhoneCall(
+                                      address.phone_number ?? ''),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
+                                        child: SvgBuilder(
+                                          svg: callSvg,
+                                          color: kcDark700Light,
+                                          height: 17,
+                                        ),
+                                      ),
+                                      horizontalSpaceSmall,
+                                      horizontalSpaceTiny,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
+                                        child: Text(
+                                          address.phone_number ?? '',
+                                          style: ktsDarkSmall(context).copyWith(
+                                            fontSize: 12,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 const Spacer(),
@@ -552,17 +629,20 @@ class MapView extends ViewModelWidget<BusinessDetailViewModel> {
       ),
       child: GoogleMapPage(
         markers: viewModel.getMarkers(
-            latlngs: viewModel.business.addresses
-                .map((e) => LatLng(e.latitude, e.longitude))
-                .toList(),
-            currentLocation: LatLng(
-              viewModel.currentLocation.latitude,
-              viewModel.currentLocation.longitude,
-            )),
+          latlngs: viewModel.business.addresses
+              .map((e) => LatLng(e.latitude, e.longitude))
+              .toList(),
+          currentLocation: LatLng(
+            viewModel.currentLocation.latitude,
+            viewModel.currentLocation.longitude,
+          ),
+        ),
         lat: business.addresses.last.latitude,
         long: business.addresses.last.longitude,
         latlngs: viewModel.business.addresses
-            .map((e) => LatLng(e.latitude, e.longitude))
+            .map(
+              (e) => LatLng(e.latitude, e.longitude),
+            )
             .toList(),
         cameraTarget: LatLng(
           business.addresses.last.latitude,
@@ -594,43 +674,51 @@ class _OperatingHoursWidget extends ViewModelWidget<BusinessDetailViewModel> {
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(children: [
-          if (viewModel.todayOperatingHour.isNotEmpty)
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  //  viewModel.todayOperatingHour.keys.first,
-                  'Today',
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                //  viewModel.todayOperatingHour.keys.first,
+                viewModel.todayOperatingHour.isNotEmpty
+                    ? 'Today'
+                    : "Closed today",
+                style: ktsSmall(context).copyWith(
+                  fontSize: 13,
+                  color: kcDarkGrey,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: viewModel.onMoreIconTap,
+                child: Text(
+                  viewModel.todayOperatingHour.isNotEmpty
+                      ? '${viewModel.todayOperatingHour.values.first!.startTime.format(context)} - ${viewModel.todayOperatingHour.values.first!.endTime.format(context)}'
+                      : !viewModel.showAllOperatingHours
+                          ? 'See more'
+                          : 'See less',
                   style: ktsSmall(context).copyWith(
                     fontSize: 13,
                     color: kcDarkGrey,
-                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  '${viewModel.todayOperatingHour.values.first!.startTime.format(context)} - ${viewModel.todayOperatingHour.values.first!.endTime.format(context)}',
-                  style: ktsSmall(context).copyWith(
-                    fontSize: 13,
-                    color: kcDarkGrey,
+              ),
+              horizontalSpaceSmall,
+              InkWell(
+                onTap: viewModel.onMoreIconTap,
+                child: SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: Icon(
+                    viewModel.showAllOperatingHours
+                        ? Icons.expand_less
+                        : Icons.expand_more,
+                    color: kcDark700Light,
                   ),
                 ),
-                horizontalSpaceSmall,
-                InkWell(
-                  onTap: viewModel.onMoreIconTap,
-                  child: SizedBox(
-                    height: 30,
-                    width: 30,
-                    child: Icon(
-                      viewModel.showAllOperatingHours
-                          ? Icons.expand_less
-                          : Icons.expand_more,
-                      color: kcDark700Light,
-                    ),
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
+          ),
           verticalSpaceTiny,
           if (viewModel.showAllOperatingHours)
             ...TimeUtil.convertOperatingHoursToTimeRanges(

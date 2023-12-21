@@ -60,6 +60,8 @@ import 'package:bnbit_app/ui/dialogs/warning/warning_dialog.dart';
 import 'package:bnbit_app/ui/views/dashboard/dashboard_view.dart';
 import 'package:bnbit_app/ui/views/address_search/address_searches_view.dart';
 import 'package:bnbit_app/ui/views/recent_searches/recent_searches_view.dart';
+import 'package:bnbit_app/ui/views/services/services_view.dart';
+import 'package:bnbit_app/ui/bottom_sheets/input_field/input_field_sheet.dart';
 // @stacked-import
 
 @StackedApp(
@@ -100,6 +102,7 @@ import 'package:bnbit_app/ui/views/recent_searches/recent_searches_view.dart';
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: AddressSearchesView),
 MaterialRoute(page: RecentSearchesView),
+MaterialRoute(page: ServicesView),
 // @stacked-route
   ],
   dependencies: [
@@ -141,6 +144,7 @@ MaterialRoute(page: RecentSearchesView),
     StackedBottomsheet(classType: BusinessOptionSheet),
     StackedBottomsheet(classType: TimeSelectionSheet),
     StackedBottomsheet(classType: AddressDetailSheet),
+StackedBottomsheet(classType: InputFieldSheet),
 // @stacked-bottom-sheet
   ],
   dialogs: [

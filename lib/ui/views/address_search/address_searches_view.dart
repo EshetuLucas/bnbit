@@ -232,120 +232,123 @@ class _BodySection extends ViewModelWidget<AddressSearchesViewModel> {
 
   @override
   Widget build(BuildContext context, AddressSearchesViewModel viewModel) {
-    return (!viewModel.isBusy &&
-            viewModel.nearByBusinesseses.isEmpty &&
-            viewModel.searchController.text.isNotEmpty)
-        ? Column(
-            children: [
-              verticalSpaceLarge,
-              SvgBuilder(
-                svg: noDataSvg,
-                height: 70,
-                color: kcDark700,
-              ),
-              verticalSpaceSmall,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  "No data found ${viewModel.searchKey} \nAround selected location",
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ],
-          )
-        : viewModel.searchKey.isEmpty && searchController.text.isEmpty
-            ? Padding(
-                padding: appSymmetricEdgePadding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return
+
+        // (!viewModel.isBusy &&
+        //         viewModel.nearByBusinesseses.isEmpty &&
+        //         viewModel.searchController.text.isNotEmpty)
+        //     ? Column(
+        //         children: [
+        //           verticalSpaceLarge,
+        //           SvgBuilder(
+        //             svg: noDataSvg,
+        //             height: 70,
+        //             color: kcDark700,
+        //           ),
+        //           verticalSpaceSmall,
+        //           Padding(
+        //             padding: const EdgeInsets.symmetric(horizontal: 30),
+        //             child: Text(
+        //               "No data found ${viewModel.searchKey} \nAround selected location",
+        //               textAlign: TextAlign.center,
+        //             ),
+        //           )
+        //         ],
+        //       )
+        //     : viewModel.searchKey.isEmpty && searchController.text.isEmpty
+        //         ?
+
+        Padding(
+      padding: appSymmetricEdgePadding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const _MyLocation(),
+          verticalSpaceSmall,
+          verticalSpaceSmall,
+          Text(
+            'Recent places',
+            style: ktsSemibold(context).copyWith(
+              fontSize: 14,
+              color: kcDark.withOpacity(0.9),
+            ),
+          ),
+          verticalSpaceSmall,
+          ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: viewModel.recentAddresses.length < 5
+                ? viewModel.recentAddresses.length
+                : 4,
+            separatorBuilder: (BuildContext context, int index) {
+              return verticalSpaceSmall;
+            },
+            itemBuilder: (BuildContext context, int index) {
+              final recentSearchKeyword = viewModel.recentAddresses[index];
+              return InkWell(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  viewModel.onRecentSearchTap(index);
+                },
+                child: Row(
                   children: [
-                    const _MyLocation(),
-                    verticalSpaceSmall,
-                    verticalSpaceSmall,
+                    const SvgBuilder(
+                      svg: recentSvg,
+                      height: 15,
+                    ),
+                    horizontalSpaceSmall,
                     Text(
-                      'Recent places',
-                      style: ktsSemibold(context).copyWith(
-                        fontSize: 14,
-                        color: kcDark.withOpacity(0.9),
+                      recentSearchKeyword.displayAddress,
+                      style: ktsDarkSmall(context).copyWith(
+                        color: kcDark700,
                       ),
                     ),
-                    verticalSpaceSmall,
-                    ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: viewModel.recentAddresses.length < 5
-                          ? viewModel.recentAddresses.length
-                          : 4,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return verticalSpaceSmall;
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        final recentSearchKeyword =
-                            viewModel.recentAddresses[index];
-                        return InkWell(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            viewModel.onRecentSearchTap(index);
-                          },
-                          child: Row(
-                            children: [
-                              const SvgBuilder(
-                                svg: recentSvg,
-                                height: 15,
-                              ),
-                              horizontalSpaceSmall,
-                              Text(
-                                recentSearchKeyword.displayAddress,
-                                style: ktsDarkSmall(context).copyWith(
-                                  color: kcDark700,
-                                ),
-                              ),
-                              const Spacer(),
-                              horizontalSpaceTiny,
-                              InkWell(
-                                onTap: () => viewModel
-                                    .onRemoveHistory(recentSearchKeyword),
-                                child: SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: Icon(
-                                    Icons.close,
-                                    color: kcDark.withOpacity(0.7),
-                                    size: 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                    verticalSpaceSmall,
-                    if (viewModel.recentAddresses.length >= 5)
-                      InkWell(
-                        onTap: () => viewModel.onSeeAll(),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 4),
-                          child: Text(
-                            'See All',
-                            style: ktsSemibold300(context).copyWith(
-                              fontSize: 13,
-                              color: kcPrimaryColor,
-                            ),
-                          ),
+                    const Spacer(),
+                    horizontalSpaceTiny,
+                    InkWell(
+                      onTap: () =>
+                          viewModel.onRemoveHistory(recentSearchKeyword),
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Icon(
+                          Icons.close,
+                          color: kcDark.withOpacity(0.7),
+                          size: 16,
                         ),
-                      )
+                      ),
+                    ),
                   ],
                 ),
-              )
-            :
-            // _Business(
-            //     // businesses: viewModel.nearByBusinesseses,
-            //     );
-
-            _BusinessWidget(
-                businesses: viewModel.nearByBusinesseses,
               );
+            },
+          ),
+          verticalSpaceSmall,
+          if (viewModel.recentAddresses.length >= 5)
+            InkWell(
+              onTap: () => viewModel.onSeeAll(),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: Text(
+                  'See All',
+                  style: ktsSemibold300(context).copyWith(
+                    fontSize: 13,
+                    color: kcPrimaryColor,
+                  ),
+                ),
+              ),
+            )
+        ],
+      ),
+    );
+    // :
+    // // _Business(
+    // //     // businesses: viewModel.nearByBusinesseses,
+    // //     );
+
+    // _BusinessWidget(
+    //     businesses: viewModel.nearByBusinesseses,
+    //   );
 
     // ListView.separated(
     //     physics: const NeverScrollableScrollPhysics(),

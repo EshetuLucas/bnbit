@@ -381,7 +381,7 @@ class _Header extends ViewModelWidget<LandingViewModel> {
                           ),
                           child: Text(
                             viewModel.isBusy
-                                ? 'Loading Category'
+                                ? '                 '
                                 : viewModel.selectedCategory.name,
                             style: ktsBoldMeidumDarkTextStyle(context).copyWith(
                               color: kcPrimaryColor,
@@ -414,36 +414,41 @@ class _Header extends ViewModelWidget<LandingViewModel> {
           ),
           if (viewModel.isBusy) horizontalSpaceLarge else horizontalSpaceSmall,
 
-          RASkeletonLoader(
-            loading: viewModel.isBusy,
-            child: InkWell(
-              onTap: viewModel.onLocationTap,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: RASkeletonLoader(
-                  loading: viewModel.isBusy,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SvgBuilder(
-                        svg: locationSvg,
-                        color: kcPrimaryColor,
-                        height: 14,
-                      ),
-                      horizontalSpaceTiny,
-                      Flexible(
-                        child: Text(
-                          viewModel.currentLocationName ?? 'Addis Aababa',
-                          style: ktsSmall(context).copyWith(
-                            fontSize: 11,
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: RASkeletonLoader(
+                loading: viewModel.isBusy,
+                child: InkWell(
+                  onTap: viewModel.onLocationTap,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 5),
+                    child: RASkeletonLoader(
+                      loading: viewModel.isBusy,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const SvgBuilder(
+                            svg: locationSvg,
                             color: kcPrimaryColor,
+                            height: 14,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.end,
-                          maxLines: 1,
-                        ),
+                          horizontalSpaceTiny,
+                          Flexible(
+                            child: Text(
+                              viewModel.currentLocationName ?? 'Addis Aababa',
+                              style: ktsSmall(context).copyWith(
+                                fontSize: 11,
+                                color: kcPrimaryColor,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.end,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),

@@ -33,11 +33,11 @@ class AccountViewModel extends BaseViewModel {
 
   UserModel get user => _userService.currentUser;
   String get userPhoneNumer =>
-      !isPhoneAuth ? user.email ?? '' : user.phone ?? '';
+      !isPhoneAuth ? user.email ?? '' : user.phone_number ?? '';
 
   bool get isPhoneAuth =>
       _firebaseAuth.currentUser!.providerData.first.providerId == 'phone';
-  String get userFullName => user.first_name + ' ${user.last_name ?? ''}';
+  String get userFullName => user.first_name! + ' ${user.last_name ?? ''}';
 
   String get profilePic {
     if (user.profile_picture != null) {
@@ -45,7 +45,7 @@ class AccountViewModel extends BaseViewModel {
 
       return baseUrl + '/' + relativeUrl;
     }
-    return user.first_name[0] + (user.last_name ?? ' ')[0];
+    return user.first_name![0] + (user.last_name ?? ' ')[0];
   }
 
   List<String> get accountOptions => [

@@ -18,6 +18,7 @@ const String WebisteValueKey = 'webiste';
 const String InstagramValueKey = 'instagram';
 const String TelegramValueKey = 'telegram';
 const String PhoneValueKey = 'phone';
+const String ServicesValueKey = 'services';
 
 final Map<String, TextEditingController>
     _CreateBusinessViewTextEditingControllers = {};
@@ -33,6 +34,7 @@ final Map<String, String? Function(String?)?>
   InstagramValueKey: null,
   TelegramValueKey: null,
   PhoneValueKey: null,
+  ServicesValueKey: null,
 };
 
 mixin $CreateBusinessView {
@@ -50,6 +52,8 @@ mixin $CreateBusinessView {
       _getFormTextEditingController(TelegramValueKey);
   TextEditingController get phoneController =>
       _getFormTextEditingController(PhoneValueKey);
+  TextEditingController get servicesController =>
+      _getFormTextEditingController(ServicesValueKey);
 
   FocusNode get nameFocusNode => _getFormFocusNode(NameValueKey);
   FocusNode get descriptionFocusNode => _getFormFocusNode(DescriptionValueKey);
@@ -58,6 +62,7 @@ mixin $CreateBusinessView {
   FocusNode get instagramFocusNode => _getFormFocusNode(InstagramValueKey);
   FocusNode get telegramFocusNode => _getFormFocusNode(TelegramValueKey);
   FocusNode get phoneFocusNode => _getFormFocusNode(PhoneValueKey);
+  FocusNode get servicesFocusNode => _getFormFocusNode(ServicesValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -90,6 +95,7 @@ mixin $CreateBusinessView {
     instagramController.addListener(() => _updateFormData(model));
     telegramController.addListener(() => _updateFormData(model));
     phoneController.addListener(() => _updateFormData(model));
+    servicesController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -108,6 +114,7 @@ mixin $CreateBusinessView {
     instagramController.addListener(() => _updateFormData(model));
     telegramController.addListener(() => _updateFormData(model));
     phoneController.addListener(() => _updateFormData(model));
+    servicesController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -124,6 +131,7 @@ mixin $CreateBusinessView {
           InstagramValueKey: instagramController.text,
           TelegramValueKey: telegramController.text,
           PhoneValueKey: phoneController.text,
+          ServicesValueKey: servicesController.text,
         }),
     );
 
@@ -173,6 +181,7 @@ extension ValueProperties on FormStateHelper {
   String? get instagramValue => this.formValueMap[InstagramValueKey] as String?;
   String? get telegramValue => this.formValueMap[TelegramValueKey] as String?;
   String? get phoneValue => this.formValueMap[PhoneValueKey] as String?;
+  String? get servicesValue => this.formValueMap[ServicesValueKey] as String?;
 
   set nameValue(String? value) {
     this.setData(
@@ -255,6 +264,18 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  set servicesValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({ServicesValueKey: value}),
+    );
+
+    if (_CreateBusinessViewTextEditingControllers.containsKey(
+        ServicesValueKey)) {
+      _CreateBusinessViewTextEditingControllers[ServicesValueKey]?.text =
+          value ?? '';
+    }
+  }
+
   bool get hasName =>
       this.formValueMap.containsKey(NameValueKey) &&
       (nameValue?.isNotEmpty ?? false);
@@ -276,6 +297,9 @@ extension ValueProperties on FormStateHelper {
   bool get hasPhone =>
       this.formValueMap.containsKey(PhoneValueKey) &&
       (phoneValue?.isNotEmpty ?? false);
+  bool get hasServices =>
+      this.formValueMap.containsKey(ServicesValueKey) &&
+      (servicesValue?.isNotEmpty ?? false);
 
   bool get hasNameValidationMessage =>
       this.fieldsValidationMessages[NameValueKey]?.isNotEmpty ?? false;
@@ -291,6 +315,8 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[TelegramValueKey]?.isNotEmpty ?? false;
   bool get hasPhoneValidationMessage =>
       this.fieldsValidationMessages[PhoneValueKey]?.isNotEmpty ?? false;
+  bool get hasServicesValidationMessage =>
+      this.fieldsValidationMessages[ServicesValueKey]?.isNotEmpty ?? false;
 
   String? get nameValidationMessage =>
       this.fieldsValidationMessages[NameValueKey];
@@ -306,6 +332,8 @@ extension ValueProperties on FormStateHelper {
       this.fieldsValidationMessages[TelegramValueKey];
   String? get phoneValidationMessage =>
       this.fieldsValidationMessages[PhoneValueKey];
+  String? get servicesValidationMessage =>
+      this.fieldsValidationMessages[ServicesValueKey];
 }
 
 extension Methods on FormStateHelper {
@@ -323,6 +351,8 @@ extension Methods on FormStateHelper {
       this.fieldsValidationMessages[TelegramValueKey] = validationMessage;
   setPhoneValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PhoneValueKey] = validationMessage;
+  setServicesValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[ServicesValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
@@ -333,6 +363,7 @@ extension Methods on FormStateHelper {
     instagramValue = '';
     telegramValue = '';
     phoneValue = '';
+    servicesValue = '';
   }
 
   /// Validates text input fields on the Form
@@ -345,6 +376,7 @@ extension Methods on FormStateHelper {
       InstagramValueKey: getValidationMessage(InstagramValueKey),
       TelegramValueKey: getValidationMessage(TelegramValueKey),
       PhoneValueKey: getValidationMessage(PhoneValueKey),
+      ServicesValueKey: getValidationMessage(ServicesValueKey),
     });
   }
 }
@@ -371,4 +403,5 @@ void updateValidationData(FormStateHelper model) =>
       InstagramValueKey: getValidationMessage(InstagramValueKey),
       TelegramValueKey: getValidationMessage(TelegramValueKey),
       PhoneValueKey: getValidationMessage(PhoneValueKey),
+      ServicesValueKey: getValidationMessage(ServicesValueKey),
     });

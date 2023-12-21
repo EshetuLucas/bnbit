@@ -3,7 +3,6 @@ import 'package:bnbit_app/app/app.router.dart';
 import 'package:bnbit_app/exceptions/api_exceptions.dart';
 import 'package:bnbit_app/mixins/auth_mixin.dart';
 import 'package:bnbit_app/services/authentication_service.dart';
-import 'package:bnbit_app/services/custom_snackbar_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
 import 'package:bnbit_app/ui/views/email_sign_in/email_sign_in_view.form.dart';
 import 'package:stacked/stacked.dart';
@@ -13,7 +12,6 @@ class EmailSignInViewModel extends FormViewModel with AuthMixin {
   final _navigationService = locator<NavigationService>();
   final _authService = locator<AuthenticationService>();
   final _userService = locator<UserService>();
-  final _snacBarService = locator<CustomSnackbarService>();
 
   bool _isCreateAccount = false;
   bool get isCreateAccount => _isCreateAccount;
@@ -105,8 +103,8 @@ class EmailSignInViewModel extends FormViewModel with AuthMixin {
   void onSignUp() {}
 
   void onForgotPassword() {
-    // _navigationService.navigateTo(Routes.forgotPasswordView);
-    _snacBarService.comingSoon();
+    _navigationService.navigateTo(Routes.forgotPasswordView);
+    // _snacBarService.comingSoon();
     notifyListeners();
   }
 }

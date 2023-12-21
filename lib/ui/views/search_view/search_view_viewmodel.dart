@@ -50,6 +50,9 @@ class SearchViewViewModel extends FormViewModel with $SearchViewView {
   List<Business> _businesseses = [];
   final List<Business> _nearByBusinesseses = [];
   List<Business> get nearByBusinesseses {
+    if (isBusy) {
+      return fakeBusinesses;
+    }
     List<Business> tempNearbyBusinesses = [];
     tempNearbyBusinesses =
         isBusy && isAddressSearch ? fakeBusinesses : _nearByBusinesseses;
@@ -113,24 +116,26 @@ class SearchViewViewModel extends FormViewModel with $SearchViewView {
   Future<void> getBusinesses({bool makeViewModelBusy = false}) async {
     try {
       setBusy(true);
+      _businesseses.clear();
+      _nearByBusinesseses.clear();
 
-      _businesseses = await _businessService.getBusinesses(
-        //  search: _searchKey,
+      _businesseses = await _businessService.searchBusinesses(
+        // search: _searchKey,
         city: _selectedAddress?.city,
         state: _selectedAddress?.state,
         country: _selectedAddress?.country,
         line1: _selectedAddress?.line1,
         line2: _selectedAddress?.line2,
-
-        // description: _searchKey,
-        // business: _searchKey,
+        category: _searchKey,
+        subCategory: _searchKey,
+        description: _searchKey,
+        services: _searchKey,
         name: _searchKey,
       );
       getBusinessBasedOnUserLocation();
       if (_nearByBusinesseses.isNotEmpty) {}
     } catch (e) {
       // setBusinessError(true);
-
       log.e('Unable to fetch categories $e');
     } finally {
       setBusy(false);

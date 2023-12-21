@@ -4,8 +4,7 @@ import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:bnbit_app/ui/common/shared_styles.dart';
 import 'package:bnbit_app/ui/common/ui_helpers.dart';
 import 'package:bnbit_app/ui/widgets/ra_skeleton_loader.dart';
-import 'package:bnbit_app/ui/widgets/svg_builder.dart';
-import 'package:bnbit_app/utils/asset_helper.dart';
+
 import 'package:get/get.dart';
 
 class PlaceholderImage extends StatelessWidget {
@@ -87,13 +86,13 @@ class PlaceholderImage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     verticalSpaceTiny,
-                    const SvgBuilder(
-                      height: 60,
-                      svg: noResult,
-                      color: kcRed,
+                    Icon(
+                      Icons.broken_image,
+                      color: kcRed.withOpacity(0.8),
+                      size: 40,
                     ),
                     Text(
-                      'unable_to_load_image'.tr,
+                      'Unable to load image'.tr,
                       style: ktsSmall(context).copyWith(
                         fontSize: 11,
                         color: Theme.of(context).colorScheme.error,

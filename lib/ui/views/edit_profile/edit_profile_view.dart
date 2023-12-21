@@ -62,8 +62,7 @@ class EditProfileView extends StackedView<EditProfileViewModel>
     Widget? child,
   ) {
     return AbsorbPointer(
-        absorbing: viewModel.isBusy,
-        //|| viewModel.isDeletingAccount,
+        absorbing: viewModel.isBusy || viewModel.isDeletingAccount,
         child: Scaffold(
           bottomNavigationBar: SafeArea(
             child: Column(
@@ -111,11 +110,21 @@ class EditProfileView extends StackedView<EditProfileViewModel>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const SvgBuilder(
-                            svg: trashSvg,
-                            color: kcRed,
-                            height: 15,
-                          ),
+                          if (viewModel.isDeletingAccount)
+                            const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: Spinner(
+                                size: 11,
+                                color: kcRed,
+                              ),
+                            )
+                          else
+                            const SvgBuilder(
+                              svg: trashSvg,
+                              color: kcRed,
+                              height: 15,
+                            ),
                           horizontalSpaceSmall,
                           horizontalSpace(2),
                           Text(

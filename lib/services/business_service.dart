@@ -71,6 +71,48 @@ class BusinessService {
     );
   }
 
+  Future<List<Business>> searchBusinesses({
+    double? lat,
+    double? lng,
+    int? radius,
+    String? subCategory,
+    String? category,
+    String? city,
+    String? sub_city,
+    String? state,
+    String? country,
+    String? phone_number,
+    String? description,
+    String? label,
+    String? search,
+    String? business,
+    String? line1,
+    String? line2,
+    String? name,
+    String? services,
+  }) async {
+    return await _categoryApis.searchBusinesses(
+      lat: lat,
+      lng: lng,
+      radius: radius,
+      subCategory: subCategory,
+      category: category,
+      city: city,
+      sub_city: sub_city,
+      state: state,
+      country: country,
+      phone_number: phone_number,
+      description: description,
+      label: label,
+      search: search,
+      business: business,
+      line1: line1,
+      line2: line2,
+      name: name,
+      services: services,
+    );
+  }
+
   Future<List<Business>> getMyBusinesses() async {
     return await _categoryApis.getMyBusinesses();
   }

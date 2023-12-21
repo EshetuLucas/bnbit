@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:bnbit_app/ui/common/theme_class.dart';
+import 'package:bnbit_app/ui/views/services/services_view.dart';
 import 'package:bnbit_app/ui/views/startup/startup_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +47,7 @@ class MyApp extends StackedView<MainViewModel> {
       theme: ThemeClass.lightTheme,
       home: AnnotatedRegion<SystemUiOverlayStyle>(
         value: viewModel.systemUiOverlayStyle,
-        child: const StartupView(),
+        child: const ServicesView(),
       ),
       onGenerateRoute: StackedRouter().onGenerateRoute,
       navigatorKey: StackedService.navigatorKey,

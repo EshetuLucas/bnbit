@@ -9,6 +9,7 @@ import 'package:bnbit_app/data_model/business/business_model.dart';
 import 'package:bnbit_app/data_model/time_range/time_range.dart';
 import 'package:bnbit_app/data_model/user/user_model.dart';
 import 'package:bnbit_app/services/business_service.dart';
+import 'package:bnbit_app/services/location_service.dart';
 import 'package:bnbit_app/services/url_launcher_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
 import 'package:bnbit_app/utils/algorithm_helpers.dart';
@@ -17,6 +18,7 @@ import 'package:bnbit_app/utils/day.dart';
 import 'package:bnbit_app/utils/time.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -26,6 +28,9 @@ class BusinessDetailViewModel extends BaseViewModel {
   final _businessService = locator<BusinessService>();
   final _urlLauncher = locator<UrlLauncherService>();
   final _userService = locator<UserService>();
+  final _locationService = locator<LocationService>();
+
+  LocationData? get currentLocationData => _locationService.currentLocation;
 
   UserModel get user => _userService.currentUser;
 
@@ -40,10 +45,10 @@ class BusinessDetailViewModel extends BaseViewModel {
   BusinessDetailViewModel({required this.business});
   final Completer<GoogleMapController> _controller = Completer();
 
-  LatLng currentLocation = const LatLng(
-    9.003429960888363,
-    38.814238038050576,
-  );
+  LatLng get currentLocation => LatLng(
+        currentLocationData!.latitude ?? 9.003429960888363,
+        currentLocationData!.longitude ?? 38.814238038050576,
+      );
 
   int _selectedIndex = 0;
   int get selectedIndex => _selectedIndex;
@@ -129,6 +134,22 @@ class BusinessDetailViewModel extends BaseViewModel {
       await _urlLauncher.openLink(url);
     } catch (e) {
       log.e('Unable to launch map : $e');
+    }
+  }
+
+  void openLink(String link) async {
+    try {
+      await _urlLauncher.openLink(link);
+    } catch (e) {
+      log.e('Unable to open a link : $e');
+    }
+  }
+
+  void makePhoneCall(String phone) async {
+    try {
+      await _urlLauncher.makePhoneCall(phone);
+    } catch (e) {
+      log.e('Unable to open a link : $e');
     }
   }
 

@@ -37,9 +37,9 @@ class ForgotPasswordDialog extends StackedView<ForgotPasswordDialogModel> {
         children: [
           const SvgBuilder(
             svg: smileyFace,
-            color: kcWhite,
+            color: kcPrimaryColor,
             width: 50,
-            height: 30,
+            height: 60,
           ),
           verticalSpace(16),
           Text(
@@ -47,8 +47,8 @@ class ForgotPasswordDialog extends StackedView<ForgotPasswordDialogModel> {
             textAlign: TextAlign.center,
             style: ktsHeading900(context).copyWith(
               fontWeight: FontWeight.w700,
-              color: kcWhite,
-              fontSize: 26,
+              color: kcPrimaryColor,
+              fontSize: 20,
             ),
           ),
           verticalSpace(11),
@@ -57,7 +57,7 @@ class ForgotPasswordDialog extends StackedView<ForgotPasswordDialogModel> {
                 'Please check your email to reset password. And Login again with your new password',
             textAlign: TextAlign.center,
             style: ktsSmall(context).copyWith(
-              color: kcWhite,
+              color: kcDark,
               fontSize: 14,
             ),
           ),

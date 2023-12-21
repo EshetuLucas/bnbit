@@ -50,6 +50,9 @@ import 'create_business_viewmodel.dart';
     FormTextField(
       name: "phone",
     ),
+    FormTextField(
+      name: "services",
+    ),
   ],
 )
 class CreateBusinessView extends StackedView<CreateBusinessViewModel>
@@ -69,6 +72,9 @@ class CreateBusinessView extends StackedView<CreateBusinessViewModel>
       webisteController.text = viewModel.selectedBusiness!.website ?? '';
       instagramController.text = viewModel.selectedBusiness!.instagram ?? '';
       telegramController.text = viewModel.selectedBusiness!.telegram ?? '';
+      servicesController.text = viewModel.selectedBusiness!.services.isEmpty
+          ? ''
+          : viewModel.selectedBusiness!.services.first;
     }
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
@@ -100,6 +106,7 @@ class CreateBusinessView extends StackedView<CreateBusinessViewModel>
                   webisteController: webisteController,
                   instagramController: instagramController,
                   telegramController: telegramController,
+                  servicesController: servicesController,
                 )
               : CreateBusinessWidget(
                   nameController: nameController,
@@ -109,6 +116,7 @@ class CreateBusinessView extends StackedView<CreateBusinessViewModel>
                   webisteController: webisteController,
                   instagramController: instagramController,
                   telegramController: telegramController,
+                  servicesController: servicesController,
                 ),
         ),
         if (viewModel.isBusy)
@@ -126,7 +134,7 @@ class CreateBusinessView extends StackedView<CreateBusinessViewModel>
                     ),
                     verticalSpaceSmall,
                     verticalSpaceSmall,
-                    Text('Loading'),
+                    Text('Please wait'),
                   ],
                 ),
               ),
@@ -152,6 +160,7 @@ class _UpdateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
     required this.webisteController,
     required this.instagramController,
     required this.telegramController,
+    required this.servicesController,
   });
 
   final TextEditingController nameController;
@@ -161,6 +170,7 @@ class _UpdateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
   final TextEditingController webisteController;
   final TextEditingController instagramController;
   final TextEditingController telegramController;
+  final TextEditingController servicesController;
 
   @override
   Widget build(BuildContext context, CreateBusinessViewModel viewModel) {
@@ -327,6 +337,7 @@ class _UpdateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
               child: _BasicSection(
                   categoryTitle: 'Business Category',
                   nameController: nameController,
+                  servicesController: servicesController,
                   descriptionController: descriptionController),
             ),
           ),
@@ -373,6 +384,7 @@ class CreateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
     required this.webisteController,
     required this.instagramController,
     required this.telegramController,
+    required this.servicesController,
   });
 
   final TextEditingController nameController;
@@ -382,6 +394,7 @@ class CreateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
   final TextEditingController webisteController;
   final TextEditingController instagramController;
   final TextEditingController telegramController;
+  final TextEditingController servicesController;
 
   @override
   Widget build(BuildContext context, CreateBusinessViewModel viewModel) {
@@ -444,6 +457,7 @@ class CreateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
                       const Divider(),
                       verticalSpaceTiny,
                       _BasicSection(
+                          servicesController: servicesController,
                           categoryTitle: 'Business address & Categories',
                           nameController: nameController,
                           descriptionController: descriptionController),
@@ -459,7 +473,9 @@ class CreateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
                       verticalSpaceTiny,
                       const _AddressSection(),
                       verticalSpaceSmall,
-                      const _OperatingHoursWidget(),
+                      _OperatingHoursWidget(
+                        servicesController: servicesController,
+                      ),
                       const Divider(),
                       verticalSpaceSmall,
                       _Communication(
@@ -483,7 +499,11 @@ class CreateBusinessWidget extends ViewModelWidget<CreateBusinessViewModel> {
 }
 
 class _OperatingHoursWidget extends ViewModelWidget<CreateBusinessViewModel> {
-  const _OperatingHoursWidget();
+  const _OperatingHoursWidget({
+    required this.servicesController,
+  });
+
+  final TextEditingController servicesController;
 
   @override
   Widget build(BuildContext context, CreateBusinessViewModel viewModel) {
@@ -572,6 +592,33 @@ class _OperatingHoursWidget extends ViewModelWidget<CreateBusinessViewModel> {
             ],
           ),
         ),
+      if (viewModel.selectedBusiness != null) ...[
+        verticalSpaceSmall,
+        Text(
+          'Services',
+          style: ktsSmall(context).copyWith(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: kcDark.withOpacity(0.8),
+          ),
+        ),
+        verticalSpaceTiny,
+        InputField(
+          contentPadding: const EdgeInsets.only(
+            left: 16,
+            top: 23,
+            bottom: 0,
+            right: 10,
+          ),
+          fieldHeight: 140,
+          placeholder: 'Service one, Service two, ....',
+          maxLine: 8,
+          hasFocusedBorder: true,
+          textInputType: TextInputType.name,
+          isReadOnly: viewModel.isBusy,
+          controller: servicesController,
+        ),
+      ]
     ]);
   }
 }
@@ -709,65 +756,86 @@ class _Communication extends ViewModelWidget<CreateBusinessViewModel> {
         InputField(
           placeholder: 'Phone Number ',
           labelText: 'Phone Number *',
-
           maxLine: 1,
-          // onChanged: viewModel.onChange,
+          onChanged: (_) => viewModel.clearFormatErrorMessage('phone'),
           hasFocusedBorder: true,
           textInputType: TextInputType.phone,
           isReadOnly: viewModel.isBusy,
           controller: phoneController,
         ),
+        if (viewModel.hasCommunicationFormatError('phone')) ...[
+          ValidationMessage(
+              title: viewModel.communicationFormatChecker['phone']!),
+          verticalSpaceSmall,
+        ],
         verticalSpaceSmall,
         verticalSpaceTiny,
         InputField(
           placeholder: 'contact@examplebusiness.com',
           labelText: 'Email (optional)',
           maxLine: 1,
-          // onChanged: viewModel.onChange,
+          onChanged: (_) => viewModel.clearFormatErrorMessage('email'),
           hasFocusedBorder: true,
           textInputType: TextInputType.emailAddress,
           isReadOnly: viewModel.isBusy,
           controller: emailController,
         ),
+        if (viewModel.hasCommunicationFormatError('email')) ...[
+          ValidationMessage(
+              title: viewModel.communicationFormatChecker['email']!),
+          verticalSpaceSmall,
+        ],
         verticalSpaceSmall,
         verticalSpaceTiny,
         InputField(
           placeholder: 'https://www.examplebusiness.com',
           labelText: 'Website (optional)',
-
           maxLine: 1,
-          // onChanged: viewModel.onChange,
+          onChanged: (_) => viewModel.clearFormatErrorMessage('website'),
           hasFocusedBorder: true,
           textInputType: TextInputType.name,
           isReadOnly: viewModel.isBusy,
           controller: webisteController,
         ),
+        if (viewModel.hasCommunicationFormatError('website')) ...[
+          ValidationMessage(
+              title: viewModel.communicationFormatChecker['website']!),
+          verticalSpaceSmall,
+        ],
         verticalSpaceSmall,
         verticalSpaceTiny,
         InputField(
           placeholder: 'https://www.instagram.com/example_username/',
           labelText: 'Instagram (optional)',
-
           maxLine: 1,
-          // onChanged: viewModel.onChange,
+          onChanged: (_) => viewModel.clearFormatErrorMessage('instagram'),
           hasFocusedBorder: true,
           textInputType: TextInputType.name,
           isReadOnly: viewModel.isBusy,
           controller: instagramController,
         ),
+        if (viewModel.hasCommunicationFormatError('instagram')) ...[
+          ValidationMessage(
+              title: viewModel.communicationFormatChecker['instagram']!),
+          verticalSpaceSmall,
+        ],
         verticalSpaceSmall,
         verticalSpaceTiny,
         InputField(
           placeholder: 'https://t.me/example_channel',
           labelText: 'Telegram (optional)',
-
           maxLine: 1,
-          // onChanged: viewModel.onChange,
+          onChanged: (_) => viewModel.clearFormatErrorMessage('telegram'),
           hasFocusedBorder: true,
           textInputType: TextInputType.name,
           isReadOnly: viewModel.isBusy,
           controller: telegramController,
         ),
+        if (viewModel.hasCommunicationFormatError('telegram')) ...[
+          ValidationMessage(
+              title: viewModel.communicationFormatChecker['telegram']!),
+          verticalSpaceSmall,
+        ],
       ],
     );
   }
@@ -778,10 +846,13 @@ class _BasicSection extends ViewModelWidget<CreateBusinessViewModel> {
     required this.nameController,
     required this.descriptionController,
     required this.categoryTitle,
+    required this.servicesController,
   });
 
   final TextEditingController nameController;
   final TextEditingController descriptionController;
+
+  final TextEditingController servicesController;
 
   final String categoryTitle;
 
@@ -938,7 +1009,9 @@ class _BasicSection extends ViewModelWidget<CreateBusinessViewModel> {
                 color: kcPrimaryColor),
           ),
           verticalSpaceSmall,
-          const _OperatingHoursWidget()
+          _OperatingHoursWidget(
+            servicesController: servicesController,
+          )
         ]
       ],
     );

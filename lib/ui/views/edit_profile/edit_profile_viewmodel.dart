@@ -1,4 +1,5 @@
 import 'package:bnbit_app/api/common/api_consts.dart';
+//import 'package:bnbit_app/app/app.dialogs.dart';
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
 import 'package:bnbit_app/app/app.router.dart';
@@ -9,6 +10,7 @@ import 'package:bnbit_app/mixins/media_mixin.dart';
 import 'package:bnbit_app/services/custom_snackbar_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
 import 'package:bnbit_app/ui/views/edit_profile/edit_profile_view.form.dart';
+//import 'package:bnbit_app/ui/views/landing/landing_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -22,6 +24,8 @@ class EditProfileViewModel extends FormViewModel with AuthMixin, MediaMixin {
   final _userService = locator<UserService>();
   final _firebaseAuth = locator<FirebaseAuthenticationService>();
   final _snacBarService = locator<CustomSnackbarService>();
+  //final _landingViewModel = locator<LandingViewModel>();
+  //final _dailogService = locator<DialogService>();
 
   String get userFullName => user.first_name + ' ${user.last_name ?? ''}';
 
@@ -56,6 +60,7 @@ class EditProfileViewModel extends FormViewModel with AuthMixin, MediaMixin {
       _firebaseAuth.currentUser!.providerData.first.providerId == 'password';
 
   bool get isUploading => busy(kUploadingBusyKey);
+  bool get isDeletingAccount => busy(_deleteAccounBusyKey);
 
   bool get hasValidFirstName => !firstNameValue.isNullOrEmpty;
   bool get hasNoValidFirstName {
@@ -123,7 +128,29 @@ class EditProfileViewModel extends FormViewModel with AuthMixin, MediaMixin {
     _navigationService.navigateToChangePasswordView();
   }
 
-  void onDeleteAccount() {
+  void onDeleteAccount() async {
+    // final result = await _dailogService.showCustomDialog(
+    //     variant: DialogType.warning,
+    //     mainButtonTitle: 'Cancel',
+    //     secondaryButtonTitle: 'Delete',
+    //     title: 'Delete Account',
+    //     description:
+    //         'Are you sure you want to delete your account?\nThis action will permanently delete your account.');
+
+    // if (result?.confirmed ?? false) {
+    //   try {
+    //     setBusyForObject(_deleteAccounBusyKey, true);
+    //     await _userService.deleteAccount();
+    //     _landingViewModel.onDispose();
+    //     await _navigationService.clearStackAndShow(Routes.loginView);
+    //   } catch (e) {
+    //     log.e('Unable to delete user account $e');
+    //     _snacBarService.showError('Something went wrong. Try again!');
+    //   } finally {
+    //     setBusyForObject(_deleteAccounBusyKey, false);
+    //   }
+    // }
+
     _snacBarService.comingSoon();
     notifyListeners();
   }

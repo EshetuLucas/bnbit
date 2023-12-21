@@ -11,6 +11,7 @@ import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
 import 'package:bnbit_app/data_model/business/business_model.dart';
 import 'package:bnbit_app/data_model/category/category.dart';
+import 'package:bnbit_app/data_model/address/address.dart' as business_address;
 import 'package:bnbit_app/services/business_service.dart';
 import 'package:bnbit_app/services/location_service.dart';
 import 'package:bnbit_app/utils/algorithm_helpers.dart';
@@ -70,6 +71,8 @@ class LandingViewModel extends BaseViewModel {
 
   void onMapCreated(GoogleMapController controller) {
     if (_controller.isCompleted) return;
+    controller.setMapStyle(
+        '[{"featureType": "poi","stylers": [{"visibility": "off"}]}]');
     _controller.complete(controller);
   }
 
@@ -104,6 +107,7 @@ class LandingViewModel extends BaseViewModel {
   }
 
   LocationData? get currentLocation => _locationService.currentLocation;
+  business_address.Address? _address;
 
   String? currentLocationName;
 
@@ -125,13 +129,29 @@ class LandingViewModel extends BaseViewModel {
   }
 
   Future<void> setCurrentLocation() async {
-    final result = await _locationService.getUserLocation();
+    await _locationService.getUserLocation();
 
     Address address = await _locationService.getLocationDetail(
         LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
-    currentLocationName =
-        '${address.subLocality ?? ''}' ', ' '${address.adminArea ?? ''}';
-    log.v('result:$result');
+    _address = business_address.Address(
+      city: address.locality!,
+      country: address.countryName!,
+      latitude: currentLocation!.latitude!,
+      longitude: currentLocation!.longitude!,
+      state: address.adminArea,
+      line1: address.subLocality,
+      line2: address.addressLine,
+      sub_city: address.subLocality,
+      area: address.subAdminArea,
+    );
+    setCurrentLocationName();
+
+    notifyListeners();
+  }
+
+  void setCurrentLocationName() {
+    currentLocationName = _address?.displayAddress ?? '';
+
     notifyListeners();
   }
 
@@ -173,8 +193,13 @@ class LandingViewModel extends BaseViewModel {
     try {
       _businesseses = await _businessService.getBusinesses(
         subCategory: subCategories[_selectedIndex].id,
-        lat: currentLocation?.latitude ?? 0,
-        lng: currentLocation?.longitude ?? 0,
+        lat: _address?.latitude ?? 0,
+        lng: _address?.longitude ?? 0,
+        city: _address?.city,
+        state: _address?.state,
+        country: _address?.country,
+        line1: _address?.line1,
+        line2: _address?.line2,
       );
       getBusinessBasedOnUserLocation();
       if (_nearByBusinesseses.isNotEmpty) {
@@ -404,7 +429,14 @@ class LandingViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void onLocationTap() {
-    _navigationService.navigateToAddressSearchesView();
+  Future<void> onLocationTap() async {
+    final result = await _navigationService.navigateToAddressSearchesView();
+    if (result != null) {
+      _address = result;
+      setCurrentLocationName();
+
+      notifyListeners();
+      getBusinesses();
+    }
   }
 }

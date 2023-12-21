@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:email_validator/email_validator.dart';
+import 'package:get/get.dart';
 import 'package:bnbit_app/app/app.bottomsheets.dart';
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
@@ -38,6 +39,69 @@ class CreateBusinessViewModel extends FormViewModel {
 
   File? _selectedFile;
   File? get selectedFile => _selectedFile;
+
+  final Map<String, String> _communicationFormatChecker = {};
+  Map<String, String> get communicationFormatChecker =>
+      _communicationFormatChecker;
+
+  bool get hasNoPhoneNumber =>
+      showValidationIfAny && phoneNumberValue.isNullOrEmpty;
+
+  bool isEmailValid(String? email) =>
+      EmailValidator.validate((email ?? '').trim());
+
+  void setCommunicationFormatChecker({
+    required String key,
+    required String value,
+  }) {
+    _communicationFormatChecker[key] = value;
+    notifyListeners();
+  }
+
+  void checkCommunicationFormat() {
+    if (phoneValue.isNullOrEmpty) {
+      setCommunicationFormatChecker(
+          key: 'phone', value: 'Phone Number can\'nt be empty');
+    }
+    if (!emailValue.isNullOrEmpty) {
+      if (!isEmailValid(emailValue)) {
+        setCommunicationFormatChecker(
+            key: 'email', value: 'Please enter vaild email address');
+      }
+    }
+    if (!webisteValue.isNullOrEmpty) {
+      bool _validURL = webisteValue!.isURL;
+      if (!_validURL) {
+        setCommunicationFormatChecker(
+            key: 'website', value: 'Please enter vaild website link');
+      }
+    }
+    if (!instagramValue.isNullOrEmpty) {
+      bool _validURL = instagramValue!.startsWith('https://www.instagram.com/');
+      if (!_validURL) {
+        setCommunicationFormatChecker(
+            key: 'instagram', value: 'Please enter vaild instagram link');
+      }
+    }
+    if (!telegramValue.isNullOrEmpty) {
+      bool _validURL = telegramValue!.startsWith('https://www.t.me/');
+      if (!_validURL) {
+        setCommunicationFormatChecker(
+            key: 'telegram', value: 'Please enter vaild telegram link');
+      }
+    }
+    notifyListeners();
+  }
+
+  void clearFormatErrorMessage(String key) {
+    _communicationFormatChecker[key] = '';
+    notifyListeners();
+  }
+
+  bool hasCommunicationFormatError(String key) =>
+      _showValidationIfAny &&
+      _communicationFormatChecker[key] != null &&
+      !_communicationFormatChecker[key].isNullOrEmpty;
 
   bool isLastAdress(address) => selectedAddress.last == address;
   bool isLastSubCategory(subCategory) =>
@@ -165,11 +229,15 @@ class CreateBusinessViewModel extends FormViewModel {
 
   Future<void> onCreateBusiness() async {
     _showValidationIfAny = false;
+    checkCommunicationFormat();
     if (!enableButton) {
       _showValidationIfAny = true;
       notifyListeners();
       return;
     }
+
+    // if (_communicationFormatChecker.values
+    //     .any((element) => !element.isNullOrEmpty)) {}
     setBusy(true);
 
     final businessToBeCreated = newBusiness.copyWith(
@@ -183,7 +251,7 @@ class CreateBusinessViewModel extends FormViewModel {
       telegram: telegramValue,
       opening_hours: newBusiness.opening_hours,
       country: 'Ethiopia',
-      services: [],
+      services: [servicesValue ?? ''],
     );
 
     log.d('businessToBeCreated:$businessToBeCreated');
@@ -228,7 +296,7 @@ class CreateBusinessViewModel extends FormViewModel {
       telegram: telegramValue,
       opening_hours: newBusiness.opening_hours,
       country: 'Ethiopia',
-      services: [],
+      services: [servicesValue ?? ''],
     );
 
     log.d('businessToBeUpated:$businessToBeUpated');

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bnbit_app/app/app.dialogs.dart';
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
@@ -49,7 +51,8 @@ class LocationService {
   }
 
   Future<LocationData?> getUserLocation() async {
-    _currentLocation = //await getLocation();
+    //updateUserLocationEvery3Minute();
+    _currentLocation = //await getLocation()
         //??
         LocationData.fromMap({
       'latitude': 9.003429960888363,
@@ -57,6 +60,18 @@ class LocationService {
     });
 
     return currentLocation;
+  }
+
+  void updateUserLocationEvery3Minute() async {
+    Timer.periodic(const Duration(minutes: 2), (timer) async {
+      _currentLocation = await getLocation() ??
+          LocationData.fromMap(
+            {
+              'latitude': 9.003429960888363,
+              'longitude': 38.814238038050576,
+            },
+          );
+    });
   }
 
   Future<geo.Address> getLocationDetail(LatLng lng) async {
