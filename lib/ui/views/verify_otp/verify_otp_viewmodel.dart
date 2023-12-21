@@ -18,11 +18,16 @@ class VerifyOtpViewModel extends FormViewModel {
 
   final String phoneNumber;
   final String? password;
+  final bool isNewUser;
 
   String? _apiValidationMessage;
   String? get apiValidationMessage => _apiValidationMessage;
 
-  VerifyOtpViewModel(this.phoneNumber, this.password);
+  VerifyOtpViewModel(
+    this.phoneNumber,
+    this.password,
+    this.isNewUser,
+  );
 
   void onBack() {
     _navigationService.back();
@@ -138,17 +143,28 @@ class VerifyOtpViewModel extends FormViewModel {
       navigateToNextView();
     } catch (e) {
       log.e('Unable to verify otp $e');
+      if (e.toString().contains('invalid-verification-code')) {
+        _apiValidationMessage = 'Invalid Verifcation Code';
+      } else {
+        _apiValidationMessage = 'Something went wrong. Try again!';
+      }
     } finally {
       setBusy(false);
     }
   }
 
   void navigateToNextView() {
+    if (!isNewUser) {
+      _navigationService.back(result: true);
+      return;
+    }
     bool isUserActive = _userService.currentUser.is_active;
     if (isUserActive) {
       _navigationService.clearStackAndShowView(const HomeView());
     } else {
-      _navigationService.clearStackAndShowView(const CreateProfileView());
+      _navigationService.clearStackAndShowView(CreateProfileView(
+        phoneNumber: phoneNumber,
+      ));
     }
   }
 

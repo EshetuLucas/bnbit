@@ -15,10 +15,12 @@ class VerifyOtpView extends StackedView<VerifyOtpViewModel> {
     Key? key,
     required this.phoneNumber,
     this.password,
+    this.isNewUser = true,
   }) : super(key: key);
 
   final String phoneNumber;
   final String? password;
+  final bool isNewUser;
 
   @override
   Widget builder(
@@ -88,7 +90,7 @@ class VerifyOtpView extends StackedView<VerifyOtpViewModel> {
   VerifyOtpViewModel viewModelBuilder(
     BuildContext context,
   ) =>
-      VerifyOtpViewModel(phoneNumber, password);
+      VerifyOtpViewModel(phoneNumber, password, isNewUser);
 }
 
 class _HeaderSection extends ViewModelWidget<VerifyOtpViewModel> {
