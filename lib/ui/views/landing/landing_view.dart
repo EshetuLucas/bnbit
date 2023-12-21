@@ -146,9 +146,12 @@ class _BodySection extends ViewModelWidget<LandingViewModel> {
                 color: kcDark700,
               ),
               verticalSpaceSmall,
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text('No businesses found!'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text(
+                  'No businesses found\nAround ${viewModel.currentLocationName}.',
+                  textAlign: TextAlign.center,
+                ),
               )
             ],
           )
@@ -176,7 +179,9 @@ class _Business extends ViewModelWidget<LandingViewModel> {
   @override
   Widget build(BuildContext context, LandingViewModel viewModel) {
     return InkWell(
-      onTap: () => viewModel.onBusinessTap(business),
+      onTap: () => viewModel.isFetchingBusinesses
+          ? {}
+          : viewModel.onBusinessTap(business),
       child: Padding(
         padding: appSymmetricEdgePadding,
         child: DecoratedContainer(
@@ -196,7 +201,11 @@ class _Business extends ViewModelWidget<LandingViewModel> {
                           roundedCorners: false,
                           fit: BoxFit.cover,
                           imageUrl: business.cover_image ??
-                              baseUrl + '/' + business.images.first.image,
+                              baseUrl +
+                                  '/' +
+                                  (business.images.isNotEmpty
+                                      ? business.images.first.image
+                                      : logoImage),
                           errorImageUrl: placeHolderImage,
                         ),
                       )
@@ -212,9 +221,56 @@ class _Business extends ViewModelWidget<LandingViewModel> {
                 padding: const EdgeInsets.only(left: 8),
                 child: RASkeletonLoader(
                   loading: viewModel.isFetchingBusinesses,
-                  child: Text(
-                    business.name,
-                    style: ktsSemibold(context).copyWith(fontSize: 14),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          business.name,
+                          style: ktsSemibold(context).copyWith(fontSize: 14),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      horizontalSpaceSmall,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          DecoratedContainer(
+                            borderRadius: 4,
+                            withCard: false,
+                            containerColor:
+                                viewModel.getOperatingHour(business).isNotEmpty
+                                    ? kcGreen.withOpacity(0.2)
+                                    : kcRed.withOpacity(0.2),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 5, vertical: 2),
+                              child: Text(
+                                viewModel.getOperatingHour(business).isNotEmpty
+                                    ? 'Open'
+                                    : 'Closed',
+                                style: ktsSemibold(context).copyWith(
+                                  fontSize: 12,
+                                  color: viewModel
+                                          .getOperatingHour(business)
+                                          .isNotEmpty
+                                      ? kcGreen
+                                      : kcRed,
+                                ),
+                              ),
+                            ),
+                          ),
+                          horizontalSpaceTiny,
+                          if (viewModel.getOperatingHour(business).isNotEmpty)
+                            Text(
+                              ': Closes at ${viewModel.getOperatingHour(business)}',
+                              style: ktsSmall(context).copyWith(fontSize: 12),
+                            ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -364,55 +420,46 @@ class _Header extends ViewModelWidget<LandingViewModel> {
       padding: appSymmetricEdgePadding,
       child: Row(
         children: [
-          Expanded(
-            child: InkWell(
-              onTap: viewModel.onChangeCategory,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  verticalSpaceTiny,
-                  RASkeletonLoader(
-                    loading: viewModel.isBusy,
-                    child: Row(
-                      children: [
-                        Container(
-                          constraints: BoxConstraints(
-                            maxWidth: screenWidth(context) / 2,
-                          ),
-                          child: Text(
-                            viewModel.isBusy
-                                ? '                 '
-                                : viewModel.selectedCategory.name,
-                            style: ktsBoldMeidumDarkTextStyle(context).copyWith(
-                              color: kcPrimaryColor,
-                              fontSize: 18.4,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        horizontalSpaceTiny,
-                        const Icon(
-                          Icons.expand_more,
-                          size: 25,
+          InkWell(
+            onTap: viewModel.onChangeCategory,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                verticalSpaceTiny,
+                RASkeletonLoader(
+                  loading: viewModel.isBusy,
+                  child: Row(
+                    children: [
+                      Text(
+                        viewModel.isBusy
+                            ? '                 '
+                            : viewModel.selectedCategory.name,
+                        style: ktsBoldMeidumDarkTextStyle(context).copyWith(
                           color: kcPrimaryColor,
-                        )
-                      ],
+                          fontSize: 18.4,
+                        ),
+                      ),
+                      horizontalSpaceTiny,
+                      const Icon(
+                        Icons.expand_more,
+                        size: 25,
+                        color: kcPrimaryColor,
+                      )
+                    ],
+                  ),
+                ),
+                if (!viewModel.isBusy)
+                  Text(
+                    'Tap to change category',
+                    style: ktsSmall(context).copyWith(
+                      fontSize: 10,
+                      color: kcDark700Light,
                     ),
                   ),
-                  if (!viewModel.isBusy)
-                    Text(
-                      'Tap to change category',
-                      style: ktsSmall(context).copyWith(
-                        fontSize: 10,
-                        color: kcDark700Light,
-                      ),
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
-          if (viewModel.isBusy) horizontalSpaceLarge else horizontalSpaceSmall,
+          if (viewModel.isBusy) horizontalSpaceLarge else horizontalSpaceMedium,
 
           Expanded(
             child: Align(
@@ -575,8 +622,8 @@ class MapView extends ViewModelWidget<LandingViewModel> {
             onMapCreated: viewModel.onLoadingMapCreated,
           ),
         const Padding(
-          padding: EdgeInsets.only(bottom: 10),
-          child: _BusinessPreviewCarousel(height: 130),
+          padding: EdgeInsets.only(bottom: 8),
+          child: _BusinessPreviewCarousel(height: 132),
         )
       ],
     );
@@ -645,7 +692,7 @@ class BusinessCard extends ViewModelWidget<LandingViewModel> {
     return DecoratedContainer(
       onTap: onTap,
       borderRadius: 12,
-      elevation: 5,
+      elevation: 0,
       shadowColor: kcWhite,
       withCard: true,
       child: Row(
@@ -668,7 +715,11 @@ class BusinessCard extends ViewModelWidget<LandingViewModel> {
                                 roundedCorners: false,
                                 fit: BoxFit.cover,
                                 imageUrl: business.cover_image ??
-                                    baseUrl + '/' + business.images.first.image,
+                                    baseUrl +
+                                        '/' +
+                                        (business.images.isNotEmpty
+                                            ? business.images.first.image
+                                            : logoImage),
                                 errorImageUrl: placeHolderImage,
                               ),
                             )
@@ -787,7 +838,7 @@ class BusinessCard extends ViewModelWidget<LandingViewModel> {
                             alignment: Alignment.bottomRight,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: kcPrimaryColor.withOpacity(0.6),
+                                color: kcPrimaryColor.withOpacity(0.8),
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(8),
                                 ),

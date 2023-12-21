@@ -1,8 +1,12 @@
 // ignore_for_file: must_call_super
 
 import 'dart:async';
+import 'package:intl/intl.dart';
 import 'package:bnbit_app/app/app.router.dart';
+import 'package:bnbit_app/data_model/time_range/time_range.dart';
 import 'package:bnbit_app/services/url_launcher_service.dart';
+import 'package:bnbit_app/utils/day.dart';
+import 'package:bnbit_app/utils/time.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -144,14 +148,13 @@ class LandingViewModel extends BaseViewModel {
       sub_city: address.subLocality,
       area: address.subAdminArea,
     );
-    setCurrentLocationName();
-
+    log.d('_address:$_address');
+    setCurrentLocationName(value: _address?.displayLocationName ?? '');
     notifyListeners();
   }
 
-  void setCurrentLocationName() {
-    currentLocationName = _address?.displayAddress ?? '';
-
+  void setCurrentLocationName({String? value}) {
+    currentLocationName = value ?? _address?.displayAddress ?? '';
     notifyListeners();
   }
 
@@ -192,14 +195,13 @@ class LandingViewModel extends BaseViewModel {
     await Future.delayed(const Duration(milliseconds: 200));
     try {
       _businesseses = await _businessService.getBusinesses(
+        lat: currentLocation?.latitude,
+        lng: currentLocation?.longitude,
         subCategory: subCategories[_selectedIndex].id,
-        lat: _address?.latitude ?? 0,
-        lng: _address?.longitude ?? 0,
+        sub_city: _address?.sub_city,
         city: _address?.city,
-        state: _address?.state,
+        state: _address?.area,
         country: _address?.country,
-        line1: _address?.line1,
-        line2: _address?.line2,
       );
       getBusinessBasedOnUserLocation();
       if (_nearByBusinesseses.isNotEmpty) {
@@ -370,8 +372,10 @@ class LandingViewModel extends BaseViewModel {
     }
   }
 
-  void onBusinessTap(Business business) =>
-      _navigationService.navigateToBusinessDetailView(business: business);
+  void onBusinessTap(Business business) {
+    if (isBusy || isFetchingBusinesses) return;
+    _navigationService.navigateToBusinessDetailView(business: business);
+  }
 
   void onDispose() {
     _nearByBusinesseses.clear();
@@ -434,9 +438,51 @@ class LandingViewModel extends BaseViewModel {
     if (result != null) {
       _address = result;
       setCurrentLocationName();
-
       notifyListeners();
       getBusinesses();
     }
+  }
+
+  String getOperatingHour(Business business) {
+    String endTime = '';
+    DateTime now = DateTime.now();
+    Map<String, TimeRange?> operatingHour = {};
+    String day = DayUtil.getDay(DateTime.now().weekday);
+    if (business.opening_hours.isNotEmpty) {
+      TimeRange? timeRange = TimeUtil.convertOperatingHoursToTimeRanges(
+          business.opening_hours)[day];
+      if (timeRange != null) {
+        operatingHour[day] = TimeUtil.convertOperatingHoursToTimeRanges(
+            business.opening_hours)[day];
+        DateTime tempEndTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          business.opening_hours[day]!.endTime.hour,
+          business.opening_hours[day]!.endTime.minute,
+          0,
+          0,
+          0,
+        );
+
+        DateTime tempNow = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          now.hour,
+          now.minute,
+          0,
+          0,
+          0,
+        );
+
+        if (tempNow.isBefore(tempEndTime)) {
+          endTime = DateFormat.jm().format(
+            business.opening_hours[day]!.endTime,
+          );
+        }
+      }
+    }
+    return endTime;
   }
 }
