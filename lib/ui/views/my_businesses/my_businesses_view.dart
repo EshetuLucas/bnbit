@@ -6,6 +6,7 @@ import 'package:bnbit_app/ui/widgets/custom_app_bar.dart';
 import 'package:bnbit_app/ui/widgets/not_found_widget.dart';
 import 'package:bnbit_app/ui/widgets/profile_pic_builder.dart';
 import 'package:bnbit_app/ui/widgets/ra_skeleton_loader.dart';
+import 'package:bnbit_app/utils/asset_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -115,7 +116,10 @@ class MyBusinessesView extends StackedView<MyBusinessesViewModel> {
                                           : business.cover_image ??
                                               baseUrl +
                                                   '/' +
-                                                  business.images.first.image,
+                                                  (business.images.isNotEmpty
+                                                      ? business
+                                                          .images.first.image
+                                                      : logoImage),
                                       size: 50,
                                       textStyle: ktsSmallDarkTextStyle(context)
                                           .copyWith(
