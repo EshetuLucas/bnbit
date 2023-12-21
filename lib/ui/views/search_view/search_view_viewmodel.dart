@@ -92,9 +92,11 @@ class SearchViewViewModel extends FormViewModel with $SearchViewView {
     notifyListeners();
   }
 
-  void onSearchForTheKeyWord() {
-    if (!recentSearches.contains(_searchKey)) {
-      List<String> tempList = [_searchKey, ...recentSearches];
+  void onSearchForTheKeyWord({String? value}) {
+    String history = value ?? _searchKey;
+    if (history.isEmpty) return;
+    if (!recentSearches.contains(history)) {
+      List<String> tempList = [history, ...recentSearches];
 
       _sharedPreferencesService.saveToDisk('search_history', tempList);
     }
@@ -228,6 +230,7 @@ class SearchViewViewModel extends FormViewModel with $SearchViewView {
 
   void onBusinessTap(Business business) {
     _navigationService.navigateToBusinessDetailView(business: business);
+    onSearchForTheKeyWord(value: _searchKey);
     if (!recentSearches.contains(business.id)) {
       List<String> temp = [business.id, ...recentVisitedBusinessesId];
       _sharedPreferencesService.saveToDisk('recent_visited', temp);

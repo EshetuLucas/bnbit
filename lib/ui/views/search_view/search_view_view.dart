@@ -205,7 +205,11 @@ class _BusinessWidget extends ViewModelWidget<SearchViewViewModel> {
                       url: viewModel.isBusy
                           ? ""
                           : business.cover_image ??
-                              baseUrl + '/' + business.images.first.image,
+                              baseUrl +
+                                  '/' +
+                                  (business.images.isNotEmpty
+                                      ? business.images.first.image
+                                      : logoImage),
                       size: 50,
                       textStyle: ktsSmallDarkTextStyle(context).copyWith(
                         fontSize: 25,
