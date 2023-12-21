@@ -84,7 +84,7 @@ mixin _$Business {
   bool get isSynced => throw _privateConstructorUsedError;
 
   /// services
-  List<dynamic> get services => throw _privateConstructorUsedError;
+  List<BusinessServiceModel> get services => throw _privateConstructorUsedError;
   Map<String, OperatingHour?> get opening_hours =>
       throw _privateConstructorUsedError;
 
@@ -122,7 +122,7 @@ abstract class $BusinessCopyWith<$Res> {
       DateTime? updatedAt,
       bool active,
       bool isSynced,
-      List<dynamic> services,
+      List<BusinessServiceModel> services,
       Map<String, OperatingHour?> opening_hours});
 
   $UserModelCopyWith<$Res> get user;
@@ -260,7 +260,7 @@ class _$BusinessCopyWithImpl<$Res, $Val extends Business>
       services: null == services
           ? _value.services
           : services // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<BusinessServiceModel>,
       opening_hours: null == opening_hours
           ? _value.opening_hours
           : opening_hours // ignore: cast_nullable_to_non_nullable
@@ -332,7 +332,7 @@ abstract class _$$BusinessImplCopyWith<$Res>
       DateTime? updatedAt,
       bool active,
       bool isSynced,
-      List<dynamic> services,
+      List<BusinessServiceModel> services,
       Map<String, OperatingHour?> opening_hours});
 
   @override
@@ -471,7 +471,7 @@ class __$$BusinessImplCopyWithImpl<$Res>
       services: null == services
           ? _value._services
           : services // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<BusinessServiceModel>,
       opening_hours: null == opening_hours
           ? _value._opening_hours
           : opening_hours // ignore: cast_nullable_to_non_nullable
@@ -507,7 +507,7 @@ class _$BusinessImpl extends _Business {
       this.updatedAt,
       this.active = true,
       this.isSynced = true,
-      final List<dynamic> services = const [],
+      final List<BusinessServiceModel> services = const [],
       final Map<String, OperatingHour?> opening_hours = const {}})
       : _subcategories = subcategories,
         _addresses = addresses,
@@ -630,12 +630,12 @@ class _$BusinessImpl extends _Business {
   final bool isSynced;
 
   /// services
-  final List<dynamic> _services;
+  final List<BusinessServiceModel> _services;
 
   /// services
   @override
   @JsonKey()
-  List<dynamic> get services {
+  List<BusinessServiceModel> get services {
     if (_services is EqualUnmodifiableListView) return _services;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_services);
@@ -767,7 +767,7 @@ abstract class _Business extends Business {
       final DateTime? updatedAt,
       final bool active,
       final bool isSynced,
-      final List<dynamic> services,
+      final List<BusinessServiceModel> services,
       final Map<String, OperatingHour?> opening_hours}) = _$BusinessImpl;
   _Business._() : super._();
 
@@ -862,7 +862,7 @@ abstract class _Business extends Business {
   @override
 
   /// services
-  List<dynamic> get services;
+  List<BusinessServiceModel> get services;
   @override
   Map<String, OperatingHour?> get opening_hours;
   @override
@@ -915,7 +915,7 @@ mixin _$NewBusiness {
       throw _privateConstructorUsedError;
 
   /// Services
-  List<String> get services => throw _privateConstructorUsedError;
+  List<BusinessServiceModel> get services => throw _privateConstructorUsedError;
 
   /// Addresses
   List<Address> get addressDetails => throw _privateConstructorUsedError;
@@ -949,7 +949,7 @@ abstract class $NewBusinessCopyWith<$Res> {
       String? cover_image,
       DateTime? updated_at,
       List<Map<String, dynamic>> subcategories,
-      List<String> services,
+      List<BusinessServiceModel> services,
       List<Address> addressDetails,
       Map<String, OperatingHour?> opening_hours});
 }
@@ -1035,7 +1035,7 @@ class _$NewBusinessCopyWithImpl<$Res, $Val extends NewBusiness>
       services: null == services
           ? _value.services
           : services // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<BusinessServiceModel>,
       addressDetails: null == addressDetails
           ? _value.addressDetails
           : addressDetails // ignore: cast_nullable_to_non_nullable
@@ -1069,7 +1069,7 @@ abstract class _$$NewBusinessImplCopyWith<$Res>
       String? cover_image,
       DateTime? updated_at,
       List<Map<String, dynamic>> subcategories,
-      List<String> services,
+      List<BusinessServiceModel> services,
       List<Address> addressDetails,
       Map<String, OperatingHour?> opening_hours});
 }
@@ -1153,7 +1153,7 @@ class __$$NewBusinessImplCopyWithImpl<$Res>
       services: null == services
           ? _value._services
           : services // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<BusinessServiceModel>,
       addressDetails: null == addressDetails
           ? _value._addressDetails
           : addressDetails // ignore: cast_nullable_to_non_nullable
@@ -1183,7 +1183,7 @@ class _$NewBusinessImpl extends _NewBusiness {
       this.cover_image,
       this.updated_at,
       final List<Map<String, dynamic>> subcategories = const [],
-      final List<String> services = const [],
+      final List<BusinessServiceModel> services = const [],
       final List<Address> addressDetails = const [],
       final Map<String, OperatingHour?> opening_hours = const {}})
       : _subcategories = subcategories,
@@ -1252,12 +1252,12 @@ class _$NewBusinessImpl extends _NewBusiness {
   }
 
   /// Services
-  final List<String> _services;
+  final List<BusinessServiceModel> _services;
 
   /// Services
   @override
   @JsonKey()
-  List<String> get services {
+  List<BusinessServiceModel> get services {
     if (_services is EqualUnmodifiableListView) return _services;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_services);
@@ -1371,7 +1371,7 @@ abstract class _NewBusiness extends NewBusiness {
       final String? cover_image,
       final DateTime? updated_at,
       final List<Map<String, dynamic>> subcategories,
-      final List<String> services,
+      final List<BusinessServiceModel> services,
       final List<Address> addressDetails,
       final Map<String, OperatingHour?> opening_hours}) = _$NewBusinessImpl;
   _NewBusiness._() : super._();
@@ -1430,7 +1430,7 @@ abstract class _NewBusiness extends NewBusiness {
   @override
 
   /// Services
-  List<String> get services;
+  List<BusinessServiceModel> get services;
   @override
 
   /// Addresses
@@ -1598,6 +1598,163 @@ abstract class _OperatingHour implements OperatingHour {
   @JsonKey(ignore: true)
   _$$OperatingHourImplCopyWith<_$OperatingHourImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+BusinessServiceModel _$BusinessServiceModelFromJson(Map<String, dynamic> json) {
+  return _BusinessServiceModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$BusinessServiceModel {
+  String get service => throw _privateConstructorUsedError;
+  double get price => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $BusinessServiceModelCopyWith<BusinessServiceModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $BusinessServiceModelCopyWith<$Res> {
+  factory $BusinessServiceModelCopyWith(BusinessServiceModel value,
+          $Res Function(BusinessServiceModel) then) =
+      _$BusinessServiceModelCopyWithImpl<$Res, BusinessServiceModel>;
+  @useResult
+  $Res call({String service, double price});
+}
+
+/// @nodoc
+class _$BusinessServiceModelCopyWithImpl<$Res,
+        $Val extends BusinessServiceModel>
+    implements $BusinessServiceModelCopyWith<$Res> {
+  _$BusinessServiceModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? service = null,
+    Object? price = null,
+  }) {
+    return _then(_value.copyWith(
+      service: null == service
+          ? _value.service
+          : service // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$BusinessServiceModelImplCopyWith<$Res>
+    implements $BusinessServiceModelCopyWith<$Res> {
+  factory _$$BusinessServiceModelImplCopyWith(_$BusinessServiceModelImpl value,
+          $Res Function(_$BusinessServiceModelImpl) then) =
+      __$$BusinessServiceModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String service, double price});
+}
+
+/// @nodoc
+class __$$BusinessServiceModelImplCopyWithImpl<$Res>
+    extends _$BusinessServiceModelCopyWithImpl<$Res, _$BusinessServiceModelImpl>
+    implements _$$BusinessServiceModelImplCopyWith<$Res> {
+  __$$BusinessServiceModelImplCopyWithImpl(_$BusinessServiceModelImpl _value,
+      $Res Function(_$BusinessServiceModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? service = null,
+    Object? price = null,
+  }) {
+    return _then(_$BusinessServiceModelImpl(
+      service: null == service
+          ? _value.service
+          : service // ignore: cast_nullable_to_non_nullable
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$BusinessServiceModelImpl implements _BusinessServiceModel {
+  _$BusinessServiceModelImpl({required this.service, required this.price});
+
+  factory _$BusinessServiceModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BusinessServiceModelImplFromJson(json);
+
+  @override
+  final String service;
+  @override
+  final double price;
+
+  @override
+  String toString() {
+    return 'BusinessServiceModel(service: $service, price: $price)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BusinessServiceModelImpl &&
+            (identical(other.service, service) || other.service == service) &&
+            (identical(other.price, price) || other.price == price));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, service, price);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$BusinessServiceModelImplCopyWith<_$BusinessServiceModelImpl>
+      get copyWith =>
+          __$$BusinessServiceModelImplCopyWithImpl<_$BusinessServiceModelImpl>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$BusinessServiceModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _BusinessServiceModel implements BusinessServiceModel {
+  factory _BusinessServiceModel(
+      {required final String service,
+      required final double price}) = _$BusinessServiceModelImpl;
+
+  factory _BusinessServiceModel.fromJson(Map<String, dynamic> json) =
+      _$BusinessServiceModelImpl.fromJson;
+
+  @override
+  String get service;
+  @override
+  double get price;
+  @override
+  @JsonKey(ignore: true)
+  _$$BusinessServiceModelImplCopyWith<_$BusinessServiceModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 Image _$ImageFromJson(Map<String, dynamic> json) {

@@ -46,7 +46,11 @@ _$BusinessImpl _$$BusinessImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['updatedAt'] as String),
       active: json['active'] as bool? ?? true,
       isSynced: json['isSynced'] as bool? ?? true,
-      services: json['services'] as List<dynamic>? ?? const [],
+      services: (json['services'] as List<dynamic>?)
+              ?.map((e) =>
+                  BusinessServiceModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       opening_hours: (json['opening_hours'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
                 k,
@@ -81,7 +85,7 @@ Map<String, dynamic> _$$BusinessImplToJson(_$BusinessImpl instance) =>
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'active': instance.active,
       'isSynced': instance.isSynced,
-      'services': instance.services,
+      'services': instance.services.map((e) => e.toJson()).toList(),
       'opening_hours':
           instance.opening_hours.map((k, e) => MapEntry(k, e?.toJson())),
     };
@@ -106,7 +110,8 @@ _$NewBusinessImpl _$$NewBusinessImplFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       services: (json['services'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) =>
+                  BusinessServiceModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
       addressDetails: (json['addressDetails'] as List<dynamic>?)
@@ -137,7 +142,7 @@ Map<String, dynamic> _$$NewBusinessImplToJson(_$NewBusinessImpl instance) =>
       'cover_image': instance.cover_image,
       'updated_at': instance.updated_at?.toIso8601String(),
       'subcategories': instance.subcategories,
-      'services': instance.services,
+      'services': instance.services.map((e) => e.toJson()).toList(),
       'addressDetails': instance.addressDetails.map((e) => e.toJson()).toList(),
       'opening_hours':
           instance.opening_hours.map((k, e) => MapEntry(k, e?.toJson())),
@@ -153,6 +158,20 @@ Map<String, dynamic> _$$OperatingHourImplToJson(_$OperatingHourImpl instance) =>
     <String, dynamic>{
       'startTime': instance.startTime.toIso8601String(),
       'endTime': instance.endTime.toIso8601String(),
+    };
+
+_$BusinessServiceModelImpl _$$BusinessServiceModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$BusinessServiceModelImpl(
+      service: json['service'] as String,
+      price: (json['price'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$BusinessServiceModelImplToJson(
+        _$BusinessServiceModelImpl instance) =>
+    <String, dynamic>{
+      'service': instance.service,
+      'price': instance.price,
     };
 
 _$ImageImpl _$$ImageImplFromJson(Map<String, dynamic> json) => _$ImageImpl(

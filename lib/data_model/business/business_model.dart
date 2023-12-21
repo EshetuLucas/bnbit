@@ -78,7 +78,7 @@ class Business with _$Business {
     @Default(true) bool isSynced,
 
     /// services
-    @Default([]) List<dynamic> services,
+    @Default([]) List<BusinessServiceModel> services,
     @Default({}) Map<String, OperatingHour?> opening_hours,
   }) = _Business;
 
@@ -130,7 +130,7 @@ class NewBusiness with _$NewBusiness {
     @Default([]) List<Map<String, dynamic>> subcategories,
 
     /// Services
-    @Default([]) List<String> services,
+    @Default([]) List<BusinessServiceModel> services,
 
     /// Addresses
     @Default([]) List<Address> addressDetails,
@@ -152,6 +152,17 @@ class OperatingHour with _$OperatingHour {
 
   factory OperatingHour.fromJson(Map<String, dynamic> json) =>
       _$OperatingHourFromJson(json);
+}
+
+@freezed
+class BusinessServiceModel with _$BusinessServiceModel {
+  factory BusinessServiceModel({
+    required String service,
+    required double price,
+  }) = _BusinessServiceModel;
+
+  factory BusinessServiceModel.fromJson(Map<String, dynamic> json) =>
+      _$BusinessServiceModelFromJson(json);
 }
 
 @freezed
