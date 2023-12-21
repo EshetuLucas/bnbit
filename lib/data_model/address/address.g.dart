@@ -23,6 +23,7 @@ _$AddressImpl _$$AddressImplFromJson(Map<String, dynamic> json) =>
       label: json['label'] as String?,
       sub_city: json['sub_city'] as String?,
       area: json['area'] as String?,
+      distance: (json['distance'] as num?)?.toDouble(),
       subcategories: (json['subcategories'] as List<dynamic>?)
           ?.map((e) => e as Map<String, dynamic>)
           .toList(),
@@ -45,6 +46,7 @@ Map<String, dynamic> _$$AddressImplToJson(_$AddressImpl instance) =>
       'label': instance.label,
       'sub_city': instance.sub_city,
       'area': instance.area,
+      'distance': instance.distance,
       'subcategories': instance.subcategories,
     };
 

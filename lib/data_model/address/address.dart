@@ -23,6 +23,7 @@ class Address with _$Address {
     String? label,
     String? sub_city,
     String? area,
+    double? distance,
     List<Map<String, dynamic>>? subcategories,
   }) = _Address;
 
@@ -54,6 +55,21 @@ class Address with _$Address {
       displayName = displayName.replaceFirst(',', '');
     }
 
+    return displayName;
+  }
+
+  String get displayLocationName {
+    String displayName = '';
+
+    if (sub_city != null) {
+      displayName = sub_city!;
+    }
+
+    displayName = displayName + ', ' + city + ', ' + country;
+
+    if (displayName.trim().startsWith(',')) {
+      displayName = displayName.replaceFirst(',', '');
+    }
     return displayName;
   }
 

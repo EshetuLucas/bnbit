@@ -35,6 +35,7 @@ mixin _$Address {
   String? get label => throw _privateConstructorUsedError;
   String? get sub_city => throw _privateConstructorUsedError;
   String? get area => throw _privateConstructorUsedError;
+  double? get distance => throw _privateConstructorUsedError;
   List<Map<String, dynamic>>? get subcategories =>
       throw _privateConstructorUsedError;
 
@@ -64,6 +65,7 @@ abstract class $AddressCopyWith<$Res> {
       String? label,
       String? sub_city,
       String? area,
+      double? distance,
       List<Map<String, dynamic>>? subcategories});
 }
 
@@ -95,6 +97,7 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
     Object? label = freezed,
     Object? sub_city = freezed,
     Object? area = freezed,
+    Object? distance = freezed,
     Object? subcategories = freezed,
   }) {
     return _then(_value.copyWith(
@@ -158,6 +161,10 @@ class _$AddressCopyWithImpl<$Res, $Val extends Address>
           ? _value.area
           : area // ignore: cast_nullable_to_non_nullable
               as String?,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
       subcategories: freezed == subcategories
           ? _value.subcategories
           : subcategories // ignore: cast_nullable_to_non_nullable
@@ -189,6 +196,7 @@ abstract class _$$AddressImplCopyWith<$Res> implements $AddressCopyWith<$Res> {
       String? label,
       String? sub_city,
       String? area,
+      double? distance,
       List<Map<String, dynamic>>? subcategories});
 }
 
@@ -218,6 +226,7 @@ class __$$AddressImplCopyWithImpl<$Res>
     Object? label = freezed,
     Object? sub_city = freezed,
     Object? area = freezed,
+    Object? distance = freezed,
     Object? subcategories = freezed,
   }) {
     return _then(_$AddressImpl(
@@ -281,6 +290,10 @@ class __$$AddressImplCopyWithImpl<$Res>
           ? _value.area
           : area // ignore: cast_nullable_to_non_nullable
               as String?,
+      distance: freezed == distance
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
       subcategories: freezed == subcategories
           ? _value._subcategories
           : subcategories // ignore: cast_nullable_to_non_nullable
@@ -308,6 +321,7 @@ class _$AddressImpl extends _Address {
       this.label,
       this.sub_city,
       this.area,
+      this.distance,
       final List<Map<String, dynamic>>? subcategories})
       : _subcategories = subcategories,
         super._();
@@ -345,6 +359,8 @@ class _$AddressImpl extends _Address {
   final String? sub_city;
   @override
   final String? area;
+  @override
+  final double? distance;
   final List<Map<String, dynamic>>? _subcategories;
   @override
   List<Map<String, dynamic>>? get subcategories {
@@ -382,6 +398,8 @@ class _$AddressImpl extends _Address {
             (identical(other.sub_city, sub_city) ||
                 other.sub_city == sub_city) &&
             (identical(other.area, area) || other.area == area) &&
+            (identical(other.distance, distance) ||
+                other.distance == distance) &&
             const DeepCollectionEquality()
                 .equals(other._subcategories, _subcategories));
   }
@@ -405,6 +423,7 @@ class _$AddressImpl extends _Address {
       label,
       sub_city,
       area,
+      distance,
       const DeepCollectionEquality().hash(_subcategories));
 
   @JsonKey(ignore: true)
@@ -438,6 +457,7 @@ abstract class _Address extends Address {
       final String? label,
       final String? sub_city,
       final String? area,
+      final double? distance,
       final List<Map<String, dynamic>>? subcategories}) = _$AddressImpl;
   _Address._() : super._();
 
@@ -473,6 +493,8 @@ abstract class _Address extends Address {
   String? get sub_city;
   @override
   String? get area;
+  @override
+  double? get distance;
   @override
   List<Map<String, dynamic>>? get subcategories;
   @override
