@@ -10,6 +10,7 @@ import 'package:bnbit_app/ui/widgets/image_place_holder.dart';
 import 'package:bnbit_app/ui/widgets/input_field.dart';
 import 'package:bnbit_app/ui/widgets/placeholder_image.dart';
 import 'package:bnbit_app/ui/widgets/ra_skeleton_loader.dart';
+import 'package:bnbit_app/ui/widgets/spinner.dart';
 import 'package:bnbit_app/ui/widgets/svg_builder.dart';
 import 'package:bnbit_app/utils/algorithm_helpers.dart';
 import 'package:bnbit_app/utils/asset_helper.dart';
@@ -144,10 +145,18 @@ class AddressSearchesView extends StackedView<AddressSearchesViewModel>
                             padding: const EdgeInsets.symmetric(vertical: 4),
                             child: Row(
                               children: [
-                                const SvgBuilder(
-                                  svg: locationSvg,
-                                  height: 19,
-                                ),
+                                if (viewModel.isBusy &&
+                                    viewModel.isSelectedIndex(index))
+                                  const SizedBox(
+                                    height: 10,
+                                    width: 10,
+                                    child: Spinner(),
+                                  )
+                                else
+                                  const SvgBuilder(
+                                    svg: locationSvg,
+                                    height: 19,
+                                  ),
                                 horizontalSpaceSmall,
                                 horizontalSpaceTiny,
                                 Expanded(
@@ -297,10 +306,13 @@ class _BodySection extends ViewModelWidget<AddressSearchesViewModel> {
                       height: 15,
                     ),
                     horizontalSpaceSmall,
-                    Text(
-                      recentSearchKeyword.displayAddress,
-                      style: ktsDarkSmall(context).copyWith(
-                        color: kcDark700,
+                    Expanded(
+                      child: Text(
+                        recentSearchKeyword.displayAddress,
+                        style: ktsDarkSmall(context).copyWith(
+                          color: kcDark700,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const Spacer(),

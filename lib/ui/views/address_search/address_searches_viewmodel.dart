@@ -33,20 +33,8 @@ class AddressSearchesViewModel extends FormViewModel {
   final List<Address> _recentAddresses = [];
   List<Address> get recentAddresses => _recentAddresses;
 
-  void getRecentAddresses() {
-    _recentAddresses.clear();
-    for (var element in recentSearches) {
-      _recentAddresses.add(Address.fromJson(json.decode(element)));
-    }
-  }
-
-  void onRecentSearchTap(int index) {
-    _address = _recentAddresses[index];
-    _searchKey = '';
-    searchController.text = _address!.displayAddress;
-    getBusinesses();
-    notifyListeners();
-  }
+  int _selectedIndex = 0;
+  bool isSelectedIndex(int index) => _selectedIndex == index;
 
   TextEditingController searchController;
 
@@ -90,12 +78,27 @@ class AddressSearchesViewModel extends FormViewModel {
   }
 
   void onClose() => _navigationService.back();
+  void getRecentAddresses() {
+    _recentAddresses.clear();
+    for (var element in recentSearches) {
+      _recentAddresses.add(Address.fromJson(json.decode(element)));
+    }
+  }
+
+  void onRecentSearchTap(int index) {
+    _address = _recentAddresses[index];
+    _searchKey = '';
+    searchController.text = _address!.displayAddress;
+    getBusinesses();
+    notifyListeners();
+  }
 
   void onBusinessTap(Business business) =>
       _navigationService.navigateToBusinessDetailView(business: business);
 
   void onSuggestionSelected(Description? description) async {
     try {
+      setBusy(true);
       _description = description;
       final placeId = _description?.place_id ?? '';
       final placeDetail = await _placesService.getPlaceDetails(placeId);
@@ -103,6 +106,8 @@ class AddressSearchesViewModel extends FormViewModel {
       notifyListeners();
     } catch (e) {
       log.e('Unable to get place detail $e');
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -245,14 +250,23 @@ class AddressSearchesViewModel extends FormViewModel {
   }
 
   Future<void> onPlaceTap(int index) async {
-    log.i('index $index');
-    _selectedPlace = _autoCompleteResults[index];
-    log.i('selectedPlace:$_selectedPlace');
-    await getPlaceDetails(_selectedPlace!);
-    updateSearchHistory();
-    _searchKey = '';
-    getBusinesses();
-    notifyListeners();
+    if (isBusy) return;
+    try {
+      _selectedIndex = index;
+      setBusy(true);
+      log.i('index $index');
+      _selectedPlace = _autoCompleteResults[index];
+      log.i('selectedPlace:$_selectedPlace');
+      await getPlaceDetails(_selectedPlace!);
+      updateSearchHistory();
+      _searchKey = '';
+      getBusinesses();
+      notifyListeners();
+    } catch (e) {
+      log.e(e);
+    } finally {
+      setBusy(false);
+    }
   }
 
   void clearSelectedPlaceDetail() {
@@ -289,17 +303,6 @@ class AddressSearchesViewModel extends FormViewModel {
         area: detail.locality,
         sub_city: detail.subLocality,
       );
-
-      // log.d(placesDetail);
-      // _address = Address(
-      //   city: placeInfo.city ?? 'Unknown',
-      //   country: placeInfo.city ?? 'Unknown',
-      //   latitude: placeInfo.lat ?? 0,
-      //   longitude: placeInfo.lng ?? 0,
-      //   state: placeInfo.state,
-      //   line1: placesDetail.mainText,
-      //   line2: placesDetail.secondaryText,
-      // );
 
       _searchKey = '';
       notifyListeners();
