@@ -86,6 +86,8 @@ class LoginView extends StatelessWidget with $LoginView {
                                             child: AbsorbPointer(
                                               absorbing: true,
                                               child: InputField(
+                                                isReadOnly: model.isBusy ||
+                                                    model.isSSOLogin,
                                                 fieldHeight: 48,
                                                 prefixIcon: Padding(
                                                   padding:
@@ -132,7 +134,6 @@ class LoginView extends StatelessWidget with $LoginView {
                                                     phoneNumberController,
                                                 maxLine: 1,
                                                 hasFocusedBorder: true,
-                                                isReadOnly: model.isBusy,
                                                 placeholder: 'Phone Number',
                                               ),
                                             ),
@@ -146,7 +147,8 @@ class LoginView extends StatelessWidget with $LoginView {
                                             maxLine: 1,
                                             hasFocusedBorder: true,
                                             textInputType: TextInputType.phone,
-                                            isReadOnly: model.isBusy,
+                                            isReadOnly: model.isBusy ||
+                                                model.isSSOLogin,
                                             nextFocusNode:
                                                 FocusScope.of(context),
                                             placeholder: 'Phone Number',
@@ -183,7 +185,8 @@ class LoginView extends StatelessWidget with $LoginView {
                                         FocusScope.of(context).unfocus();
                                         model.login();
                                       },
-                                      enabled: !model.isBusy,
+                                      enabled:
+                                          !model.isBusy && !model.isSSOLogin,
                                     ),
                                     verticalSpaceMedium,
                                     Padding(
@@ -233,26 +236,31 @@ class LoginView extends StatelessWidget with $LoginView {
                                         ),
                                       ),
                                     ),
-                                    Column(
-                                      children: [
-                                        SocialloginWidget(
-                                          onEmailSign: model.onEmailSignIn,
-                                          onGoogleSign: model.signInWithGoogle,
-                                          onAppleSign:
-                                              model.useAppleAuthentication,
-                                          isAppleSignInAvailable:
-                                              model.isAppleSignInAvailable,
-                                        ),
-                                        verticalSpaceSmall,
-                                        if (model.isBusy)
-                                          Container(
-                                            alignment: Alignment.center,
-                                            height: 22,
-                                            child: const Spinner(
-                                              size: 13,
-                                            ),
-                                          )
-                                      ],
+                                    AbsorbPointer(
+                                      absorbing:
+                                          model.isBusy || model.isSSOLogin,
+                                      child: Column(
+                                        children: [
+                                          SocialloginWidget(
+                                            onEmailSign: model.onEmailSignIn,
+                                            onGoogleSign:
+                                                model.signInWithGoogle,
+                                            onAppleSign:
+                                                model.useAppleAuthentication,
+                                            isAppleSignInAvailable:
+                                                model.isAppleSignInAvailable,
+                                          ),
+                                          verticalSpaceSmall,
+                                          if (model.isSSOLogin)
+                                            Container(
+                                              alignment: Alignment.center,
+                                              height: 22,
+                                              child: const Spinner(
+                                                size: 13,
+                                              ),
+                                            )
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),

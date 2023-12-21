@@ -13,6 +13,8 @@ import 'package:stacked_services/stacked_services.dart';
 import 'login_view.form.dart';
 import 'package:bnbit_app/extensions/string_extensions.dart';
 
+const String _ssoLoginKey = 'ssoLognKey';
+
 class LoginViewModel extends FormViewModel {
   final log = getLogger('LoginViewModel');
   final _navigationService = locator<NavigationService>();
@@ -21,6 +23,7 @@ class LoginViewModel extends FormViewModel {
   final _userService = locator<UserService>();
 
   bool get isEthiopia => _selectedCountry.name == 'Ethiopia';
+  bool get isSSOLogin => busy(_ssoLoginKey);
   bool get isAppleSignInAvailable => _authService.isAppleSignInAvailable;
   bool get enableLoginButton => _phoneNumberValidationMessage.isEmpty;
 
@@ -54,11 +57,10 @@ class LoginViewModel extends FormViewModel {
         setBusy(true);
         await Future.delayed(const Duration(seconds: 1));
         await _authService.loginWithPhone(
-          codeAutoRetrievalTimeout: onTimeOut,
-          phoneNumber: (phoneNumberValue ?? '').trim(),
-          verificationFailed: onVerificationFailed,
-          codeSent: onCodeSent,
-        );
+            codeAutoRetrievalTimeout: onTimeOut,
+            phoneNumber: selectedCountry.dialCode + phoneNumberValue!.trim(),
+            verificationFailed: onVerificationFailed,
+            codeSent: onCodeSent);
         return;
       } catch (e) {
         log.e("Unable to login: $e");
@@ -74,7 +76,8 @@ class LoginViewModel extends FormViewModel {
   }
 
   void onCodeSent(String? verificationId, int? forceResendingToken) {
-    _navigationService.navigateToVerifyOtpView(phoneNumber: phoneNumberValue!);
+    _navigationService.navigateToVerifyOtpView(
+        phoneNumber: (selectedCountry.dialCode + phoneNumberValue!).trim());
     setBusy(false);
   }
 
@@ -86,18 +89,19 @@ class LoginViewModel extends FormViewModel {
 
   Future<void> signInWithGoogle() async {
     try {
-      setBusy(true);
+      setBusyForObject(_ssoLoginKey, true);
       await _authService.signInWithGoogle();
       navigateToNextView();
     } catch (e) {
       log.e('Unable to sign-in with google: $e');
     } finally {
-      setBusy(false);
+      setBusyForObject(_ssoLoginKey, false);
     }
   }
 
   Future<void> useAppleAuthentication() async {
     log.i('useAppleAuthentication');
+    setBusyForObject(_ssoLoginKey, true);
     try {
       setBusy(true);
       await _authService.signInWithApple(
@@ -109,7 +113,7 @@ class LoginViewModel extends FormViewModel {
     } catch (e) {
       log.e('Unable to sign-in with google: $e');
     } finally {
-      setBusy(false);
+      setBusyForObject(_ssoLoginKey, false);
     }
   }
 
