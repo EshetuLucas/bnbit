@@ -49,8 +49,8 @@ class AuthenticationService with ListenableServiceMixin {
     try {
       final user = await _userService.getUserById(userId: uid);
       _userService.setCurrentUser(user);
-          // ignore: unnecessary_null_comparison
-          return user != null;
+      // ignore: unnecessary_null_comparison
+      return user != null;
     } catch (e) {
       log.e(e);
       return false;
@@ -150,7 +150,7 @@ class AuthenticationService with ListenableServiceMixin {
       id: user.uid,
       email: user.email ?? '',
       createdAt: DateTime.now(),
-      phone: user.phoneNumber,
+      phone_number: user.phoneNumber,
     );
 
     // Check if it's an existing user sign in via SSO.
@@ -217,7 +217,7 @@ class AuthenticationService with ListenableServiceMixin {
     required void Function(String, int?) codeSent,
     required void Function(String) codeAutoRetrievalTimeout,
   }) async {
-    final mobileNumber = '+251' + phoneNumber;
+    final mobileNumber = phoneNumber;
     log.v('mobileNumber:$mobileNumber');
 
     try {
@@ -264,18 +264,25 @@ class AuthenticationService with ListenableServiceMixin {
   }
 
   Future<bool> verifyOTP(
-    String otp,
-  ) async {
+    String otp, {
+    bool isNewUser = true,
+  }) async {
     log.i('otp$otp');
     try {
       final result = await _firebaseAuthenticationService.firebaseAuth
-          .signInWithCredential(PhoneAuthProvider.credential(
-        verificationId: _verificationId!,
-        smsCode: otp,
-      ));
-      return await _createUser(
-        FirebaseAuthenticationResult(user: result.user),
+          .signInWithCredential(
+        PhoneAuthProvider.credential(
+          verificationId: _verificationId!,
+          smsCode: otp,
+        ),
       );
+      if (isNewUser) {
+        return await _createUser(
+          FirebaseAuthenticationResult(user: result.user),
+        );
+      } else {
+        return true;
+      }
     } catch (e) {
       log.e("Unable to verify otp: $e");
       rethrow;

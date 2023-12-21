@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bnbit_app/api/user/user_apis.dart';
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.logger.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:bnbit_app/service/device_info_service.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
 //import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
@@ -107,6 +108,27 @@ class UserService {
     await _userApis.deleteAccount(currentUser.id);
     await _firebaseAuthentication.currentUser!.delete();
     _currentUser = null;
+  }
+
+  Future<void> reAuthUser() async {
+    String providerId =
+        _firebaseAuthentication.currentUser!.providerData.first.providerId;
+    switch (providerId) {
+      case 'phone':
+        break;
+      case 'password':
+        await _firebaseAuthentication.currentUser
+            ?.reauthenticateWithCredential(EmailAuthProvider.credential(
+          email: currentUser.email!,
+          password: 'password',
+        ));
+        break;
+      case 'google.com':
+        break;
+      case 'apple.com':
+        break;
+      default:
+    }
   }
 
   Future<void> resetPassword(String email) async {

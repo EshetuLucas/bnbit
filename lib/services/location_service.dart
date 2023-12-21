@@ -51,13 +51,12 @@ class LocationService {
   }
 
   Future<LocationData?> getUserLocation() async {
-    //updateUserLocationEvery3Minute();
-    _currentLocation = //await getLocation()
-        //??
+    updateUserLocationEvery3Minute();
+    _currentLocation = await getLocation() ??
         LocationData.fromMap({
-      'latitude': 9.003429960888363,
-      'longitude': 38.814238038050576,
-    });
+          'latitude': 9.003429960888363,
+          'longitude': 38.814238038050576,
+        });
 
     return currentLocation;
   }
@@ -82,7 +81,6 @@ class LocationService {
     final address = await geocoder.findAddressesFromCoordinates(
         geo.Coordinates(lng.latitude, lng.longitude));
     log.e('address:${address.first.featureName}');
-
     return address.first;
   }
 }
