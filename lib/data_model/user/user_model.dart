@@ -26,10 +26,10 @@ class UserModel with _$UserModel {
     String? email,
 
     /// User phone [optional]
-    String? phone,
+    String? phone_number,
 
     /// User first name [required]
-    required String first_name,
+    String? first_name,
 
     /// User first name [required]
     String? last_name,

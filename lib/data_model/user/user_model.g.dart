@@ -12,8 +12,8 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       is_active: json['is_active'] as bool? ?? false,
       getNotifications: json['getNotifications'] as bool? ?? true,
       email: json['email'] as String?,
-      phone: json['phone'] as String?,
-      first_name: json['first_name'] as String,
+      phone_number: json['phone_number'] as String?,
+      first_name: json['first_name'] as String?,
       last_name: json['last_name'] as String?,
       last_login: json['last_login'] == null
           ? null
@@ -38,7 +38,7 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'is_active': instance.is_active,
       'getNotifications': instance.getNotifications,
       'email': instance.email,
-      'phone': instance.phone,
+      'phone_number': instance.phone_number,
       'first_name': instance.first_name,
       'last_name': instance.last_name,
       'last_login': instance.last_login?.toIso8601String(),

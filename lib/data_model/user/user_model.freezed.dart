@@ -37,10 +37,10 @@ mixin _$UserModel {
   String? get email => throw _privateConstructorUsedError;
 
   /// User phone [optional]
-  String? get phone => throw _privateConstructorUsedError;
+  String? get phone_number => throw _privateConstructorUsedError;
 
   /// User first name [required]
-  String get first_name => throw _privateConstructorUsedError;
+  String? get first_name => throw _privateConstructorUsedError;
 
   /// User first name [required]
   String? get last_name => throw _privateConstructorUsedError;
@@ -71,8 +71,8 @@ abstract class $UserModelCopyWith<$Res> {
       bool is_active,
       bool getNotifications,
       String? email,
-      String? phone,
-      String first_name,
+      String? phone_number,
+      String? first_name,
       String? last_name,
       DateTime? last_login,
       String? profile_picture,
@@ -98,8 +98,8 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? is_active = null,
     Object? getNotifications = null,
     Object? email = freezed,
-    Object? phone = freezed,
-    Object? first_name = null,
+    Object? phone_number = freezed,
+    Object? first_name = freezed,
     Object? last_name = freezed,
     Object? last_login = freezed,
     Object? profile_picture = freezed,
@@ -124,14 +124,14 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
+      phone_number: freezed == phone_number
+          ? _value.phone_number
+          : phone_number // ignore: cast_nullable_to_non_nullable
               as String?,
-      first_name: null == first_name
+      first_name: freezed == first_name
           ? _value.first_name
           : first_name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       last_name: freezed == last_name
           ? _value.last_name
           : last_name // ignore: cast_nullable_to_non_nullable
@@ -173,8 +173,8 @@ abstract class _$$UserModelImplCopyWith<$Res>
       bool is_active,
       bool getNotifications,
       String? email,
-      String? phone,
-      String first_name,
+      String? phone_number,
+      String? first_name,
       String? last_name,
       DateTime? last_login,
       String? profile_picture,
@@ -198,8 +198,8 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? is_active = null,
     Object? getNotifications = null,
     Object? email = freezed,
-    Object? phone = freezed,
-    Object? first_name = null,
+    Object? phone_number = freezed,
+    Object? first_name = freezed,
     Object? last_name = freezed,
     Object? last_login = freezed,
     Object? profile_picture = freezed,
@@ -224,14 +224,14 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      phone: freezed == phone
-          ? _value.phone
-          : phone // ignore: cast_nullable_to_non_nullable
+      phone_number: freezed == phone_number
+          ? _value.phone_number
+          : phone_number // ignore: cast_nullable_to_non_nullable
               as String?,
-      first_name: null == first_name
+      first_name: freezed == first_name
           ? _value.first_name
           : first_name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       last_name: freezed == last_name
           ? _value.last_name
           : last_name // ignore: cast_nullable_to_non_nullable
@@ -269,8 +269,8 @@ class _$UserModelImpl extends _UserModel {
       this.is_active = false,
       this.getNotifications = true,
       this.email,
-      this.phone,
-      required this.first_name,
+      this.phone_number,
+      this.first_name,
       this.last_name,
       this.last_login,
       this.profile_picture,
@@ -308,11 +308,11 @@ class _$UserModelImpl extends _UserModel {
 
   /// User phone [optional]
   @override
-  final String? phone;
+  final String? phone_number;
 
   /// User first name [required]
   @override
-  final String first_name;
+  final String? first_name;
 
   /// User first name [required]
   @override
@@ -351,7 +351,7 @@ class _$UserModelImpl extends _UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, is_active: $is_active, getNotifications: $getNotifications, email: $email, phone: $phone, first_name: $first_name, last_name: $last_name, last_login: $last_login, profile_picture: $profile_picture, createdAt: $createdAt, userfcmTokens: $userfcmTokens, saved_business: $saved_business)';
+    return 'UserModel(id: $id, is_active: $is_active, getNotifications: $getNotifications, email: $email, phone_number: $phone_number, first_name: $first_name, last_name: $last_name, last_login: $last_login, profile_picture: $profile_picture, createdAt: $createdAt, userfcmTokens: $userfcmTokens, saved_business: $saved_business)';
   }
 
   @override
@@ -365,7 +365,8 @@ class _$UserModelImpl extends _UserModel {
             (identical(other.getNotifications, getNotifications) ||
                 other.getNotifications == getNotifications) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.phone, phone) || other.phone == phone) &&
+            (identical(other.phone_number, phone_number) ||
+                other.phone_number == phone_number) &&
             (identical(other.first_name, first_name) ||
                 other.first_name == first_name) &&
             (identical(other.last_name, last_name) ||
@@ -390,7 +391,7 @@ class _$UserModelImpl extends _UserModel {
       is_active,
       getNotifications,
       email,
-      phone,
+      phone_number,
       first_name,
       last_name,
       last_login,
@@ -419,8 +420,8 @@ abstract class _UserModel extends UserModel {
       final bool is_active,
       final bool getNotifications,
       final String? email,
-      final String? phone,
-      required final String first_name,
+      final String? phone_number,
+      final String? first_name,
       final String? last_name,
       final DateTime? last_login,
       final String? profile_picture,
@@ -454,11 +455,11 @@ abstract class _UserModel extends UserModel {
   @override
 
   /// User phone [optional]
-  String? get phone;
+  String? get phone_number;
   @override
 
   /// User first name [required]
-  String get first_name;
+  String? get first_name;
   @override
 
   /// User first name [required]
