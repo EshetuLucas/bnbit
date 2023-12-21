@@ -46,6 +46,7 @@ class GoogleMapPage extends StatelessWidget {
           ]),
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
       onMapCreated: onMapCreated,
       compassEnabled: false,
       initialCameraPosition: CameraPosition(

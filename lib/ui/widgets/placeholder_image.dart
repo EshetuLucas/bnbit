@@ -69,11 +69,12 @@ class PlaceholderImage extends StatelessWidget {
 
   Widget _image(bool isFromFile) {
     if (isFromFile) {
+      String url = imageUrl.split('assets/').last;
       return Image.asset(
-        imageUrl,
+        'assets/' + url,
         width: double.infinity,
         height: double.infinity,
-        fit: fit,
+        fit: BoxFit.contain,
       );
     } else {
       return CachedNetworkImage(
