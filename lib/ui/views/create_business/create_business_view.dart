@@ -72,9 +72,6 @@ class CreateBusinessView extends StackedView<CreateBusinessViewModel>
       webisteController.text = viewModel.selectedBusiness!.website ?? '';
       instagramController.text = viewModel.selectedBusiness!.instagram ?? '';
       telegramController.text = viewModel.selectedBusiness!.telegram ?? '';
-      servicesController.text = viewModel.selectedBusiness!.services.isEmpty
-          ? ''
-          : viewModel.selectedBusiness!.services.first;
     }
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
@@ -507,95 +504,11 @@ class _OperatingHoursWidget extends ViewModelWidget<CreateBusinessViewModel> {
 
   @override
   Widget build(BuildContext context, CreateBusinessViewModel viewModel) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
-        'Operating hours',
-        style: ktsSmall(context).copyWith(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: kcDark.withOpacity(0.8),
-        ),
-      ),
-      verticalSpaceTiny,
-      if (!viewModel.hasSelectedTradinghours)
-        InkWell(
-          onTap: viewModel.onOperatingHoursTap,
-          child: InputField(
-            hintTextStyle: ktsSmall(context),
-            placeholder: 'Operating hours',
-
-            maxLine: 1,
-            // onChanged: viewModel.onChange,
-            hasFocusedBorder: true,
-            textInputType: TextInputType.name,
-            isReadOnly: viewModel.isBusy,
-
-            suffixIcon: const Padding(
-              padding: EdgeInsets.all(18.0),
-              child: MoreIcon(),
-            ),
-          ),
-        )
-      else
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Column(
-            children: viewModel.selectedTradingHours.entries
-                .map(
-                  (tradingHourEntry) => Column(
-                    children: [
-                      verticalSpaceSmall,
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            tradingHourEntry.key,
-                            style: ktsSmall(context).copyWith(
-                              fontSize: 12,
-                              color: kcDarkGrey,
-                            ),
-                          ),
-                          Text(
-                            '${tradingHourEntry.value!.startTime.format(context)} - ${tradingHourEntry.value!.endTime.format(context)}',
-                            style: ktsSmall(context).copyWith(
-                              fontSize: 12,
-                              color: kcDarkGrey,
-                            ),
-                          )
-                        ],
-                      ),
-                      verticalSpaceSmall,
-                      const Divider(),
-                    ],
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-      if (viewModel.hasSelectedTradinghours)
-        InkWell(
-          onTap: viewModel.onOperatingHoursTap,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Edit',
-                style: ktsSmall(context)
-                    .copyWith(color: kcPrimaryColor, fontSize: 14),
-              ),
-              horizontalSpaceSmall,
-              const SvgBuilder(
-                svg: editSvg,
-                color: kcPrimaryColor,
-              ),
-            ],
-          ),
-        ),
-      if (viewModel.selectedBusiness != null) ...[
-        verticalSpaceSmall,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         Text(
-          'Services',
+          'Operating hours',
           style: ktsSmall(context).copyWith(
             fontSize: 11,
             fontWeight: FontWeight.w600,
@@ -603,23 +516,170 @@ class _OperatingHoursWidget extends ViewModelWidget<CreateBusinessViewModel> {
           ),
         ),
         verticalSpaceTiny,
-        InputField(
-          contentPadding: const EdgeInsets.only(
-            left: 16,
-            top: 23,
-            bottom: 0,
-            right: 10,
+        if (!viewModel.hasSelectedTradinghours)
+          InkWell(
+            onTap: viewModel.onOperatingHoursTap,
+            child: InputField(
+              hintTextStyle: ktsSmall(context),
+              placeholder: 'Operating hours',
+
+              maxLine: 1,
+              // onChanged: viewModel.onChange,
+              hasFocusedBorder: true,
+              textInputType: TextInputType.name,
+              isReadOnly: viewModel.isBusy,
+
+              suffixIcon: const Padding(
+                padding: EdgeInsets.all(18.0),
+                child: MoreIcon(),
+              ),
+            ),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Column(
+              children: viewModel.selectedTradingHours.entries
+                  .map(
+                    (tradingHourEntry) => Column(
+                      children: [
+                        verticalSpaceSmall,
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              tradingHourEntry.key,
+                              style: ktsSmall(context).copyWith(
+                                fontSize: 12,
+                                color: kcDarkGrey,
+                              ),
+                            ),
+                            Text(
+                              '${tradingHourEntry.value!.startTime.format(context)} - ${tradingHourEntry.value!.endTime.format(context)}',
+                              style: ktsSmall(context).copyWith(
+                                fontSize: 12,
+                                color: kcDarkGrey,
+                              ),
+                            )
+                          ],
+                        ),
+                        verticalSpaceSmall,
+                        const Divider(),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
-          fieldHeight: 140,
-          placeholder: 'Service one, Service two, ....',
-          maxLine: 8,
-          hasFocusedBorder: true,
-          textInputType: TextInputType.name,
-          isReadOnly: viewModel.isBusy,
-          controller: servicesController,
-        ),
-      ]
-    ]);
+        if (viewModel.hasSelectedTradinghours)
+          InkWell(
+            onTap: viewModel.onOperatingHoursTap,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Edit',
+                  style: ktsSmall(context)
+                      .copyWith(color: kcPrimaryColor, fontSize: 14),
+                ),
+                horizontalSpaceSmall,
+                const SvgBuilder(
+                  svg: editSvg,
+                  color: kcPrimaryColor,
+                ),
+              ],
+            ),
+          ),
+        if (viewModel.selectedBusiness != null) ...[
+          verticalSpaceSmall,
+          Text(
+            'Services',
+            style: ktsSmall(context).copyWith(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: kcDark.withOpacity(0.8),
+            ),
+          ),
+          verticalSpaceTiny,
+          if (viewModel.services.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                spacing: 4,
+                runSpacing: 6,
+                children: viewModel.services
+                    .map(
+                      (service) => Wrap(
+                        spacing: 4,
+                        runSpacing: 6,
+                        children: [
+                          DecoratedContainer(
+                            // onTap: viewModel.onAddAddress,
+                            borderRadius: 30,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 8),
+                                  child: Text(
+                                    service.service,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: ktsSmall(context),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 8),
+                                  child: Text(
+                                    service.price.toString(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: ktsSmall(context),
+                                  ),
+                                ),
+                                horizontalSpaceTiny,
+                              ],
+                            ),
+                          ),
+                          if (viewModel.isLastService(service))
+                            DecoratedContainer(
+                              onTap: viewModel.onServicesTap,
+                              borderRadius: 30,
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 8),
+                                child: Text(' + Add'),
+                              ),
+                            )
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            )
+          else
+            InkWell(
+              onTap: viewModel.onServicesTap,
+              child: InputField(
+                suffixIcon: const Padding(
+                  padding: EdgeInsets.all(18.0),
+                  child: MoreIcon(),
+                ),
+                //fieldHeight: 140,
+                placeholder: 'Add services',
+                maxLine: 1,
+                hasFocusedBorder: true,
+                textInputType: TextInputType.name,
+                isReadOnly: viewModel.isBusy,
+                //  controller: servicesController,
+              ),
+            ),
+        ]
+      ],
+    );
   }
 }
 
@@ -751,25 +811,25 @@ class _Communication extends ViewModelWidget<CreateBusinessViewModel> {
           style: ktsSmall(context).copyWith(
               fontSize: 13, fontWeight: FontWeight.w600, color: kcPrimaryColor),
         ),
+        // verticalSpaceSmall,
+        // verticalSpaceSmall,
+        // InputField(
+        //   placeholder: 'Phone Number ',
+        //   labelText: 'Phone Number *',
+        //   maxLine: 1,
+        //   onChanged: (_) => viewModel.clearFormatErrorMessage('phone'),
+        //   hasFocusedBorder: true,
+        //   textInputType: TextInputType.phone,
+        //   isReadOnly: viewModel.isBusy,
+        //   controller: phoneController,
+        // ),
+        // if (viewModel.hasCommunicationFormatError('phone')) ...[
+        //   ValidationMessage(
+        //       title: viewModel.communicationFormatChecker['phone']!),
+        //   verticalSpaceSmall,
+        // ],
         verticalSpaceSmall,
         verticalSpaceSmall,
-        InputField(
-          placeholder: 'Phone Number ',
-          labelText: 'Phone Number *',
-          maxLine: 1,
-          onChanged: (_) => viewModel.clearFormatErrorMessage('phone'),
-          hasFocusedBorder: true,
-          textInputType: TextInputType.phone,
-          isReadOnly: viewModel.isBusy,
-          controller: phoneController,
-        ),
-        if (viewModel.hasCommunicationFormatError('phone')) ...[
-          ValidationMessage(
-              title: viewModel.communicationFormatChecker['phone']!),
-          verticalSpaceSmall,
-        ],
-        verticalSpaceSmall,
-        verticalSpaceTiny,
         InputField(
           placeholder: 'contact@examplebusiness.com',
           labelText: 'Email (optional)',
@@ -902,9 +962,16 @@ class _BasicSection extends ViewModelWidget<CreateBusinessViewModel> {
         verticalSpaceTiny,
         InputField(
           placeholder: 'Description',
+          contentPadding: const EdgeInsets.only(
+            left: 16,
+            top: 18,
+            bottom: 0,
+            right: 10,
+          ),
 
-          maxLine: 1,
+          maxLine: 6,
           // onChanged: viewModel.onChange,
+          fieldHeight: 110,
           hasFocusedBorder: true,
           textInputType: TextInputType.name,
           isReadOnly: viewModel.isBusy,

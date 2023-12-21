@@ -36,6 +36,7 @@ class CreateBusinessViewModel extends FormViewModel {
   Business? get selectedBusiness => _businessService.selectedBusiness;
 
   List<Address> get selectedAddress => newBusiness.addressDetails;
+  List<BusinessServiceModel> get services => newBusiness.services;
 
   File? _selectedFile;
   File? get selectedFile => _selectedFile;
@@ -106,6 +107,8 @@ class CreateBusinessViewModel extends FormViewModel {
   bool isLastAdress(address) => selectedAddress.last == address;
   bool isLastSubCategory(subCategory) =>
       _selectedSubCategories.last == subCategory;
+
+  bool isLastService(service) => services.last == service;
   bool get hasBusiness => selectedBusiness != null;
   bool get isDeletingBusiness => busy(_deleteBusinessKey);
 
@@ -204,6 +207,7 @@ class CreateBusinessViewModel extends FormViewModel {
     _businessService.setNewBusiness(newBusiness.copyWith(
       addressDetails: business.addresses,
       opening_hours: business.opening_hours,
+      services: business.services,
     ));
   }
 
@@ -251,7 +255,6 @@ class CreateBusinessViewModel extends FormViewModel {
       telegram: telegramValue,
       opening_hours: newBusiness.opening_hours,
       country: 'Ethiopia',
-      services: [servicesValue ?? ''],
     );
 
     log.d('businessToBeCreated:$businessToBeCreated');
@@ -296,7 +299,6 @@ class CreateBusinessViewModel extends FormViewModel {
       telegram: telegramValue,
       opening_hours: newBusiness.opening_hours,
       country: 'Ethiopia',
-      services: [servicesValue ?? ''],
     );
 
     log.d('businessToBeUpated:$businessToBeUpated');
@@ -495,6 +497,11 @@ class CreateBusinessViewModel extends FormViewModel {
   void onOperatingHoursTap() async {
     await _navigationService.navigateToSetScheduleView(
         tradingHours: selectedTradingHours);
+    notifyListeners();
+  }
+
+  void onServicesTap() async {
+    await _navigationService.navigateToServicesView();
     notifyListeners();
   }
 }
