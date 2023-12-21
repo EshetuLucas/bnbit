@@ -5,7 +5,8 @@ const Color kcPrimary2Color = Color(0xFF5D0DFC);
 const Color kcSecondaryColor = Color(0xFF536DFB);
 const Color kcQrColor = Color(0xFF283693);
 
-const Color kcGreen = Color(0xFF0B4402);
+const Color kcGreen = Color(0xFF96CB39);
+Color secondaryColor = const Color(0xFF96CB39);
 const Color kcWhite = Colors.white;
 const Color kcLightWhite = Color(0xFFF8F8F8);
 const Color kcDarkGreyColor = Color(0xFF1A1B1E);

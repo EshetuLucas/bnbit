@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ThemeClass {
   Color primaryColor = const Color(0xFF8F00FF);
-  Color secondaryColor = const Color(0xFF96CB39);
+Color secondaryColor = const Color(0xFF96CB39);
   Color kcDarkGreyColor = const Color(0xFF1A1B1E);
   Color kcLightGrey = const Color(0xFFA4A9B8);
   Color kcGrey3 = const Color(0xFF94A3B8);
