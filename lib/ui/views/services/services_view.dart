@@ -77,7 +77,10 @@ class ServicesView extends StackedView<ServicesViewModel> with $ServicesView {
                           final service = viewModel.services[index];
                           return _ServiceWidget(
                             serviceModel: service,
-                            onTap: () => viewModel.onAddService(index),
+                            onTap: () => viewModel.onAddService(
+                              index,
+                              businessServiceModel: service,
+                            ),
                             onRemove: () => viewModel.onRemove(index),
                           );
 
@@ -102,7 +105,7 @@ class ServicesView extends StackedView<ServicesViewModel> with $ServicesView {
                         onTap: () => viewModel
                             .onAddService(viewModel.services.length + 1),
                         service: BusinessServiceModel(
-                            service: 'Add service', price: 0),
+                            service: 'Add service', price: 0, currency: 'ETB'),
                         //  onRemove: () => viewModel.onRemove(index),
                       ),
                       // _Location(
@@ -286,40 +289,53 @@ class _ServiceWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             verticalSpaceTiny,
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    serviceModel.service,
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      serviceModel.service,
+                      textAlign: TextAlign.start,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
                 horizontalSpaceSmall,
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    serviceModel.price.toString(),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                horizontalSpaceTiny,
                 SizedBox(
-                  height: 30,
-                  width: 20,
-                  child: InkWell(
-                      onTap: onRemove,
-                      child: const SvgBuilder(
-                        svg: closeRedCircleSvg,
-                        height: 17,
-                      )),
+                  width: screenWidth(context) / 2.5,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          serviceModel.price.toString() +
+                              ' ${serviceModel.currency ?? 'ETB'}',
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      horizontalSpaceTiny,
+                      SizedBox(
+                        height: 30,
+                        width: 20,
+                        child: InkWell(
+                            onTap: onRemove,
+                            child: const SvgBuilder(
+                              svg: closeRedCircleSvg,
+                              height: 17,
+                            )),
+                      ),
+                    ],
+                  ),
                 ),
                 horizontalSpaceTiny,
               ],

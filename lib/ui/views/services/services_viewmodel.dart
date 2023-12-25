@@ -22,9 +22,14 @@ class ServicesViewModel extends BaseViewModel {
   late final List<BusinessServiceModel> _services = [...newBusiness.services];
   List<BusinessServiceModel> get services => _services;
 
-  void onAddService(int index) async {
+  void onAddService(
+    int index, {
+    BusinessServiceModel? businessServiceModel,
+  }) async {
     final result = await _bottomSheetService.showCustomSheet(
-        variant: BottomSheetType.inputField, title: 'Service');
+      variant: BottomSheetType.inputField,
+      data: businessServiceModel,
+    );
     if (result?.data == null) return;
     if (index < _services.length) {
       _services[index] = result!.data;
