@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:bnbit_app/services/url_launcher_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:get/get.dart';
 import 'package:bnbit_app/app/app.bottomsheets.dart';
@@ -15,7 +16,7 @@ import 'package:bnbit_app/extensions/string_extensions.dart';
 import 'package:bnbit_app/services/business_service.dart';
 import 'package:bnbit_app/services/custom_snackbar_service.dart';
 import 'package:bnbit_app/services/media_service.dart';
-import 'package:bnbit_app/ui/views/create_business/create_business_view.form.dart';
+import 'package:bnbit_app/ui/views/update_create_business/update_create_business_view.form.dart';
 import 'package:bnbit_app/ui/views/login_view/login_view.form.dart';
 import 'package:bnbit_app/ui/views/my_businesses/my_businesses_view.dart';
 import 'package:bnbit_app/utils/time.dart';
@@ -24,13 +25,14 @@ import 'package:stacked_services/stacked_services.dart';
 
 const String _deleteBusinessKey = 'delete business key';
 
-class CreateBusinessViewModel extends FormViewModel {
+class UpdateCreateBusinessViewModel extends FormViewModel {
   final log = getLogger('CreateBusinessViewModel');
   final _navigationService = locator<NavigationService>();
   final _businessService = locator<BusinessService>();
   final _bottomSheetService = locator<BottomSheetService>();
   final _mediaService = locator<MediaService>();
   final _snackService = locator<CustomSnackbarService>();
+  final _urlLauncherService = locator<UrlLauncherService>();
 
   NewBusiness get newBusiness => _businessService.newBusiness;
   Business? get selectedBusiness => _businessService.selectedBusiness;
@@ -240,6 +242,12 @@ class CreateBusinessViewModel extends FormViewModel {
       return;
     }
 
+    if (selectedTradingHours.isEmpty) {
+      _snackService.showWarning('Please add operating hours');
+      notifyListeners();
+      return;
+    }
+
     // if (_communicationFormatChecker.values
     //     .any((element) => !element.isNullOrEmpty)) {}
     setBusy(true);
@@ -264,7 +272,7 @@ class CreateBusinessViewModel extends FormViewModel {
         businessToBeCreated,
         _selectedFile,
       );
-      _navigationService.replaceWithCreateBusinessView();
+      _navigationService.replaceWithUpdateCreateBusinessView();
       _snackService.showSuccess('Business created successfully.');
 
       log.v('result:$result');
@@ -409,59 +417,6 @@ class CreateBusinessViewModel extends FormViewModel {
   void onAddressTap(Address address) async {
     onAddAddress();
     return;
-    final result = await _bottomSheetService.showCustomSheet(
-        variant: BottomSheetType.addressOption);
-
-    if (result != null) {
-      try {
-        if (result.confirmed) {
-          await onAddAddress();
-          return;
-          // _snackService.showSuccess('Business cover image changed');
-          // Make it cover
-        }
-        setBusy(true);
-        Business selectedBusiness = _businessService.selectedBusiness!;
-        final businessToBeUpated = newBusiness.copyWith(
-          name: selectedBusiness.name,
-          description: selectedBusiness.description,
-          subcategories:
-              selectedBusiness.subcategories.map((e) => {'id': e.id}).toList(),
-          phone_number: selectedBusiness.phone,
-          email: selectedBusiness.email,
-          website: selectedBusiness.website,
-          instagram: selectedBusiness.instagram,
-          telegram: selectedBusiness.telegram,
-          opening_hours: selectedBusiness.opening_hours,
-          logo: selectedBusiness.logo,
-          country: 'Ethiopia',
-          services: [],
-        );
-
-        if (!result.confirmed) {
-          await onAddAddress();
-          return;
-          // _snackService.showSuccess('Business cover image changed');
-          // Make it cover
-        } else {
-          if (selectedBusiness.addresses.length == 1) {
-            _snackService
-                .showWarning('Business should have at least one address.');
-
-            return;
-          }
-
-          await _businessService.deleteAddress(address.id!);
-          _snackService.showSuccess('Address deleted');
-        }
-      } catch (e) {
-        log.e('Something went wrong:$e');
-        _snackService.showError('Something went wrong! Try again');
-      } finally {
-        setBusy(false);
-        notifyListeners();
-      }
-    }
   }
 
   void onQrCodeTap() {
@@ -484,6 +439,9 @@ class CreateBusinessViewModel extends FormViewModel {
       case BusinessOption.preview:
         onBusinessTap();
         break;
+      case BusinessOption.support:
+        onSupport();
+        break;
       case BusinessOption.delete:
         onDelete();
         break;
@@ -503,5 +461,9 @@ class CreateBusinessViewModel extends FormViewModel {
   void onServicesTap() async {
     await _navigationService.navigateToServicesView();
     notifyListeners();
+  }
+
+  Future<void> onSupport() async {
+    await _urlLauncherService.openLink('https://t.me/+4ywvEDq_X9M5Y2Qx');
   }
 }

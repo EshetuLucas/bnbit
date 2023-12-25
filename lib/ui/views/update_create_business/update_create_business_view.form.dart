@@ -21,12 +21,12 @@ const String PhoneValueKey = 'phone';
 const String ServicesValueKey = 'services';
 
 final Map<String, TextEditingController>
-    _CreateBusinessViewTextEditingControllers = {};
+    _UpdateCreateBusinessViewTextEditingControllers = {};
 
-final Map<String, FocusNode> _CreateBusinessViewFocusNodes = {};
+final Map<String, FocusNode> _UpdateCreateBusinessViewFocusNodes = {};
 
 final Map<String, String? Function(String?)?>
-    _CreateBusinessViewTextValidations = {
+    _UpdateCreateBusinessViewTextValidations = {
   NameValueKey: null,
   DescriptionValueKey: null,
   EmailValueKey: null,
@@ -37,7 +37,7 @@ final Map<String, String? Function(String?)?>
   ServicesValueKey: null,
 };
 
-mixin $CreateBusinessView {
+mixin $UpdateCreateBusinessView {
   TextEditingController get nameController =>
       _getFormTextEditingController(NameValueKey);
   TextEditingController get descriptionController =>
@@ -68,21 +68,21 @@ mixin $CreateBusinessView {
     String key, {
     String? initialValue,
   }) {
-    if (_CreateBusinessViewTextEditingControllers.containsKey(key)) {
-      return _CreateBusinessViewTextEditingControllers[key]!;
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(key)) {
+      return _UpdateCreateBusinessViewTextEditingControllers[key]!;
     }
 
-    _CreateBusinessViewTextEditingControllers[key] =
+    _UpdateCreateBusinessViewTextEditingControllers[key] =
         TextEditingController(text: initialValue);
-    return _CreateBusinessViewTextEditingControllers[key]!;
+    return _UpdateCreateBusinessViewTextEditingControllers[key]!;
   }
 
   FocusNode _getFormFocusNode(String key) {
-    if (_CreateBusinessViewFocusNodes.containsKey(key)) {
-      return _CreateBusinessViewFocusNodes[key]!;
+    if (_UpdateCreateBusinessViewFocusNodes.containsKey(key)) {
+      return _UpdateCreateBusinessViewFocusNodes[key]!;
     }
-    _CreateBusinessViewFocusNodes[key] = FocusNode();
-    return _CreateBusinessViewFocusNodes[key]!;
+    _UpdateCreateBusinessViewFocusNodes[key] = FocusNode();
+    return _UpdateCreateBusinessViewFocusNodes[key]!;
   }
 
   /// Registers a listener on every generated controller that calls [model.setData()]
@@ -149,15 +149,16 @@ mixin $CreateBusinessView {
   void disposeForm() {
     // The dispose function for a TextEditingController sets all listeners to null
 
-    for (var controller in _CreateBusinessViewTextEditingControllers.values) {
+    for (var controller
+        in _UpdateCreateBusinessViewTextEditingControllers.values) {
       controller.dispose();
     }
-    for (var focusNode in _CreateBusinessViewFocusNodes.values) {
+    for (var focusNode in _UpdateCreateBusinessViewFocusNodes.values) {
       focusNode.dispose();
     }
 
-    _CreateBusinessViewTextEditingControllers.clear();
-    _CreateBusinessViewFocusNodes.clear();
+    _UpdateCreateBusinessViewTextEditingControllers.clear();
+    _UpdateCreateBusinessViewFocusNodes.clear();
   }
 }
 
@@ -188,8 +189,9 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({NameValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(NameValueKey)) {
-      _CreateBusinessViewTextEditingControllers[NameValueKey]?.text =
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
+        NameValueKey)) {
+      _UpdateCreateBusinessViewTextEditingControllers[NameValueKey]?.text =
           value ?? '';
     }
   }
@@ -199,10 +201,10 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({DescriptionValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
         DescriptionValueKey)) {
-      _CreateBusinessViewTextEditingControllers[DescriptionValueKey]?.text =
-          value ?? '';
+      _UpdateCreateBusinessViewTextEditingControllers[DescriptionValueKey]
+          ?.text = value ?? '';
     }
   }
 
@@ -211,8 +213,9 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({EmailValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(EmailValueKey)) {
-      _CreateBusinessViewTextEditingControllers[EmailValueKey]?.text =
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
+        EmailValueKey)) {
+      _UpdateCreateBusinessViewTextEditingControllers[EmailValueKey]?.text =
           value ?? '';
     }
   }
@@ -222,9 +225,9 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({WebisteValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
         WebisteValueKey)) {
-      _CreateBusinessViewTextEditingControllers[WebisteValueKey]?.text =
+      _UpdateCreateBusinessViewTextEditingControllers[WebisteValueKey]?.text =
           value ?? '';
     }
   }
@@ -234,9 +237,9 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({InstagramValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
         InstagramValueKey)) {
-      _CreateBusinessViewTextEditingControllers[InstagramValueKey]?.text =
+      _UpdateCreateBusinessViewTextEditingControllers[InstagramValueKey]?.text =
           value ?? '';
     }
   }
@@ -246,9 +249,9 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({TelegramValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
         TelegramValueKey)) {
-      _CreateBusinessViewTextEditingControllers[TelegramValueKey]?.text =
+      _UpdateCreateBusinessViewTextEditingControllers[TelegramValueKey]?.text =
           value ?? '';
     }
   }
@@ -258,8 +261,9 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({PhoneValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(PhoneValueKey)) {
-      _CreateBusinessViewTextEditingControllers[PhoneValueKey]?.text =
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
+        PhoneValueKey)) {
+      _UpdateCreateBusinessViewTextEditingControllers[PhoneValueKey]?.text =
           value ?? '';
     }
   }
@@ -269,9 +273,9 @@ extension ValueProperties on FormStateHelper {
       this.formValueMap..addAll({ServicesValueKey: value}),
     );
 
-    if (_CreateBusinessViewTextEditingControllers.containsKey(
+    if (_UpdateCreateBusinessViewTextEditingControllers.containsKey(
         ServicesValueKey)) {
-      _CreateBusinessViewTextEditingControllers[ServicesValueKey]?.text =
+      _UpdateCreateBusinessViewTextEditingControllers[ServicesValueKey]?.text =
           value ?? '';
     }
   }
@@ -383,11 +387,11 @@ extension Methods on FormStateHelper {
 
 /// Returns the validation message for the given key
 String? getValidationMessage(String key) {
-  final validatorForKey = _CreateBusinessViewTextValidations[key];
+  final validatorForKey = _UpdateCreateBusinessViewTextValidations[key];
   if (validatorForKey == null) return null;
 
   String? validationMessageForKey = validatorForKey(
-    _CreateBusinessViewTextEditingControllers[key]!.text,
+    _UpdateCreateBusinessViewTextEditingControllers[key]!.text,
   );
 
   return validationMessageForKey;
