@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:414289243591:android:c6242bca27bf8990b8fde2",
+        "android_client_info": {
+          "package_name": "com.bnbit.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414289243591-lhefbct71ima8csfmk05shoo66ao7cv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAIv4q8GAZ-CrJ-KmhWbgIGlF73l35uyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414289243591-eltuug381c6o9djlk0r0hog3k6m9bsfm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "414289243591-7le6n8hu940jj8d6cdbbtkfpi7u3qkn5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bnbit.app.bnbit",
+                "app_store_id": "6446858641"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:414289243591:android:5506db245a933544b8fde2",
         "android_client_info": {
           "package_name": "com.bnbit.app.bnbit"

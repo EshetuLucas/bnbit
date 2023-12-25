@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>414289243591-7le6n8hu940jj8d6cdbbtkfpi7u3qkn5.apps.googleusercontent.com</string>
+	<string>414289243591-ulnh90deh2hl6hevdduoftj1c06btvij.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.414289243591-7le6n8hu940jj8d6cdbbtkfpi7u3qkn5</string>
+	<string>com.googleusercontent.apps.414289243591-ulnh90deh2hl6hevdduoftj1c06btvij</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>414289243591-1fhin8il708mucq79v2qbqglfac05lic.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bnbit.app.bnbit</string>
+	<string>com.bnbit.app</string>
 	<key>PROJECT_ID</key>
 	<string>bnbit-app-370917</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:414289243591:ios:a4acb821a9012cd7b8fde2</string>
+	<string>1:414289243591:ios:40c3eb601e6fa9feb8fde2</string>
 </dict>
 </plist>

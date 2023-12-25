@@ -1,4 +1,4 @@
-package com.bnbit.app.bnbit
+package com.bnbit.app
 
 import io.flutter.embedding.android.FlutterActivity
 
