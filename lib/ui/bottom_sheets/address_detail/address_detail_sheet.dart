@@ -32,6 +32,7 @@ class AddressDetailSheet extends StackedView<AddressDetailSheetModel>
 
   @override
   void onViewModelReady(AddressDetailSheetModel viewModel) {
+    addressController.text = request.description ?? '';
     syncFormWithViewModel(viewModel);
     super.onViewModelReady(viewModel);
   }
