@@ -16,7 +16,7 @@ import '../../../app/app.logger.dart';
 
 const List<String> _urls = [
   'https://bnbit.com/terms-of-service/',
-  'https://bnbit.com/contact/',
+  'https://t.me/Bnbitapp_support',
   'https://bnbit.com/about/',
   'https://bnbit.com/privacy-policy/',
 ];
@@ -147,7 +147,7 @@ class AccountViewModel extends BaseViewModel {
   }
 
   void onAddYourBusiness() {
-    _navigationService.navigateToCreateBusinessView();
+    _navigationService.navigateToUpdateCreateBusinessView();
   }
 
   void onMyBusinessestTap({bool isSavedBusines = false}) {
