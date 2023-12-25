@@ -164,7 +164,7 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                       Padding(
                         padding: appSymmetricEdgePadding,
                         child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Column(
                             children: [
                               // Text(
@@ -423,7 +423,7 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                       verticalSpaceTiny,
                                       if (business.services.isNotEmpty)
                                         Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.all(6.0),
                                           child: Wrap(
                                             spacing: 4,
                                             runSpacing: 6,
@@ -436,22 +436,50 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                                       DecoratedContainer(
                                                         // onTap: viewModel.onAddAddress,
                                                         borderRadius: 30,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      10,
-                                                                  vertical: 8),
-                                                          child: Text(
-                                                            service.service,
-                                                            maxLines: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: ktsSmall(
-                                                                context),
-                                                          ),
+                                                        child: Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          10,
+                                                                      vertical:
+                                                                          8),
+                                                              child: Text(
+                                                                service.service,
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: ktsSmall(
+                                                                    context),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      horizontal:
+                                                                          10,
+                                                                      vertical:
+                                                                          8),
+                                                              child: Text(
+                                                                service.price
+                                                                        .toString() +
+                                                                    ' ${service.currency ?? 'ETB'}',
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                style: ktsSmall(
+                                                                    context),
+                                                              ),
+                                                            ),
+                                                            horizontalSpaceTiny,
+                                                          ],
                                                         ),
                                                       ),
                                                     ],

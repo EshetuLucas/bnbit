@@ -236,7 +236,7 @@ class BusinessDetailViewModel extends BaseViewModel {
 
   void onSettingTap() {
     _businessService.setSelectedBusiness(business);
-    _navigationService.navigateToCreateBusinessView();
+    _navigationService.navigateToUpdateCreateBusinessView();
   }
 
   Future<void> changeCamera(
