@@ -13,6 +13,7 @@ const bool _autoTextFieldValidation = true;
 
 const String InputValueKey = 'input';
 const String PriceValueKey = 'price';
+const String CurrencyValueKey = 'currency';
 
 final Map<String, TextEditingController>
     _InputFieldSheetTextEditingControllers = {};
@@ -23,6 +24,7 @@ final Map<String, String? Function(String?)?> _InputFieldSheetTextValidations =
     {
   InputValueKey: null,
   PriceValueKey: null,
+  CurrencyValueKey: null,
 };
 
 mixin $InputFieldSheet {
@@ -30,9 +32,12 @@ mixin $InputFieldSheet {
       _getFormTextEditingController(InputValueKey);
   TextEditingController get priceController =>
       _getFormTextEditingController(PriceValueKey);
+  TextEditingController get currencyController =>
+      _getFormTextEditingController(CurrencyValueKey);
 
   FocusNode get inputFocusNode => _getFormFocusNode(InputValueKey);
   FocusNode get priceFocusNode => _getFormFocusNode(PriceValueKey);
+  FocusNode get currencyFocusNode => _getFormFocusNode(CurrencyValueKey);
 
   TextEditingController _getFormTextEditingController(
     String key, {
@@ -60,6 +65,7 @@ mixin $InputFieldSheet {
   void syncFormWithViewModel(FormStateHelper model) {
     inputController.addListener(() => _updateFormData(model));
     priceController.addListener(() => _updateFormData(model));
+    currencyController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -73,6 +79,7 @@ mixin $InputFieldSheet {
   void listenToFormUpdated(FormViewModel model) {
     inputController.addListener(() => _updateFormData(model));
     priceController.addListener(() => _updateFormData(model));
+    currencyController.addListener(() => _updateFormData(model));
 
     _updateFormData(model, forceValidate: _autoTextFieldValidation);
   }
@@ -84,6 +91,7 @@ mixin $InputFieldSheet {
         ..addAll({
           InputValueKey: inputController.text,
           PriceValueKey: priceController.text,
+          CurrencyValueKey: currencyController.text,
         }),
     );
 
@@ -127,6 +135,7 @@ extension ValueProperties on FormStateHelper {
 
   String? get inputValue => this.formValueMap[InputValueKey] as String?;
   String? get priceValue => this.formValueMap[PriceValueKey] as String?;
+  String? get currencyValue => this.formValueMap[CurrencyValueKey] as String?;
 
   set inputValue(String? value) {
     this.setData(
@@ -148,22 +157,40 @@ extension ValueProperties on FormStateHelper {
     }
   }
 
+  set currencyValue(String? value) {
+    this.setData(
+      this.formValueMap..addAll({CurrencyValueKey: value}),
+    );
+
+    if (_InputFieldSheetTextEditingControllers.containsKey(CurrencyValueKey)) {
+      _InputFieldSheetTextEditingControllers[CurrencyValueKey]?.text =
+          value ?? '';
+    }
+  }
+
   bool get hasInput =>
       this.formValueMap.containsKey(InputValueKey) &&
       (inputValue?.isNotEmpty ?? false);
   bool get hasPrice =>
       this.formValueMap.containsKey(PriceValueKey) &&
       (priceValue?.isNotEmpty ?? false);
+  bool get hasCurrency =>
+      this.formValueMap.containsKey(CurrencyValueKey) &&
+      (currencyValue?.isNotEmpty ?? false);
 
   bool get hasInputValidationMessage =>
       this.fieldsValidationMessages[InputValueKey]?.isNotEmpty ?? false;
   bool get hasPriceValidationMessage =>
       this.fieldsValidationMessages[PriceValueKey]?.isNotEmpty ?? false;
+  bool get hasCurrencyValidationMessage =>
+      this.fieldsValidationMessages[CurrencyValueKey]?.isNotEmpty ?? false;
 
   String? get inputValidationMessage =>
       this.fieldsValidationMessages[InputValueKey];
   String? get priceValidationMessage =>
       this.fieldsValidationMessages[PriceValueKey];
+  String? get currencyValidationMessage =>
+      this.fieldsValidationMessages[CurrencyValueKey];
 }
 
 extension Methods on FormStateHelper {
@@ -171,11 +198,14 @@ extension Methods on FormStateHelper {
       this.fieldsValidationMessages[InputValueKey] = validationMessage;
   setPriceValidationMessage(String? validationMessage) =>
       this.fieldsValidationMessages[PriceValueKey] = validationMessage;
+  setCurrencyValidationMessage(String? validationMessage) =>
+      this.fieldsValidationMessages[CurrencyValueKey] = validationMessage;
 
   /// Clears text input fields on the Form
   void clearForm() {
     inputValue = '';
     priceValue = '';
+    currencyValue = '';
   }
 
   /// Validates text input fields on the Form
@@ -183,6 +213,7 @@ extension Methods on FormStateHelper {
     this.setValidationMessages({
       InputValueKey: getValidationMessage(InputValueKey),
       PriceValueKey: getValidationMessage(PriceValueKey),
+      CurrencyValueKey: getValidationMessage(CurrencyValueKey),
     });
   }
 }
@@ -204,4 +235,5 @@ void updateValidationData(FormStateHelper model) =>
     model.setValidationMessages({
       InputValueKey: getValidationMessage(InputValueKey),
       PriceValueKey: getValidationMessage(PriceValueKey),
+      CurrencyValueKey: getValidationMessage(CurrencyValueKey),
     });

@@ -15,6 +15,9 @@ class InputFieldSheetModel extends FormViewModel {
   String _priceValidationMessage = '';
   String get priceValidationMessage => _priceValidationMessage;
 
+  String _currencyValidationMessage = '';
+  String get currencyValidationMessage => _currencyValidationMessage;
+
   String _serviceValidationMessage = '';
   String get serviceValidationMessage => _serviceValidationMessage;
 
@@ -35,6 +38,10 @@ class InputFieldSheetModel extends FormViewModel {
     if (priceValue.isNullOrEmpty) {
       _priceValidationMessage = "Price can't be empty";
     }
+
+    if (priceValue.isNullOrEmpty) {
+      _currencyValidationMessage = "Currency can't be empty";
+    }
     notifyListeners();
   }
 
@@ -47,9 +54,9 @@ class InputFieldSheetModel extends FormViewModel {
     }
     completer?.call(SheetResponse(
       data: BusinessServiceModel(
-        service: inputValue!,
-        price: double.parse(priceValue!),
-      ),
+          service: inputValue!,
+          price: double.parse(priceValue!),
+          currency: currencyValue!),
     ));
   }
 }

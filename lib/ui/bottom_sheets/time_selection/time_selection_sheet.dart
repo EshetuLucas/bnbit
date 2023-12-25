@@ -1,4 +1,5 @@
 import 'package:bnbit_app/ui/bottom_sheets/basic_bottom_sheet.dart';
+import 'package:bnbit_app/ui/common/app_colors.dart';
 import 'package:bnbit_app/ui/widgets/app_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,10 +32,10 @@ class TimeSelectionSheet extends StatelessWidget {
             SizedBox(
               height: 200,
               child: CupertinoTheme(
-                data: const CupertinoThemeData(
+                data: CupertinoThemeData(
                   textTheme: CupertinoTextThemeData(
-                    textStyle: TextStyle(color: Colors.white),
-                    // dateTimePickerTextStyle: TextStyle(color: Colors.white),
+                    textStyle: const TextStyle(color: Colors.white),
+                    dateTimePickerTextStyle: TextStyle(color: kcDark),
                   ),
                 ),
                 child: CupertinoDatePicker(

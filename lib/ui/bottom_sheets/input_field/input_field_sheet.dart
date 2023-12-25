@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bnbit_app/ui/bottom_sheets/basic_bottom_sheet.dart';
 import 'package:bnbit_app/ui/common/shared_styles.dart';
 import 'package:bnbit_app/ui/widgets/app_button.dart';
@@ -20,6 +22,9 @@ import 'input_field_sheet_model.dart';
     FormTextField(
       name: "price",
     ),
+    FormTextField(
+      name: "currency",
+    ),
   ],
 )
 class InputFieldSheet extends StackedView<InputFieldSheetModel>
@@ -34,8 +39,15 @@ class InputFieldSheet extends StackedView<InputFieldSheetModel>
   @override
   void onViewModelReady(InputFieldSheetModel viewModel) {
     syncFormWithViewModel(viewModel);
+
+    if (request.data != null) {
+      priceController.text = request.data!.price.toString();
+      inputController.text = request.data!.service.toString();
+      currencyController.text = request.data!.currency.toString();
+    }
     super.onViewModelReady(viewModel);
   }
+  //1000141321138
 
   @override
   void onDispose(InputFieldSheetModel viewModel) {
@@ -64,7 +76,7 @@ class InputFieldSheet extends StackedView<InputFieldSheetModel>
                   children: [
                     const Spacer(),
                     Text(
-                      request.title ?? 'Input',
+                      'Service',
                       style: ktsMediumDarkTextStyle(context).copyWith(),
                     ),
                     const Spacer(),
@@ -80,8 +92,8 @@ class InputFieldSheet extends StackedView<InputFieldSheetModel>
                 ),
                 verticalSpaceSmall,
                 InputField(
-                  placeholder: request.title ?? '',
-                  labelText: request.title ?? '',
+                  placeholder: request.data?.service ?? '',
+                  labelText: 'Service',
                   maxLine: 1,
                   autoFocus: true,
                   onChanged: (_) => viewModel.setServiceValidation(''),
@@ -95,9 +107,11 @@ class InputFieldSheet extends StackedView<InputFieldSheetModel>
                   verticalSpaceSmall,
                 ],
                 verticalSpaceMedium,
-                verticalSpaceSmall,
                 InputField(
-                  placeholder: 'Price',
+                  placeholder:
+                      request.data != null && request.data?.price != null
+                          ? request.data!.price.toString()
+                          : 'Price',
                   labelText: 'Price',
                   maxLine: 1,
                   autoFocus: true,
@@ -107,8 +121,23 @@ class InputFieldSheet extends StackedView<InputFieldSheetModel>
                   isReadOnly: viewModel.isBusy,
                   controller: priceController,
                 ),
-                if (viewModel.priceValidationMessage.isNotEmpty) ...[
-                  ValidationMessage(title: viewModel.priceValidationMessage),
+                verticalSpaceMedium,
+                InputField(
+                  placeholder:
+                      request.data != null && request.data?.currency != null
+                          ? request.data!.currency.toString()
+                          : 'ETB',
+                  labelText: 'Currency',
+                  maxLine: 1,
+                  autoFocus: true,
+                  onChanged: (_) => viewModel.setPriceValidation(''),
+                  hasFocusedBorder: true,
+                  textInputType: TextInputType.text,
+                  isReadOnly: viewModel.isBusy,
+                  controller: currencyController,
+                ),
+                if (viewModel.currencyValidationMessage.isNotEmpty) ...[
+                  ValidationMessage(title: viewModel.currencyValidationMessage),
                   verticalSpaceSmall,
                 ],
                 verticalSpaceMedium,
