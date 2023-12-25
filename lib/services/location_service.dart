@@ -52,24 +52,26 @@ class LocationService {
 
   Future<LocationData?> getUserLocation() async {
     updateUserLocationEvery3Minute();
-    _currentLocation = await getLocation() ??
+    _currentLocation =
+        //await getLocation() ??
         LocationData.fromMap({
-          'latitude': 9.003429960888363,
-          'longitude': 38.814238038050576,
-        });
+      'latitude': 9.003429960888363,
+      'longitude': 38.814238038050576,
+    });
 
     return currentLocation;
   }
 
   void updateUserLocationEvery3Minute() async {
     Timer.periodic(const Duration(minutes: 2), (timer) async {
-      _currentLocation = await getLocation() ??
+      _currentLocation =
+          //await getLocation() ??
           LocationData.fromMap(
-            {
-              'latitude': 9.003429960888363,
-              'longitude': 38.814238038050576,
-            },
-          );
+        {
+          'latitude': 9.003429960888363,
+          'longitude': 38.814238038050576,
+        },
+      );
     });
   }
 

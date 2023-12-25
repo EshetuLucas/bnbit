@@ -242,4 +242,159 @@ class BusinessService {
     await _categoryApis.deleteBusinessesAddress(id);
     _selectedBusiness = await getBusinessById(selectedBusiness!.id);
   }
+
+  Map<String, List<String>> tempCategories = {
+    'Beauty & Spa': [
+      'Spa',
+      'Massage',
+      'Makeup',
+      'Women Salons',
+      'Barber Shop',
+      'Face & Skin care',
+      'Hair & Styling',
+      'Tool & Accessories',
+      'Cosmetics',
+    ],
+    'Health & Fitness': [
+      'Gym',
+      'Dental',
+      'Vision',
+      'Medical',
+      'Pharmacy',
+      'Baby & Child care',
+      'Fitness Classes',
+      'Vitamims & Supplements',
+      'Natural Medicine',
+    ],
+    'For the Home': [
+      'Arts',
+      'Bath',
+      'Furniture',
+      'Home Appliances',
+      'Kitchen & Dining',
+      'Luggage',
+      'Mattresses & Accessories',
+      'Outdoor & Garden',
+      'Cleaning Supplies',
+    ],
+    'Electronics': [
+      'Computers & Tablets',
+      'Cell Phones & Accessories',
+      'Television & Home Theater',
+      'Musical Instruments',
+      'Smart Home & Lighting',
+      'Camera, Video & Surveillance',
+      'Phones & Computers Repairs',
+      'Video Games',
+    ],
+    'Personal Services': [
+      'Photography Studios',
+      'Home & Ourdoor Décor',
+      'Seasonal Decor',
+      'Consultants',
+      'Event Organizers',
+      'Event Rental Services',
+      'Writing & Printing',
+      'Catering',
+      'Laundry',
+    ],
+    'Home Services & Improvement': [
+      'Interior Design',
+      'Remodeling',
+      'Home Painting',
+      'Repairs',
+      'Electrical',
+      'Cleaning Services',
+    ],
+    'Entertainment': [
+      'Theater & Cinema',
+      'Game Centers',
+      'Tickets & Events',
+      'Night Club',
+      'Sport Events',
+      'Road Trip & Camping',
+      'Concerts',
+      'Day & Night Shows',
+    ],
+    'Automotive': [
+      'Repairs & Maintenance',
+      'Vehicle Emission Test',
+      'Auto Tools & Accessories',
+      'Auto Body Repairs',
+      'Camera & Security Installation',
+      'Tire & Wheels',
+      'Car Wash & Cleaning',
+    ],
+    'Learning': [
+      'Auto Driving',
+      'Hair Style',
+      'Makeup',
+      'Acting & Modeling',
+      'Art & Music',
+      'Language',
+      'Food'
+    ],
+    'Retail': [
+      'Cultural Clothing',
+      'Flowers',
+      'Personalized Gifts',
+      'Supermarket',
+      'Minimarket',
+      'Kids',
+      'Bookstore',
+      'Jewelry',
+      'Eyeglasses',
+      'Home & Garden',
+      'Sport Materials',
+      'Furniture',
+      'Electronics',
+      'Office & School supplies',
+      'Construction Materials',
+      'Metal Works',
+      'Agriculture & Tools'
+    ],
+    'Fashion': [
+      "Men's Fashion",
+      "Women's Fashion",
+      'Baby & Kids',
+      'Jewelry & Watches',
+      'Designers',
+    ],
+    'Hotels & Travel': [
+      'Hotels',
+      'Resorts',
+      'Guesthouses',
+      'Apartments',
+      'Outdoor & Adventures',
+      'Air Exclusive Trips',
+    ],
+    'Food & Drink': [
+      'Restaurants',
+      'Bars & Lounges',
+      'Smoothies & Joices',
+      'Cafes & Treats',
+      'Fresh Markets',
+      'Desserts & Icecreams',
+      'Butcheries',
+      'Breweries & Wineries',
+      'Liquor Store',
+    ],
+  };
+
+  Future<void> uploadCategoryAndSubCategory() async {
+    try {
+      tempCategories.forEach((key, value) async {
+        final result = await _categoryApis.addNewCategory(key);
+
+        for (var element in value) {
+          await _categoryApis.addNewSubCategory(
+            name: element,
+            category: result.id,
+          );
+        }
+      });
+    } catch (e) {
+      log.e("Unable to upload category: ");
+    }
+  }
 }
