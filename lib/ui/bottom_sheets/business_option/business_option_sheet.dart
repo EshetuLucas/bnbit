@@ -95,6 +95,23 @@ class _Header extends ViewModelWidget<BusinessOptionSheetModel> {
             const Divider(
               height: 1,
             ),
+            const Divider(
+              height: 1,
+            ),
+            Padding(
+              padding: appSymmetricEdgePadding,
+              child: ActionsItem(
+                title: 'Support',
+                icon: const SvgBuilder(svg: svgsPath + '/Support' + '.svg'),
+                hasTrailingIcon: false,
+                onTap: () => completer?.call(
+                  SheetResponse(data: BusinessOption.support),
+                ),
+              ),
+            ),
+            const Divider(
+              height: 1,
+            ),
             Padding(
               padding: appSymmetricEdgePadding,
               child: Padding(
