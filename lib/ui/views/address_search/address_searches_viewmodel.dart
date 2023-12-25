@@ -249,6 +249,31 @@ class AddressSearchesViewModel extends FormViewModel {
     }
   }
 
+  Future<void> defaultLocation() async {
+    _searchKey = '';
+    setBusy(true);
+    try {
+      _address = Address(
+        city: 'Addis Ababa',
+        country: 'Ethiopia',
+        latitude: 9.003429960888363,
+        longitude: 38.814238038050576,
+        state: 'Addis Ababa',
+        line2: 'Addis Ababa, Ethiopia',
+      );
+      _searchKey = '';
+      searchController.text = _address!.displayAddress;
+//      updateSearchHistory();
+      getBusinesses();
+      notifyListeners();
+      log.v('_address:$_address');
+    } catch (e) {
+      log.e('Unable to get location');
+    } finally {
+      setBusy(false);
+    }
+  }
+
   Future<void> onPlaceTap(int index) async {
     if (isBusy) return;
     try {

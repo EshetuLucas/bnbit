@@ -210,26 +210,52 @@ class _MyLocation extends ViewModelWidget<AddressSearchesViewModel> {
 
   @override
   Widget build(BuildContext context, AddressSearchesViewModel viewModel) {
-    return InkWell(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-        viewModel.setCurrentLocation();
-      },
-      child: Row(
-        children: [
-          const Icon(
-            Icons.my_location,
-            color: kcPrimaryColor,
+    return Column(
+      children: [
+        InkWell(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            viewModel.setCurrentLocation();
+          },
+          child: Row(
+            children: [
+              const Icon(
+                Icons.my_location,
+                color: kcPrimaryColor,
+              ),
+              horizontalSpaceSmall,
+              Text(
+                'Use My Current Location',
+                style: ktsSmall(context).copyWith(
+                  color: kcPrimaryColor,
+                ),
+              )
+            ],
           ),
-          horizontalSpaceSmall,
-          Text(
-            'Use My Current Location',
-            style: ktsSmall(context).copyWith(
-              color: kcPrimaryColor,
-            ),
-          )
-        ],
-      ),
+        ),
+        verticalSpaceSmall,
+        InkWell(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            viewModel.defaultLocation();
+          },
+          child: Row(
+            children: [
+              const Icon(
+                Icons.location_on,
+                color: kcPrimaryColor,
+              ),
+              horizontalSpaceSmall,
+              Text(
+                'Default Location',
+                style: ktsSmall(context).copyWith(
+                  color: kcPrimaryColor,
+                ),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }
