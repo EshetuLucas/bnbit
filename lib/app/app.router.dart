@@ -20,8 +20,6 @@ import 'package:bnbit_app/ui/views/change_password/change_password_view.dart'
     as _i22;
 import 'package:bnbit_app/ui/views/change_success/change_success_view.dart'
     as _i23;
-import 'package:bnbit_app/ui/views/create_business/create_business_view.dart'
-    as _i7;
 import 'package:bnbit_app/ui/views/create_profile/create_profile_view.dart'
     as _i6;
 import 'package:bnbit_app/ui/views/dashboard/dashboard_view.dart' as _i27;
@@ -52,6 +50,8 @@ import 'package:bnbit_app/ui/views/set_trading_hours/set_trading_hours_view.dart
 import 'package:bnbit_app/ui/views/show_full_image/show_full_image_view.dart'
     as _i26;
 import 'package:bnbit_app/ui/views/startup/startup_view.dart' as _i3;
+import 'package:bnbit_app/ui/views/update_create_business/update_create_business_view.dart'
+    as _i7;
 import 'package:bnbit_app/ui/views/verify_otp/verify_otp_view.dart' as _i4;
 import 'package:bnbit_app/ui/views/view_images/view_images_view.dart' as _i31;
 import 'package:flutter/material.dart';
@@ -70,7 +70,7 @@ class Routes {
 
   static const createProfileView = '/create-profile-view';
 
-  static const createBusinessView = '/create-business-view';
+  static const updateCreateBusinessView = '/update-create-business-view';
 
   static const accountView = '/account-view';
 
@@ -128,7 +128,7 @@ class Routes {
     verifyOtpView,
     landingView,
     createProfileView,
-    createBusinessView,
+    updateCreateBusinessView,
     accountView,
     businessLocationsView,
     forgotPasswordView,
@@ -180,8 +180,8 @@ class StackedRouter extends _i1.RouterBase {
       page: _i6.CreateProfileView,
     ),
     _i1.RouteDef(
-      Routes.createBusinessView,
-      page: _i7.CreateBusinessView,
+      Routes.updateCreateBusinessView,
+      page: _i7.UpdateCreateBusinessView,
     ),
     _i1.RouteDef(
       Routes.accountView,
@@ -332,9 +332,9 @@ class StackedRouter extends _i1.RouterBase {
         settings: data,
       );
     },
-    _i7.CreateBusinessView: (data) {
+    _i7.UpdateCreateBusinessView: (data) {
       return _i33.MaterialPageRoute<dynamic>(
-        builder: (context) => const _i7.CreateBusinessView(),
+        builder: (context) => const _i7.UpdateCreateBusinessView(),
         settings: data,
       );
     },
@@ -1133,14 +1133,14 @@ extension NavigatorStateExtension on _i36.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> navigateToCreateBusinessView([
+  Future<dynamic> navigateToUpdateCreateBusinessView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return navigateTo<dynamic>(Routes.createBusinessView,
+    return navigateTo<dynamic>(Routes.updateCreateBusinessView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -1643,14 +1643,14 @@ extension NavigatorStateExtension on _i36.NavigationService {
         transition: transition);
   }
 
-  Future<dynamic> replaceWithCreateBusinessView([
+  Future<dynamic> replaceWithUpdateCreateBusinessView([
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)?
         transition,
   ]) async {
-    return replaceWith<dynamic>(Routes.createBusinessView,
+    return replaceWith<dynamic>(Routes.updateCreateBusinessView,
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

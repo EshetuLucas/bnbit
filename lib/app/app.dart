@@ -26,7 +26,7 @@ import 'package:bnbit_app/ui/bottom_sheets/country_picker/country_picker_sheet.d
 import 'package:bnbit_app/ui/views/landing/landing_view.dart';
 import 'package:bnbit_app/ui/bottom_sheets/category/category_sheet.dart';
 import 'package:bnbit_app/ui/views/create_profile/create_profile_view.dart';
-import 'package:bnbit_app/ui/views/create_business/create_business_view.dart';
+import 'package:bnbit_app/ui/views/update_create_business/update_create_business_view.dart';
 import 'package:bnbit_app/ui/views/account/account_view.dart';
 import 'package:bnbit_app/ui/views/business_locations/business_locations_view.dart';
 import 'package:bnbit_app/ui/bottom_sheets/select_location/select_location_sheet.dart';
@@ -75,7 +75,7 @@ import 'package:bnbit_app/ui/bottom_sheets/single_input/single_input_sheet.dart'
     MaterialRoute(page: VerifyOtpView),
     MaterialRoute(page: LandingView),
     MaterialRoute(page: CreateProfileView),
-    MaterialRoute(page: CreateBusinessView),
+    MaterialRoute(page: UpdateCreateBusinessView),
     MaterialRoute(page: AccountView),
     MaterialRoute(page: BusinessLocationsView),
     MaterialRoute(page: ForgotPasswordView),
@@ -104,10 +104,10 @@ import 'package:bnbit_app/ui/bottom_sheets/single_input/single_input_sheet.dart'
 
     MaterialRoute(page: DashboardView),
     MaterialRoute(page: AddressSearchesView),
-MaterialRoute(page: RecentSearchesView),
-MaterialRoute(page: ServicesView),
-MaterialRoute(page: ViewImagesView),
-MaterialRoute(page: DeleteAccountView),
+    MaterialRoute(page: RecentSearchesView),
+    MaterialRoute(page: ServicesView),
+    MaterialRoute(page: ViewImagesView),
+    MaterialRoute(page: DeleteAccountView),
 // @stacked-route
   ],
   dependencies: [
@@ -149,8 +149,8 @@ MaterialRoute(page: DeleteAccountView),
     StackedBottomsheet(classType: BusinessOptionSheet),
     StackedBottomsheet(classType: TimeSelectionSheet),
     StackedBottomsheet(classType: AddressDetailSheet),
-StackedBottomsheet(classType: InputFieldSheet),
-StackedBottomsheet(classType: SingleInputSheet),
+    StackedBottomsheet(classType: InputFieldSheet),
+    StackedBottomsheet(classType: SingleInputSheet),
 // @stacked-bottom-sheet
   ],
   dialogs: [
