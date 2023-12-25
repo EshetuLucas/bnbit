@@ -327,11 +327,11 @@ class _SubCategories extends ViewModelWidget<LandingViewModel> {
     return SizedBox(
       height: 50,
       child: ListView.separated(
+        key: viewModel.isBusy ? null : PageStorageKey(viewModel.pageKey),
         padding: appSymmetricEdgePadding,
         shrinkWrap: viewModel.isBusy,
         scrollDirection: Axis.horizontal,
         itemCount: viewModel.subCategories.length,
-        //viewModel.specialitites.length,
         separatorBuilder: (BuildContext context, int index) {
           return horizontalSpaceSmall;
         },
@@ -417,51 +417,65 @@ class _Header extends ViewModelWidget<LandingViewModel> {
   @override
   Widget build(BuildContext context, LandingViewModel viewModel) {
     return Container(
-      padding: appSymmetricEdgePadding,
+      padding: EdgeInsets.only(left: 20, right: 8),
       child: Row(
         children: [
-          InkWell(
-            onTap: viewModel.onChangeCategory,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                verticalSpaceTiny,
-                RASkeletonLoader(
-                  loading: viewModel.isBusy,
-                  child: Row(
-                    children: [
+          Flexible(
+            flex: 5,
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: screenWidth(context) / 1.5,
+              ),
+              child: InkWell(
+                onTap: viewModel.onChangeCategory,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    verticalSpaceTiny,
+                    RASkeletonLoader(
+                      loading: viewModel.isBusy,
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              viewModel.isBusy
+                                  ? '                 '
+                                  : viewModel.selectedCategory.name,
+                              style:
+                                  ktsBoldMeidumDarkTextStyle(context).copyWith(
+                                color: kcPrimaryColor,
+                                fontSize: 18.4,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          horizontalSpaceTiny,
+                          const Icon(
+                            Icons.expand_more,
+                            size: 25,
+                            color: kcPrimaryColor,
+                          )
+                        ],
+                      ),
+                    ),
+                    if (!viewModel.isBusy)
                       Text(
-                        viewModel.isBusy
-                            ? '                 '
-                            : viewModel.selectedCategory.name,
-                        style: ktsBoldMeidumDarkTextStyle(context).copyWith(
-                          color: kcPrimaryColor,
-                          fontSize: 18.4,
+                        'Tap to change category',
+                        style: ktsSmall(context).copyWith(
+                          fontSize: 10,
+                          color: kcDark700Light,
                         ),
                       ),
-                      horizontalSpaceTiny,
-                      const Icon(
-                        Icons.expand_more,
-                        size: 25,
-                        color: kcPrimaryColor,
-                      )
-                    ],
-                  ),
+                  ],
                 ),
-                if (!viewModel.isBusy)
-                  Text(
-                    'Tap to change category',
-                    style: ktsSmall(context).copyWith(
-                      fontSize: 10,
-                      color: kcDark700Light,
-                    ),
-                  ),
-              ],
+              ),
             ),
           ),
-          if (viewModel.isBusy) horizontalSpaceLarge else horizontalSpaceMedium,
+          if (viewModel.isBusy) horizontalSpaceLarge else horizontalSpaceSmall,
 
-          Expanded(
+          Flexible(
+            flex: 3,
             child: Align(
               alignment: Alignment.centerRight,
               child: RASkeletonLoader(
@@ -480,7 +494,7 @@ class _Header extends ViewModelWidget<LandingViewModel> {
                             color: kcPrimaryColor,
                             height: 14,
                           ),
-                          horizontalSpaceTiny,
+                          horizontalSpace(2),
                           Flexible(
                             child: Text(
                               viewModel.currentLocationName ?? 'Addis Aababa',

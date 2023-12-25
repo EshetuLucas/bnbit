@@ -89,6 +89,9 @@ class LandingViewModel extends BaseViewModel {
     return value;
   }
 
+  String get pageKey => _pageKey;
+  String _pageKey = '';
+
   bool _isMapView = false;
   bool get isMapView => _isMapView;
 
@@ -135,18 +138,16 @@ class LandingViewModel extends BaseViewModel {
   Future<void> setCurrentLocation() async {
     await _locationService.getUserLocation();
 
-    Address address = await _locationService.getLocationDetail(
+    await _locationService.getLocationDetail(
         LatLng(currentLocation!.latitude!, currentLocation!.longitude!));
     _address = business_address.Address(
-      city: address.locality!,
-      country: address.countryName!,
-      latitude: currentLocation!.latitude!,
-      longitude: currentLocation!.longitude!,
-      state: address.adminArea,
-      line1: address.subLocality,
-      line2: address.addressLine,
-      sub_city: address.subLocality,
-      area: address.subAdminArea,
+      city: 'Addis Ababa',
+      country: 'Ethiopia',
+      latitude: 9.003429960888363,
+      longitude: 38.814238038050576,
+      state: 'Addis Ababa',
+      line1: 'Bole',
+      line2: 'Addis Ababa, Ethiopia',
     );
     log.d('_address:$_address');
     setCurrentLocationName(value: _address?.displayLocationName ?? '');
@@ -161,7 +162,7 @@ class LandingViewModel extends BaseViewModel {
   Future<void> init() async {
     onChangeView(value: false);
 
-    if (_nearByBusinesseses.isNotEmpty) {
+    if (_selectedCategory != null) {
       await getBusinesses(loadAgain: false);
       return;
     }
@@ -195,14 +196,15 @@ class LandingViewModel extends BaseViewModel {
     await Future.delayed(const Duration(milliseconds: 200));
     try {
       _businesseses = await _businessService.getBusinesses(
-        lat: currentLocation?.latitude,
-        lng: currentLocation?.longitude,
-        subCategory: subCategories[_selectedIndex].id,
-        sub_city: _address?.sub_city,
-        city: _address?.city,
-        state: _address?.area,
-        country: _address?.country,
-      );
+          lat: currentLocation?.latitude,
+          lng: currentLocation?.longitude,
+          subCategory: subCategories[_selectedIndex].id,
+          sub_city: _address?.sub_city,
+          city: _address?.city,
+          state: _address?.state ?? _address?.area,
+          country: _address?.country,
+          line1: _address?.line1,
+          line2: _address?.line2);
       getBusinessBasedOnUserLocation();
       if (_nearByBusinesseses.isNotEmpty) {
         activeBusiness = nearByBusinesseses.last;
@@ -288,6 +290,7 @@ class LandingViewModel extends BaseViewModel {
     if (result?.data == null) return;
 
     _selectedCategory = result!.data;
+    _pageKey = selectedCategory.id + DateTime.now().toString();
     _selectedIndex = 0;
     await getBusinesses();
     notifyListeners();
