@@ -159,6 +159,7 @@ class BusinessServiceModel with _$BusinessServiceModel {
   factory BusinessServiceModel({
     required String service,
     required double price,
+    String? currency,
   }) = _BusinessServiceModel;
 
   factory BusinessServiceModel.fromJson(Map<String, dynamic> json) =>

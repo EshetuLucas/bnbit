@@ -165,6 +165,7 @@ _$BusinessServiceModelImpl _$$BusinessServiceModelImplFromJson(
     _$BusinessServiceModelImpl(
       service: json['service'] as String,
       price: (json['price'] as num).toDouble(),
+      currency: json['currency'] as String?,
     );
 
 Map<String, dynamic> _$$BusinessServiceModelImplToJson(
@@ -172,6 +173,7 @@ Map<String, dynamic> _$$BusinessServiceModelImplToJson(
     <String, dynamic>{
       'service': instance.service,
       'price': instance.price,
+      'currency': instance.currency,
     };
 
 _$ImageImpl _$$ImageImplFromJson(Map<String, dynamic> json) => _$ImageImpl(

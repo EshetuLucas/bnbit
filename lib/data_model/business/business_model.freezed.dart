@@ -1608,6 +1608,7 @@ BusinessServiceModel _$BusinessServiceModelFromJson(Map<String, dynamic> json) {
 mixin _$BusinessServiceModel {
   String get service => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
+  String? get currency => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1621,7 +1622,7 @@ abstract class $BusinessServiceModelCopyWith<$Res> {
           $Res Function(BusinessServiceModel) then) =
       _$BusinessServiceModelCopyWithImpl<$Res, BusinessServiceModel>;
   @useResult
-  $Res call({String service, double price});
+  $Res call({String service, double price, String? currency});
 }
 
 /// @nodoc
@@ -1640,6 +1641,7 @@ class _$BusinessServiceModelCopyWithImpl<$Res,
   $Res call({
     Object? service = null,
     Object? price = null,
+    Object? currency = freezed,
   }) {
     return _then(_value.copyWith(
       service: null == service
@@ -1650,6 +1652,10 @@ class _$BusinessServiceModelCopyWithImpl<$Res,
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -1662,7 +1668,7 @@ abstract class _$$BusinessServiceModelImplCopyWith<$Res>
       __$$BusinessServiceModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String service, double price});
+  $Res call({String service, double price, String? currency});
 }
 
 /// @nodoc
@@ -1678,6 +1684,7 @@ class __$$BusinessServiceModelImplCopyWithImpl<$Res>
   $Res call({
     Object? service = null,
     Object? price = null,
+    Object? currency = freezed,
   }) {
     return _then(_$BusinessServiceModelImpl(
       service: null == service
@@ -1688,6 +1695,10 @@ class __$$BusinessServiceModelImplCopyWithImpl<$Res>
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as double,
+      currency: freezed == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -1695,7 +1706,8 @@ class __$$BusinessServiceModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$BusinessServiceModelImpl implements _BusinessServiceModel {
-  _$BusinessServiceModelImpl({required this.service, required this.price});
+  _$BusinessServiceModelImpl(
+      {required this.service, required this.price, this.currency});
 
   factory _$BusinessServiceModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$BusinessServiceModelImplFromJson(json);
@@ -1704,10 +1716,12 @@ class _$BusinessServiceModelImpl implements _BusinessServiceModel {
   final String service;
   @override
   final double price;
+  @override
+  final String? currency;
 
   @override
   String toString() {
-    return 'BusinessServiceModel(service: $service, price: $price)';
+    return 'BusinessServiceModel(service: $service, price: $price, currency: $currency)';
   }
 
   @override
@@ -1716,12 +1730,14 @@ class _$BusinessServiceModelImpl implements _BusinessServiceModel {
         (other.runtimeType == runtimeType &&
             other is _$BusinessServiceModelImpl &&
             (identical(other.service, service) || other.service == service) &&
-            (identical(other.price, price) || other.price == price));
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, service, price);
+  int get hashCode => Object.hash(runtimeType, service, price, currency);
 
   @JsonKey(ignore: true)
   @override
@@ -1742,7 +1758,8 @@ class _$BusinessServiceModelImpl implements _BusinessServiceModel {
 abstract class _BusinessServiceModel implements BusinessServiceModel {
   factory _BusinessServiceModel(
       {required final String service,
-      required final double price}) = _$BusinessServiceModelImpl;
+      required final double price,
+      final String? currency}) = _$BusinessServiceModelImpl;
 
   factory _BusinessServiceModel.fromJson(Map<String, dynamic> json) =
       _$BusinessServiceModelImpl.fromJson;
@@ -1751,6 +1768,8 @@ abstract class _BusinessServiceModel implements BusinessServiceModel {
   String get service;
   @override
   double get price;
+  @override
+  String? get currency;
   @override
   @JsonKey(ignore: true)
   _$$BusinessServiceModelImplCopyWith<_$BusinessServiceModelImpl>
