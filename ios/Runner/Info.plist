@@ -2,25 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
- 
-    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Cronlink uses location data for tracking of drivers.\nYour data will not be shared with any other.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Cronlink uses location data for tracking of drivers.\nYour data will not be shared with any other.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Cronlink uses location data for tracking of drivers.\nYour data will not be shared with any other.</string>
-    <key>NSCameraUsageDescription</key>
-	<string>This lets you to capture photos of receipt during adding entries, making it easy to remember important details.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Mekfeya Cashbook would like to access your photo library to enable you to upload your business and entry images.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs access to location when in the background.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs access to location when open and in the background.</string>
-	<key>io.flutter.embedded_views_preview</key>
-	<string>YES</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -47,10 +28,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.bnbit.app.bnbit</string>
+			<string>com.bnbit.app</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.414289243591-7le6n8hu940jj8d6cdbbtkfpi7u3qkn5</string>
+				<string>com.googleusercontent.apps.414289243591-ulnh90deh2hl6hevdduoftj1c06btvij</string>
 			</array>
 		</dict>
 	</array>
@@ -58,12 +39,21 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This lets you to capture photos of receipt during adding entries, making it easy to remember important details.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open and in the background.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs access to location when in the background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app needs access to location when open.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Bnbit would like to access your photo library to enable you to upload your profile and business images.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
-	
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -78,5 +68,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 </dict>
 </plist>
