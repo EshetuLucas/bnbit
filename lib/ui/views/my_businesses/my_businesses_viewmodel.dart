@@ -74,12 +74,12 @@ class MyBusinessesViewModel extends BaseViewModel {
     }
     _businessService.setSelectedBusiness(business);
 
-    await _navigationService.navigateToCreateBusinessView();
+    await _navigationService.navigateToUpdateCreateBusinessView();
     _myBusinesses[index] = _businessService.selectedBusiness!;
     notifyListeners();
   }
 
   void onAddBusiness() {
-    _navigationService.navigateToCreateBusinessView();
+    _navigationService.navigateToUpdateCreateBusinessView();
   }
 }
