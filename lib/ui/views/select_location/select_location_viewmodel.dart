@@ -188,7 +188,7 @@ class SelectLocationViewModel extends FormViewModel {
         country: detail.countryName ?? 'Unknown',
         latitude: placeInfo.lat ?? 0,
         longitude: placeInfo.lng ?? 0,
-        state: placeInfo.state,
+        state: detail.locality,
         line1: placesDetail.mainText,
         line2: placesDetail.secondaryText,
         area: detail.locality,
