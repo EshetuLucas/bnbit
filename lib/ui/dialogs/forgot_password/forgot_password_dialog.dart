@@ -43,7 +43,7 @@ class ForgotPasswordDialog extends StackedView<ForgotPasswordDialogModel> {
           ),
           verticalSpace(16),
           Text(
-            request.title ?? 'Rest password link sent to your email ',
+            request.title ?? 'Reset password link sent to your email ',
             textAlign: TextAlign.center,
             style: ktsHeading900(context).copyWith(
               fontWeight: FontWeight.w700,
