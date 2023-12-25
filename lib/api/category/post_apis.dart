@@ -5,12 +5,14 @@ import 'package:bnbit_app/api/common/api_consts.dart';
 import 'package:bnbit_app/app/app.logger.dart';
 import 'package:bnbit_app/data_model/address/address.dart';
 import 'package:bnbit_app/data_model/business/business_model.dart';
+import 'package:bnbit_app/data_model/category/category.dart';
 import 'package:dio/dio.dart';
 
 String categoriesUrl = baseUrl + '/business/categories';
 String uploadImageUrl = baseUrl + '/business/galleries';
 String businessUrl = baseUrl + '/business/businesses';
 String addAddressesUrl = baseUrl + '/business/addresses';
+String businessBaseUrl = baseUrl + '/business';
 
 mixin PostApis {
   final log = getLogger('CategoryGetApis');
@@ -93,6 +95,30 @@ mixin PostApis {
   Future<void> deleteBuisness(String businessId) async {
     return await apiClient.delete<void>(
       businessUrl + '/$businessId',
+    );
+  }
+
+  Future<Category> addNewCategory(
+    String name,
+  ) async {
+    return await apiClient.post<Category>(
+      businessBaseUrl + '/categories',
+      {
+        'name': name,
+      },
+    );
+  }
+
+  Future<void> addNewSubCategory({
+    required String name,
+    required String category,
+  }) async {
+    return await apiClient.post<void>(
+      businessBaseUrl + '/sub-categories',
+      {
+        'name': name,
+        'category': category,
+      },
     );
   }
 }

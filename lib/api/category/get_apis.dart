@@ -86,6 +86,13 @@ mixin GetApis {
       query = query + 'name=$name';
     }
 
+    if (query.split('').last == '&') {
+      List<String> tempQuery = query.split('');
+      tempQuery.removeLast();
+      query = tempQuery.join('');
+    }
+    log.e(query);
+
     return await apiClient.getList<Business>(
       businessUrl + query,
     );
