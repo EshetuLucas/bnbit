@@ -104,10 +104,17 @@ class BusinessLocationsViewModel extends BaseViewModel {
     // }
   }
 
-  void onAddOtherDetails(String title, int index) async {
+  void onAddOtherDetails(
+    String title,
+    int index, {
+    String? description,
+  }) async {
     log.i('index:$index');
     final result = await _bottomSheetService.showCustomSheet(
-        variant: BottomSheetType.addressDetail, title: title);
+      variant: BottomSheetType.addressDetail,
+      title: title,
+      description: description,
+    );
 
     if (result?.data == null) return;
 

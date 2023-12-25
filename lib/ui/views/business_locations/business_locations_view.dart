@@ -80,7 +80,9 @@ class BusinessLocationsView extends StackedView<BusinessLocationsViewModel>
                           lableController: lableController,
                           title: 'Location ${index + 1}',
                           index: index + 1,
-                          onTap: () => viewModel.onAddAddress(index),
+                          onTap: () => viewModel.onAddAddress(
+                            index,
+                          ),
                           address: address,
                           onRemove: () => viewModel.onRemove(index),
                         );
@@ -189,8 +191,11 @@ class _Location extends ViewModelWidget<BusinessLocationsViewModel> {
               verticalSpaceSmall,
               verticalSpaceTiny,
               InkWell(
-                onTap: () =>
-                    viewModel.onAddOtherDetails('Phone Number', index - 1),
+                onTap: () => viewModel.onAddOtherDetails(
+                  'Phone Number',
+                  index - 1,
+                  description: address.phone_number,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: InputField(
@@ -207,7 +212,11 @@ class _Location extends ViewModelWidget<BusinessLocationsViewModel> {
               verticalSpaceSmall,
               verticalSpaceTiny,
               InkWell(
-                onTap: () => viewModel.onAddOtherDetails('Label', index - 1),
+                onTap: () => viewModel.onAddOtherDetails(
+                  'Label',
+                  index - 1,
+                  description: address.label,
+                ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: InputField(
