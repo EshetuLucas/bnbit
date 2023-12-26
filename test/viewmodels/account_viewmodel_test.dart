@@ -6,7 +6,8 @@ import '../helpers/test_helpers.dart';
 void main() {
   group('AccountViewModel Tests -', () {
     setUp(() => registerServices());
-    tearDown(() => locator.reset());
+    tearDown(
+      () => locator.reset(),
+    );
   });
 }
-
