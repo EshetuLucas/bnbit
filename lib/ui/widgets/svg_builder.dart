@@ -20,10 +20,11 @@ class SvgBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       svg,
-      color: color,
       fit: fit,
       height: height,
       width: width,
+      colorFilter:
+          color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
     );
   }
 }
