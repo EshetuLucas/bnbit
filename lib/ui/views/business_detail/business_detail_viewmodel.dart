@@ -324,6 +324,9 @@ class BusinessDetailViewModel extends BaseViewModel {
 
     return endTime;
   }
+
+  void onSellAllServices() => _navigationService.navigateToSeeAllServicesView(
+      businessServices: business.services);
 }
 
 

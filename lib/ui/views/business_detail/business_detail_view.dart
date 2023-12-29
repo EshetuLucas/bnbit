@@ -10,7 +10,6 @@ import 'package:bnbit_app/ui/widgets/decorated_container.dart';
 import 'package:bnbit_app/ui/widgets/image_place_holder.dart';
 import 'package:bnbit_app/ui/widgets/map_view.dart';
 import 'package:bnbit_app/ui/widgets/placeholder_image.dart';
-import 'package:bnbit_app/ui/widgets/ra_skeleton_loader.dart';
 import 'package:bnbit_app/ui/widgets/spinner.dart';
 import 'package:bnbit_app/ui/widgets/svg_builder.dart';
 import 'package:bnbit_app/utils/algorithm_helpers.dart';
@@ -427,67 +426,90 @@ class BusinessDetailView extends StackedView<BusinessDetailViewModel> {
                                           child: Wrap(
                                             spacing: 4,
                                             runSpacing: 6,
-                                            children: business.services
-                                                .map(
-                                                  (service) => Wrap(
-                                                    spacing: 4,
-                                                    runSpacing: 6,
-                                                    children: [
-                                                      DecoratedContainer(
-                                                        // onTap: viewModel.onAddAddress,
-                                                        borderRadius: 30,
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          10,
-                                                                      vertical:
-                                                                          8),
-                                                              child: Text(
-                                                                service.service,
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: ktsSmall(
-                                                                    context),
+                                            children: [
+                                              ...business.services
+                                                  .getRange(0, 5)
+                                                  .map(
+                                                    (service) => Wrap(
+                                                      spacing: 4,
+                                                      runSpacing: 6,
+                                                      children: [
+                                                        DecoratedContainer(
+                                                          // onTap: viewModel.onAddAddress,
+                                                          borderRadius: 30,
+                                                          child: Row(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        10,
+                                                                    vertical:
+                                                                        8),
+                                                                child: Text(
+                                                                  service
+                                                                      .service,
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: ktsSmall(
+                                                                      context),
+                                                                ),
                                                               ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          10,
-                                                                      vertical:
-                                                                          8),
-                                                              child: Text(
-                                                                service.price
-                                                                        .toString() +
-                                                                    ' ${service.currency ?? 'ETB'}',
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: ktsSmall(
-                                                                    context),
+                                                              Padding(
+                                                                padding: const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        10,
+                                                                    vertical:
+                                                                        8),
+                                                                child: Text(
+                                                                  service.price
+                                                                          .toString() +
+                                                                      ' ${service.currency ?? 'ETB'}',
+                                                                  maxLines: 1,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  style: ktsSmall(
+                                                                      context),
+                                                                ),
                                                               ),
-                                                            ),
-                                                            horizontalSpaceTiny,
-                                                          ],
+                                                              horizontalSpaceTiny,
+                                                            ],
+                                                          ),
                                                         ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                              if (business.services.length > 5)
+                                                DecoratedContainer(
+                                                  onTap: viewModel
+                                                      .onSellAllServices,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 10,
+                                                        vertical: 6),
+                                                    child: Text(
+                                                      'See All ',
+                                                      style: ktsSmall(context)
+                                                          .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: kcPrimaryColor,
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 )
-                                                .toList(),
+                                            ],
                                           ),
-                                        )
+                                        ),
                                     ],
                                   ),
                                 ),
