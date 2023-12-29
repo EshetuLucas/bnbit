@@ -325,7 +325,7 @@ class _SubCategories extends ViewModelWidget<LandingViewModel> {
   @override
   Widget build(BuildContext context, LandingViewModel viewModel) {
     return SizedBox(
-      height: 50,
+      height: 65,
       child: ListView.separated(
         key: viewModel.isBusy ? null : PageStorageKey(viewModel.pageKey),
         padding: appSymmetricEdgePadding,
@@ -350,7 +350,7 @@ class _SubCategories extends ViewModelWidget<LandingViewModel> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 25,
+                      height: 30,
                       child:
                           // viewModel.isBusy || subCategory.svg == null
                           //     ?
@@ -367,14 +367,11 @@ class _SubCategories extends ViewModelWidget<LandingViewModel> {
                           SvgBuilder(
                         fit: BoxFit.cover,
                         key: Key(subCategory.id),
-                        svg: svgsPath + '/${subCategory.name}.svg',
-                        height: 25,
+                        svg: svgsPath + '/Icons_${subCategory.name}.svg',
+                        height: 30,
                         color: isSelected
-                            ? kcPrimaryColor
-                            : Theme.of(context)
-                                .colorScheme
-                                .onPrimary
-                                .withOpacity(0.6),
+                            ? kcPrimaryColor.withOpacity(0.8)
+                            : kcMediumLightGrey,
                       ),
                     ),
                     verticalSpaceTiny,
