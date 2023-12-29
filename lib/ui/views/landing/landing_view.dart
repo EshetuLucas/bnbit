@@ -325,7 +325,7 @@ class _SubCategories extends ViewModelWidget<LandingViewModel> {
   @override
   Widget build(BuildContext context, LandingViewModel viewModel) {
     return SizedBox(
-      height: 65,
+      height: 55,
       child: ListView.separated(
         key: viewModel.isBusy ? null : PageStorageKey(viewModel.pageKey),
         padding: appSymmetricEdgePadding,
