@@ -25,6 +25,7 @@ class SharedPreferencesService {
   }
 
   static const _isUserLoggedInKey = 'isUserLoggedIn';
+  static const _isMileInkmKey = 'distanceKey';
   static const _freshInstall = "fresh_install";
   static const _isEnglish = "isEnglish";
   static const _isAppLocked = "app_lock";
@@ -33,6 +34,8 @@ class SharedPreferencesService {
   static const _showUpdateDialog = "showUpdateDialog";
   static const _businessIdsWithBooks = "businessIdsWithBooks";
   static const _booksIdsWithEntries = "booksIdsWithEntries";
+
+  bool get isDistanceInMile => (getFromDisk(_isMileInkmKey) as bool?) ?? true;
 
   bool get isUserLoggedIn =>
       (getFromDisk(_isUserLoggedInKey) as bool?) ?? false;
@@ -68,7 +71,7 @@ class SharedPreferencesService {
   // String get theme => getFromDisk(_isDarkMode) ?? DarkModeType.system.name;
 
   set freshInstall(bool value) => saveToDisk(_freshInstall, value);
-
+  void setDistanceSystem(bool value) => saveToDisk(_isMileInkmKey, value);
   void setUserLoggedIn(bool value) => saveToDisk(_isUserLoggedInKey, value);
   void setAppLock(bool value) => saveToDisk(_isAppLocked, value);
   void setEnglish(bool value) => saveToDisk(_isEnglish, value);
