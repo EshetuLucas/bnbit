@@ -65,6 +65,8 @@ import 'package:bnbit_app/ui/bottom_sheets/input_field/input_field_sheet.dart';
 import 'package:bnbit_app/ui/views/view_images/view_images_view.dart';
 import 'package:bnbit_app/ui/views/delete_account/delete_account_view.dart';
 import 'package:bnbit_app/ui/bottom_sheets/single_input/single_input_sheet.dart';
+import 'package:bnbit_app/ui/views/see_all_services/see_all_services_view.dart';
+import 'package:bnbit_app/ui/views/settings/settings_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -108,6 +110,8 @@ import 'package:bnbit_app/ui/bottom_sheets/single_input/single_input_sheet.dart'
     MaterialRoute(page: ServicesView),
     MaterialRoute(page: ViewImagesView),
     MaterialRoute(page: DeleteAccountView),
+MaterialRoute(page: SeeAllServicesView),
+MaterialRoute(page: SettingsView),
 // @stacked-route
   ],
   dependencies: [
