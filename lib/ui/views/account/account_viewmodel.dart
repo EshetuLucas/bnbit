@@ -3,10 +3,8 @@ import 'package:bnbit_app/app/app.dialogs.dart';
 import 'package:bnbit_app/app/app.locator.dart';
 import 'package:bnbit_app/app/app.router.dart';
 import 'package:bnbit_app/data_model/user/user_model.dart';
-import 'package:bnbit_app/services/business_service.dart';
 import 'package:bnbit_app/services/url_launcher_service.dart';
 import 'package:bnbit_app/services/user_service.dart';
-import 'package:bnbit_app/ui/views/edit_profile/edit_profile_view.dart';
 import 'package:bnbit_app/ui/views/landing/landing_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_firebase_auth/stacked_firebase_auth.dart';
@@ -25,7 +23,6 @@ class AccountViewModel extends BaseViewModel {
   final log = getLogger('AccountViewModel');
   final _navigationService = locator<NavigationService>();
   final _userService = locator<UserService>();
-  final _businessService = locator<BusinessService>();
   final _firebaseAuth = locator<FirebaseAuthenticationService>();
   final _landingViewModel = locator<LandingViewModel>();
   final _urlLauncherService = locator<UrlLauncherService>();
@@ -54,6 +51,7 @@ class AccountViewModel extends BaseViewModel {
         'About',
         'Policy',
         'Saved',
+        'Settings',
         'My business',
       ];
 
@@ -78,12 +76,14 @@ class AccountViewModel extends BaseViewModel {
         openLink(3);
         break;
       case 4:
-        onMyBusinessestTap(isSavedBusines: true);
         break;
       case 5:
-        onMyBusinessestTap();
+        _navigationService.navigateToSettingsView();
         break;
       case 6:
+        onMyBusinessestTap();
+        break;
+      case 7:
         //onAbout();
         break;
       case 8:
