@@ -1,6 +1,9 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:bnbit_app/data_model/category/category.dart';
+import 'package:bnbit_app/ui/common/app_colors.dart';
+import 'package:bnbit_app/ui/widgets/svg_builder.dart';
+import 'package:bnbit_app/utils/asset_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:bnbit_app/ui/common/ui_helpers.dart';
 import 'package:stacked/stacked.dart';
@@ -80,6 +83,15 @@ class CategorySheet extends StackedView<CategorySheetModel> {
                                   padding: const EdgeInsets.all(13.0),
                                   child: Row(
                                     children: [
+                                      SvgBuilder(
+                                        svg: svgsPath +
+                                            '/Icons_${item.name}.svg',
+                                        height: 30,
+                                        color: item.id == request.description
+                                            ? kcPrimaryColor
+                                            : kcMediumLightGrey,
+                                      ),
+                                      horizontalSpaceSmall,
                                       Expanded(
                                         child: Text(
                                           item.name,
